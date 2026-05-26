@@ -42,7 +42,7 @@ All three outputs feed into a single Claude Haiku call that generates competitor
 
 ## Architecture
 
-![Pipeline Architecture](reports/assets/architecture.svg)
+![Pipeline Architecture](docs/assets/architecture.svg)
 
 ---
 
