@@ -1,1 +1,74 @@
+name: Monthly Competitive Intelligence
+on:
+  workflow_dispatch:
+    inputs:
+      year:
+        description: "Year (leave blank = auto)"
+        required: false
+      month:
+        description: "Month 1-12 (leave blank = auto)"
+        required: false
+      no_summary:
+        description: "Skip Claude theme summaries? (true/false)"
+        required: false
+        default: "false"
 
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install requests beautifulsoup4 anthropic sentence-transformers \
+                      openpyxl scikit-learn python-docx pandas
+
+      - name: Build date args
+        id: date_args
+        run: |
+          if [ -n "${{ github.event.inputs.year }}" ] && [ -n "${{ github.event.inputs.month }}" ]; then
+            echo "args=--year ${{ github.event.inputs.year }} --month ${{ github.event.inputs.month }}" >> $GITHUB_OUTPUT
+          else
+            echo "args=" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run news scraper
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          NO_SUMMARY=""
+          if [ "${{ github.event.inputs.no_summary }}" = "true" ]; then
+            NO_SUMMARY="--no-summary"
+          fi
+          mkdir -p news/data
+          python news/google_news_scraper.py ${{ steps.date_args.outputs.args }} $NO_SUMMARY
+
+      - name: Run Reddit sentiment scraper
+        run: |
+          mkdir -p social/data
+          python social/reddit_scraper.py ${{ steps.date_args.outputs.args }}
+
+      - name: Generate monthly brief
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          mkdir -p data
+          python core/generate_brief.py --data-dir news/data
+
+      - name: Generate HTML dashboard
+        run: python core/generate_html.py --data-dir data
+
+      - name: Commit all outputs
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add news/data/ social/data/ data/ reports/ core/ || true
+          git diff --staged --quiet || git commit -m "data: competitive intelligence $(date +'%Y-%m')"
+          git push
