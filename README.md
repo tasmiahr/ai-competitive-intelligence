@@ -42,51 +42,7 @@ All three outputs feed into a single Claude Haiku call that generates competitor
 
 ## Architecture
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│                      DATA COLLECTION                         │
-│                                                              │
-│   news/                 social/              website/        │
-│   Google News RSS       Reddit public JSON   Playwright      │
-│   3 buckets ×           4 subreddits ×       screenshots     │
-│   N competitors         N competitors        pixel diff gate  │
-└────────┬────────────────────┬────────────────────┬───────────┘
-         │                    │                    │
-         ▼                    ▼                    ▼
-┌──────────────┐    ┌──────────────────┐   ┌──────────────────┐
-│ Guide filter │    │ Sentiment scoring │   │ Pixel diff check │
-│ Exact dedup  │    │ Competitor agg.  │   │ Bounding box crop│
-│ BERT dedup   │    └────────┬─────────┘   │ Claude Vision    │
-│ DBSCAN       │             │             └────────┬─────────┘
-│ Claude Haiku │             │                      │
-└──────┬───────┘             │                      │
-       └─────────────────────┴──────────────────────┘
-                             │
-                             ▼
-              ┌──────────────────────────┐
-              │      generate_brief.py   │
-              │  1 Claude Haiku call     │
-              │  → executive summary     │
-              │  → competitor summaries  │
-              │  → top 5 market trends   │
-              └──────────────┬───────────┘
-                             │
-                             ▼
-              ┌──────────────────────────┐
-              │      generate_html.py    │
-              │  Self-contained HTML     │
-              │  Data baked in at build  │
-              └──────────────┬───────────┘
-                             │
-                             ▼
-              ┌──────────────────────────┐
-              │       GitHub Pages       │
-              │  reports/index.html      │
-              │  reports/dashboard.html  │
-              └──────────────────────────┘
-
-  GitHub Actions · manual trigger · auto-commits all outputs
-```
+![Pipeline Architecture](reports/assets/architecture.svg)
 
 ---
 
