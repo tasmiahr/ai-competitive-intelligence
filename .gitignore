@@ -1,1 +1,17 @@
+# Database
+market_intel.db
+*.db
 
+# Screenshots (large files)
+screenshots_*/
+screenshots_prev_*/
+
+# Environment
+.env
+.env.*
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+venv/
+.venv/
