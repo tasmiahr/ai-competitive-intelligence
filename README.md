@@ -1,6 +1,8 @@
-# AI Competitive Intelligence System
+# AI-Powered Competitive Intelligence
 
-A multi-source competitive intelligence system that monitors travel credit card competitors across news, social, and web — processing thousands of articles monthly, clustering them into actionable themes, and synthesizing a structured brief using a single Claude AI call. Built end-to-end in Python, fully automated via GitHub Actions, and deployed as a self-contained HTML dashboard to GitHub Pages.
+A multi-source competitive intelligence system that monitors credit card competitors across news, social, and web, processing thousands of articles monthly, clustering them into actionable themes, and synthesizing a structured brief using a single Claude API call. 
+
+Built end-to-end in Python, fully automated via GitHub Actions, and deployed as a self-contained HTML dashboard to GitHub Pages.
 
 **[View Live Dashboard →](https://tasmiahr.github.io/ai-competitive-intelligence/)** &nbsp;·&nbsp; **[Latest Brief →](https://tasmiahr.github.io/ai-competitive-intelligence/dashboard.html)**
 
@@ -8,7 +10,7 @@ A multi-source competitive intelligence system that monitors travel credit card 
 
 ## What it does
 
-Each month, three parallel data pipelines activate:
+Each month, three parallel data pipelines activate and feed into a single synthesis step.
 
 **News intelligence** scrapes Google News RSS across three query buckets per competitor — loyalty program changes, card product news, and company-level developments. Raw articles pass through a four-stage NLP pipeline: a guide filter removes evergreen content and listicles, exact deduplication removes identical headlines, semantic deduplication uses BERT sentence embeddings with cosine similarity to catch near-identical rewrites, and DBSCAN clustering groups articles about the same story across sources. Each cluster becomes a theme. Claude Haiku summarizes each theme in one sentence formatted as `[Competitor] [did X], [competitive implication for card products].`
 
@@ -111,7 +113,7 @@ All three outputs feed into a single Claude Haiku call that generates competitor
 | Reddit + news scraping | No AI | $0 |
 | **Total** | | **~$0.15–0.20/month** |
 
-90% reduction in Claude API usage compared to a naive per-article summarization approach — achieved by clustering articles into themes first and summarizing at the theme level, then batching all themes into a single brief generation call.
+Cost was a major factor during technical design considerations. 90% reduction in Claude API usage compared to a naive per-article summarization approach, achieved by clustering articles into themes first and summarizing at the theme level, then batching all themes into a single brief generation call.
 
 ---
 
