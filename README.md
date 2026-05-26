@@ -1,8 +1,11 @@
 # AI-Powered Competitive Intelligence
 
-A multi-source competitive intelligence system that monitors credit card competitors across news, social, and web, processing thousands of articles monthly, clustering them into actionable themes, and synthesizing a structured brief using a single Claude API call. 
+A multi-source competitive intelligence for credit card products that tracks
+competitor news, loyalty program changes, card offers, and cardholder sentiment 
+from social platforms.
 
-Built end-to-end in Python, fully automated via GitHub Actions, and deployed as a self-contained HTML dashboard to GitHub Pages.
+This pipeline eliminates manual research and automates the full pipeline: multi-source data collection, NLP-based deduplication and clustering, AI-driven summarization, and report generation. This engine can process thousands of articles into a structured brief using a single Claude API call at under $0.25 per run, improving time-to-insight by 95%.
+
 
 **[View Live Dashboard →](https://tasmiahr.github.io/ai-competitive-intelligence/)** &nbsp;·&nbsp; **[Latest Brief →](https://tasmiahr.github.io/ai-competitive-intelligence/dashboard.html)**
 
@@ -12,13 +15,16 @@ Built end-to-end in Python, fully automated via GitHub Actions, and deployed as 
 
 Each month, three parallel data pipelines activate and feed into a single synthesis step.
 
-**News intelligence** scrapes Google News RSS across three query buckets per competitor — loyalty program changes, card product news, and company-level developments. Raw articles pass through a four-stage NLP pipeline: a guide filter removes evergreen content and listicles, exact deduplication removes identical headlines, semantic deduplication uses BERT sentence embeddings with cosine similarity to catch near-identical rewrites, and DBSCAN clustering groups articles about the same story across sources. Each cluster becomes a theme. Claude Haiku summarizes each theme in one sentence formatted as `[Competitor] [did X], [competitive implication for card products].`
+### 📰 News Intelligence
+Scrapes Google News RSS across three query buckets per competitor — loyalty program changes, card product news, and company-level developments. Raw articles pass through a four-stage NLP pipeline: a guide filter removes evergreen content and listicles, exact deduplication removes identical headlines, semantic deduplication uses BERT sentence embeddings with cosine similarity to catch near-identical rewrites, and DBSCAN clustering groups articles about the same story across sources. Each cluster becomes a theme. Claude Haiku summarizes each theme in one sentence formatted as `[Competitor] [did X], [competitive implication for card products].`
 
-**Social sentiment** queries four subreddits — r/creditcards, r/churning, r/awardtravel, r/personalfinance — using Reddit's public JSON endpoints with no API key required. Posts mentioning each competitor are scored for sentiment and aggregated into per-competitor signals, surfacing what cardholders are actually saying rather than what press releases say.
+### 📱 Social Sentiment
+Queries four subreddits — r/creditcards, r/churning, r/awardtravel, r/personalfinance — using Reddit's public JSON endpoints with no API key required. Posts mentioning each competitor are scored for sentiment and aggregated into per-competitor signals, surfacing what cardholders are actually saying rather than what press releases say.
 
-**Visual change tracking** takes full-page Playwright screenshots of competitor card offer pages monthly. A Pillow pixel diff check acts as a free gatekeeper — only pages with more than 500 changed pixels are sent to Claude Vision (Sonnet). The changed region is cropped to its bounding box before the API call, minimizing token cost. Changes are classified by business impact: bonus increases, fee changes, new offers, messaging shifts, CTA changes.
+### 🖼️ Visual Change Tracking
+Takes full-page Playwright screenshots of competitor card offer pages monthly. A Pillow pixel diff check acts as a free gatekeeper — only pages with more than 500 changed pixels are sent to Claude Vision (Sonnet). The changed region is cropped to its bounding box before the API call, minimizing token cost. Changes are classified by business impact: bonus increases, fee changes, new offers, messaging shifts, CTA changes.
 
-All three outputs feed into a single Claude Haiku call that generates competitor summaries, an executive summary, and five market trends. A Python script bakes everything into a self-contained HTML dashboard — no server, no runtime dependencies — deployed automatically to GitHub Pages on every run.
+All three outputs feed into a single Claude Haiku call that generates competitor summaries, an executive summary, and five market trends. The pipeline bakes everything into a self-contained HTML dashboard — no server, no runtime dependencies — deployed automatically to GitHub Pages on every run.
 
 ---
 
