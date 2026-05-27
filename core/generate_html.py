@@ -2,7 +2,7 @@
 generate_html.py
 ================
 Reads monthly_market_trends_*.json + reddit_sentiment_*.json
-and generates reports/dashboard.html — fully self-contained.
+and generates docs/dashboard.html — fully self-contained.
 
 Run: python core/generate_html.py
      python core/generate_html.py --data-dir data
@@ -15,7 +15,7 @@ import argparse
 from datetime import datetime
 from pathlib import Path
 
-DOCS_DIR = "reports"
+DOCS_DIR = "docs"
 
 
 def find_latest(pattern):
