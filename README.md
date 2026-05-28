@@ -16,13 +16,24 @@ This pipeline eliminates manual research and automates the full pipeline: multi-
 Each month, three parallel data pipelines activate and feed into a single synthesis step.
 
 ### 📰 News Intelligence
-Scrapes Google News RSS across three query buckets per competitor — loyalty program changes, card product news, and company-level developments. Raw articles pass through a four-stage NLP pipeline: a guide filter removes evergreen content and listicles, exact deduplication removes identical headlines, semantic deduplication uses BERT sentence embeddings with cosine similarity to catch near-identical rewrites, and DBSCAN clustering groups articles about the same story across sources. Each cluster becomes a theme. Claude Haiku summarizes each theme in one sentence formatted as `[Competitor] [did X], [competitive implication for card products].`
+- Scrapes Google News RSS across three query buckets per competitor including loyalty program changes, card product news, and company-level developments.
+  
+- Raw articles pass through a four-stage NLP pipeline:
+-   a guide filter removes evergreen content and listicles,
+-   exact deduplication removes identical headlines,
+-   semantic deduplication uses BERT sentence embeddings with cosine similarity to catch near-identical rewrites, and
+-   DBSCAN clustering groups articles about the same story across sources.
+
+- Each cluster becomes a theme, which Claude Haiku summarizes in one sentence.
 
 ### 📱 Social Sentiment
-Queries four subreddits — r/creditcards, r/churning, r/awardtravel, r/personalfinance — using Reddit's public JSON endpoints with no API key required. Posts mentioning each competitor are scored for sentiment and aggregated into per-competitor signals, surfacing what cardholders are actually saying rather than what press releases say.
+- Queries four subreddits r/creditcards, r/churning, r/awardtravel, r/personalfinance using Reddit's public JSON endpoints with no API key required. Posts mentioning each competitor are scored for sentiment and aggregated into per-competitor signals, surfacing what cardholders are actually saying rather than what press releases say.
 
 ### 🖼️ Visual Change Tracking
-Takes full-page Playwright screenshots of competitor card offer pages monthly. A Pillow pixel diff check acts as a free gatekeeper — only pages with more than 500 changed pixels are sent to Claude Vision (Sonnet). The changed region is cropped to its bounding box before the API call, minimizing token cost. Changes are classified by business impact: bonus increases, fee changes, new offers, messaging shifts, CTA changes.
+- Takes full-page Playwright screenshots of competitor card offer pages monthly.
+- A Pillow pixel diff check acts as a free gatekeeper and only pages with more than 500 changed pixels are sent to Claude Vision (Sonnet).
+- The changed region is cropped to its bounding box before the API call, minimizing token cost.
+- Changes are classified by business impact: bonus increases, fee changes, new offers, messaging shifts, CTA changes.
 
 All three outputs feed into a single Claude Haiku call that generates competitor summaries, an executive summary, and five market trends. The pipeline bakes everything into a self-contained HTML dashboard — no server, no runtime dependencies — deployed automatically to GitHub Pages on every run.
 
