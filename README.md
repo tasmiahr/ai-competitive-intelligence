@@ -27,11 +27,13 @@ Raw articles pass through a four-stage NLP pipeline:
 Each cluster becomes a theme, which Claude Haiku summarizes in one sentence.
 
 ### 📱 Social Sentiment
-- Queries four subreddits r/creditcards, r/churning, r/awardtravel, r/personalfinance using Reddit's public JSON endpoints with no API key required. Posts mentioning each competitor are scored for sentiment and aggregated into per-competitor signals, surfacing what cardholders are actually saying rather than what press releases say.
+Queries relevant Reddit subreddits using its public JSON endpoints with no API key required. 
+- Posts mentioning each competitor are scored for sentiment and aggregated into per-competitor signals, surfacing what cardholders are actually saying rather than what press releases say.
+- Queries four subreddits: r/creditcards, r/churning, r/awardtravel, r/personalfinance
 
 ### 🖼️ Visual Change Tracking
-- Takes full-page Playwright screenshots of competitor card offer pages monthly.
-- A Pillow pixel diff check acts as a free gatekeeper and only pages with more than 500 changed pixels are sent to Claude Vision (Sonnet).
+Takes full-page Playwright screenshots of competitor card offer pages monthly.
+- Pillow pixel diff check is used for pages with more than 500 changed pixels and sent to Claude Vision.
 - The changed region is cropped to its bounding box before the API call, minimizing token cost.
 - Changes are classified by business impact: bonus increases, fee changes, new offers, messaging shifts, CTA changes.
 
