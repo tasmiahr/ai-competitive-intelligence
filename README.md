@@ -16,15 +16,15 @@ This pipeline eliminates manual research and automates the full pipeline: multi-
 Each month, three parallel data pipelines activate and feed into a single synthesis step.
 
 ### 📰 News Intelligence
-- Scrapes Google News RSS across three query buckets per competitor including loyalty program changes, card product news, and company-level developments.
+Scrapes Google News RSS across three query buckets per competitor including loyalty program changes, card product news, and company-level developments.
   
-- Raw articles pass through a four-stage NLP pipeline:
--   a guide filter removes evergreen content and listicles,
--   exact deduplication removes identical headlines,
--   semantic deduplication uses BERT sentence embeddings with cosine similarity to catch near-identical rewrites, and
--   DBSCAN clustering groups articles about the same story across sources.
+Raw articles pass through a four-stage NLP pipeline:
+-  A guide filter removes evergreen content and listicles,
+-  Exact deduplication removes identical headlines,
+-  Semantic deduplication uses BERT sentence embeddings with cosine similarity to catch near-identical rewrites, and
+- DBSCAN clustering groups articles about the same story across sources.
 
-- Each cluster becomes a theme, which Claude Haiku summarizes in one sentence.
+Each cluster becomes a theme, which Claude Haiku summarizes in one sentence.
 
 ### 📱 Social Sentiment
 - Queries four subreddits r/creditcards, r/churning, r/awardtravel, r/personalfinance using Reddit's public JSON endpoints with no API key required. Posts mentioning each competitor are scored for sentiment and aggregated into per-competitor signals, surfacing what cardholders are actually saying rather than what press releases say.
