@@ -7,7 +7,7 @@ from social platforms.
 This pipeline eliminates manual research and automates the full pipeline: multi-source data collection, NLP-based deduplication and clustering, AI-driven summarization, and report generation. This engine can process thousands of articles into a structured brief using a single Claude API call at under $0.25 per run, improving time-to-insight by 95%.
 
 
-**[View Live Dashboard →](https://tasmiahr.github.io/ai-competitive-intelligence/)** &nbsp;·&nbsp; **[Latest Brief →](https://tasmiahr.github.io/ai-competitive-intelligence/dashboard.html)**
+**[View Project →](https://tasmiahr.github.io/ai-competitive-intelligence/)** 
 
 ---
 
