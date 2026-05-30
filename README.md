@@ -59,33 +59,23 @@ All three outputs feed into a single Claude Haiku call that generates competitor
 
 ---
 
-## Stack
-
-| Layer | Technology |
-|-------|-----------|
-| News scraping | Python, Google News RSS, BeautifulSoup |
-| Semantic dedup | sentence-transformers (all-MiniLM-L6-v2) |
-| Clustering | scikit-learn DBSCAN |
-| AI summarization | Claude Haiku (themes + brief), Claude Sonnet (visual changes) |
-| Web rendering | Playwright (screenshots + JS-rendered extraction) |
-| Visual diff | Pillow (pixel diff + bounding box crop) |
-| Social data | Reddit public JSON (no API key) |
-| Automation | GitHub Actions |
-| Dashboard | Python-generated self-contained HTML + Chart.js |
-| Export | python-docx (Word document) |
-| Local analytics | DuckDB |
-
----
-
 ## Technical Considerations
 
+### 📰 News Intelligence
 - **DBSCAN over K-Means** for news clustering — avoids specifying cluster count upfront, handles variable story volume naturally, and treats noise (unique articles) as first-class output rather than forcing them into clusters
 - **BERT sentence embeddings** (all-MiniLM-L6-v2) for semantic deduplication — catches near-identical rewrites with different headlines that exact matching misses
+
+### 📱 Social Sentiment
+- **Public Reddit JSON endpoints** — no API key, no rate limit concerns at monthly scraping volume; `requests.get` with `.json` suffix on any Reddit URL returns structured post data
+
+### 🖼️ Visual Change Tracking
 - **Pillow pixel diff gating** before Claude Vision — free local comparison eliminates API calls for unchanged pages, reducing visual tracking cost by ~60–70% depending on month
 - **Bounding box cropping** on detected changes — sends only the changed region to Claude rather than full-page screenshots, further minimizing Vision token usage
+
+### Brief Generation
 - **Single-call brief generation** — all theme summaries (~30 tokens each) fit in one Claude Haiku call returning structured JSON with competitor paragraphs, executive summary, and trends; splitting per-competitor would cost ~12× more with no quality gain
 - **Self-contained HTML output** — `generate_html.py` bakes all data as JavaScript into a static file at build time; opens in any browser, no server required, deploys to GitHub Pages without configuration
-- **Public Reddit JSON endpoints** — no API key, no rate limit concerns at monthly scraping volume; `requests.get` with `.json` suffix on any Reddit URL returns structured post data
+
 
 ---
 
@@ -102,6 +92,23 @@ All three outputs feed into a single Claude Haiku call that generates competitor
 
 Cost was a major factor during technical design considerations. 90% reduction in Claude API usage compared to a naive per-article summarization approach, achieved by clustering articles into themes first and summarizing at the theme level, then batching all themes into a single brief generation call.
 
+---
+
+## Stack
+
+| Layer | Technology |
+|-------|-----------|
+| News scraping | Python, Google News RSS, BeautifulSoup |
+| Semantic dedup | sentence-transformers (all-MiniLM-L6-v2) |
+| Clustering | scikit-learn DBSCAN |
+| AI summarization | Claude Haiku (themes + brief), Claude Sonnet (visual changes) |
+| Web rendering | Playwright (screenshots + JS-rendered extraction) |
+| Visual diff | Pillow (pixel diff + bounding box crop) |
+| Social data | Reddit public JSON (no API key) |
+| Automation | GitHub Actions |
+| Dashboard | Python-generated self-contained HTML + Chart.js |
+| Export | python-docx (Word document) |
+| Local analytics | DuckDB |
 
 ---
 
