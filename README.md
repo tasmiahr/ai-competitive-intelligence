@@ -41,7 +41,8 @@ Raw articles are scraped via Google News RSS and passed through a four-stage NLP
 -  Exact deduplication removes identical headlines,
 -  Semantic deduplication uses BERT sentence embeddings with cosine similarity to catch near-identical rewrites, and
 - DBSCAN clustering groups articles about the same story across sources.
-- Each cluster becomes a theme which Claude Haiku summarizes in one sentence.
+
+Each cluster becomes a theme which Claude Haiku summarizes in one sentence.
 
 ### 📱 Social Sentiment
 Relevant Reddit subreddits are used with its public JSON endpoints. Queries social posts mentioning each competitor, scores the posts analysing the sentiment, and aggregated into per-competitor signals. 
