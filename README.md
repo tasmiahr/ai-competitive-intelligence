@@ -18,16 +18,33 @@ Each month, three parallel data pipelines activate and feed into a single synthe
 ### 📰 News Intelligence
 Scrapes Google News RSS across three query buckets per competitor including program changes, product news, and company-level developments.
   
-Raw articles pass through a four-stage NLP pipeline:
+### 📱 Social Sentiment
+Queries social posts mentioning each competitor, scores the posts analysing the sentiment, and aggregated into per-competitor signals, surfacing what users are actually saying.
+
+### 🖼️ Visual Change Tracking
+Takes full-page Playwright screenshots of competitor pages monthly and then visual changes are flagged and classified by business impact such as messaging shifts or CTA changes.
+
+### Brief Generation
+
+All three outputs are used to generate competitor summaries, an executive summary, and top five market trends in desired brief format.
+
+---
+
+## Architecture
+
+![Pipeline Architecture](docs/assets/architecture.svg)
+
+
+### 📰 News Intelligence
+Raw articles are scraped via Google News RSS and passed through a four-stage NLP pipeline:
 -  A guide filter removes evergreen content and listicles,
 -  Exact deduplication removes identical headlines,
 -  Semantic deduplication uses BERT sentence embeddings with cosine similarity to catch near-identical rewrites, and
 - DBSCAN clustering groups articles about the same story across sources.
-
-Each cluster becomes a theme, which Claude Haiku summarizes in one sentence.
+- Each cluster becomes a theme which Claude Haiku summarizes in one sentence.
 
 ### 📱 Social Sentiment
-Queries social posts mentioning each competitor, scores the posts analysing the sentiment, and aggregated into per-competitor signals, surfacing what users are actually saying. Relevant Reddit subreddits are used with its public JSON endpoints. 
+Relevant Reddit subreddits are used with its public JSON endpoints. Queries social posts mentioning each competitor, scores the posts analysing the sentiment, and aggregated into per-competitor signals. 
 
 
 ### 🖼️ Visual Change Tracking
@@ -36,13 +53,9 @@ Takes full-page Playwright screenshots of competitor pages monthly.
 - The changed region is cropped to its bounding box before the API call, minimizing token cost.
 - Changes are classified by business impact such as messaging shifts or CTA changes.
 
+### Brief Generation
 All three outputs feed into a single Claude Haiku call that generates competitor summaries, an executive summary, and five market trends. The pipeline bakes everything into a self-contained HTML dashboard — no server, no runtime dependencies — deployed automatically to GitHub Pages on every run.
 
----
-
-## Architecture
-
-![Pipeline Architecture](docs/assets/architecture.svg)
 
 ---
 
