@@ -27,8 +27,8 @@ Raw articles pass through a four-stage NLP pipeline:
 Each cluster becomes a theme, which Claude Haiku summarizes in one sentence.
 
 ### 📱 Social Sentiment
-Queries relevant Reddit subreddits using its public JSON endpoints with no API key required. 
-- Posts mentioning each competitor are scored for sentiment and aggregated into per-competitor signals, surfacing what users are actually saying.
+Queries social posts mentioning each competitor, scores the posts analysing the sentiment, and aggregated into per-competitor signals, surfacing what users are actually saying. Relevant Reddit subreddits are used with its public JSON endpoints. 
+
 
 ### 🖼️ Visual Change Tracking
 Takes full-page Playwright screenshots of competitor pages monthly.
