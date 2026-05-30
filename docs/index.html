@@ -5,607 +5,867 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI Competitive Intelligence System</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --white:#ffffff; --bg:#fafafa; --surf:#f4f4f6;
-  --border:#e6e6eb; --ink:#0a0a14; --ink2:#3d3d4e;
-  --muted:#6b6b80; --muted2:#a0a0b0;
-  --purple:#5b5bd6; --teal:#00b894; --blue:#0066ff;
-  --grad:linear-gradient(135deg,#5b5bd6 0%,#00b894 100%);
-  --grad-r:linear-gradient(135deg,#00b894 0%,#5b5bd6 100%);
-  --font:'Inter',sans-serif; --mono:'JetBrains Mono',monospace;
-  --r:12px;
+  --blue:#1a56ff;
+  --blue-dark:#0f36cc;
+  --blue-light:#4d7bff;
+  --black:#0a0a0a;
+  --white:#ffffff;
+  --grey:#f2f2f2;
+  --grey-mid:#d4d4d4;
+  --grey-dark:#666666;
+  --ink:#111111;
+  --display:'Bebas Neue',sans-serif;
+  --body:'DM Sans',sans-serif;
+  --mono:'JetBrains Mono',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--white);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{background:var(--white);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 
-/* NAV */
-nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,0.88);backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid var(--border);height:60px;display:flex;align-items:center;padding:0 2.5rem;gap:2rem}
-.nav-brand{font-size:15px;font-weight:700;color:var(--ink);letter-spacing:-.01em;white-space:nowrap}
-.nav-links{display:flex;gap:.25rem;flex:1}
-.nav-link{font-size:14px;color:var(--muted);text-decoration:none;padding:.4rem .8rem;border-radius:8px;transition:all .15s;font-weight:400}
-.nav-link:hover{color:var(--ink);background:var(--surf)}
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;z-index:200;
+  background:var(--black);
+  height:58px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 2.5rem;
+}
+.nav-brand{
+  font-family:var(--display);font-size:20px;
+  letter-spacing:.06em;color:var(--white);
+}
+.nav-links{display:flex;gap:.25rem}
+.nav-link{
+  font-size:13px;color:rgba(255,255,255,.8);
+  text-decoration:none;padding:.4rem .8rem;border-radius:4px;
+  transition:color .15s;font-weight:400;
+}
+.nav-link:hover{color:var(--white)}
 .nav-actions{display:flex;gap:.75rem;align-items:center}
-.btn-ghost-sm{font-size:14px;font-weight:500;color:var(--ink);text-decoration:none;padding:.5rem 1rem;border-radius:8px;border:1px solid var(--border);transition:all .15s}
-.btn-ghost-sm:hover{background:var(--surf)}
-.btn-grad-sm{font-size:14px;font-weight:600;color:white;background:var(--grad);text-decoration:none;padding:.5rem 1.2rem;border-radius:8px;transition:all .2s;box-shadow:0 1px 2px rgba(91,91,214,.2)}
-.btn-grad-sm:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(91,91,214,.3)}
+.nav-btn-ghost{
+  font-size:13px;font-weight:500;
+  color:rgba(255,255,255,.7);
+  text-decoration:none;padding:.45rem 1rem;
+  border-radius:4px;border:1px solid rgba(255,255,255,.2);
+  transition:all .15s;
+}
+.nav-btn-ghost:hover{color:var(--white);border-color:rgba(255,255,255,.5)}
+.nav-btn-blue{
+  font-size:13px;font-weight:600;
+  color:var(--white);background:var(--blue);
+  text-decoration:none;padding:.45rem 1.1rem;
+  border-radius:4px;transition:all .2s;
+}
+.nav-btn-blue:hover{background:var(--blue-dark);transform:translateY(-1px)}
 
-/* HERO */
-.hero{position:relative;padding:6rem 2.5rem 4rem;text-align:center;min-height:90vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
-.hero-mesh{position:absolute;inset:0;z-index:0;pointer-events:none}
-.hero-mesh::before{content:'';position:absolute;top:-40%;left:-20%;width:80%;height:120%;background:radial-gradient(ellipse,rgba(91,91,214,.09) 0%,transparent 65%);animation:mfloat 12s ease-in-out infinite alternate}
-.hero-mesh::after{content:'';position:absolute;top:-20%;right:-20%;width:70%;height:100%;background:radial-gradient(ellipse,rgba(0,184,148,.08) 0%,transparent 60%);animation:mfloat 14s ease-in-out infinite alternate-reverse}
-@keyframes mfloat{from{transform:translate(0,0) scale(1)}to{transform:translate(3%,4%) scale(1.03)}}
-.hero-inner{position:relative;z-index:1;max-width:820px;width:100%}
-.hero-badge{display:inline-flex;align-items:center;gap:.5rem;font-size:12px;font-weight:600;color:var(--purple);background:rgba(91,91,214,.07);border:1px solid rgba(91,91,214,.15);padding:.35rem 1rem;border-radius:20px;margin-bottom:2rem;animation:up .5s .1s ease both}
-.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--purple);animation:bdot 2s ease-in-out infinite}
-@keyframes bdot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
-.hero-h1{font-size:clamp(44px,6.5vw,80px);font-weight:900;letter-spacing:-.04em;line-height:1.05;margin-bottom:1.5rem;animation:up .6s .2s ease both}
-.grad-text{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{font-size:18px;color:var(--muted);font-weight:400;max-width:520px;margin:0 auto 2.5rem;line-height:1.65;animation:up .6s .3s ease both}
-.hero-ctas{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:3rem;animation:up .6s .4s ease both}
-.btn-primary{font-size:15px;font-weight:600;color:white;background:var(--grad);text-decoration:none;padding:.9rem 2.2rem;border-radius:10px;transition:all .2s;box-shadow:0 2px 8px rgba(91,91,214,.25)}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(91,91,214,.3)}
-.btn-secondary{font-size:15px;font-weight:500;color:var(--ink2);background:white;text-decoration:none;padding:.9rem 2.2rem;border-radius:10px;border:1px solid var(--border);transition:all .2s}
-.btn-secondary:hover{background:var(--bg);transform:translateY(-2px)}
-@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+/* ── HERO ── */
+.hero{
+  background:var(--blue);
+  min-height:92vh;
+  display:grid;grid-template-columns:1fr 1fr;
+  align-items:center;
+  padding:5rem 2.5rem;
+  gap:3rem;
+  position:relative;overflow:hidden;
+}
+/* Blue accent shape */
+.hero::before{
+  content:'';position:absolute;
+  top:-20%;right:-5%;
+  width:480px;height:480px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.15) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero::after{
+  content:'';position:absolute;
+  bottom:-10%;left:30%;
+  width:300px;height:300px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,0,0,.1) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-left{position:relative;z-index:1}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-family:var(--mono);font-size:11px;font-weight:500;
+  color:rgba(255,255,255,.9);
+  border:1px solid rgba(255,255,255,.3);
+  background:rgba(255,255,255,.1);
+  padding:.35rem 1rem;border-radius:2px;
+  margin-bottom:1.75rem;letter-spacing:.05em;
+  animation:fadeUp .5s .1s ease both;
+}
+.eyebrow-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:white;flex-shrink:0;
+  animation:blink 2s ease-in-out infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-h1{
+  font-family:var(--display);
+  font-size:clamp(64px,7vw,96px);
+  line-height:.95;letter-spacing:.02em;
+  color:var(--white);
+  margin-bottom:1.5rem;
+  animation:fadeUp .6s .2s ease both;
+}
+.hero-h1 .blue{color:var(--blue)}
+.hero-h1 .grey{color:var(--grey-mid)}
+.hero-sub{
+  font-size:16px;color:rgba(255,255,255,.5);
+  font-weight:300;line-height:1.7;
+  max-width:440px;margin-bottom:2.5rem;
+  animation:fadeUp .6s .3s ease both;
+}
+.hero-ctas{
+  display:flex;gap:.75rem;flex-wrap:wrap;
+  animation:fadeUp .6s .4s ease both;
+}
+.btn-blue-lg{
+  font-size:15px;font-weight:700;color:var(--blue);
+  background:var(--white);text-decoration:none;
+  padding:.85rem 2rem;border-radius:4px;
+  transition:all .2s;
+  box-shadow:0 4px 24px rgba(0,0,0,.2);
+  letter-spacing:-.01em;
+}
+.btn-blue-lg:hover{background:var(--grey);transform:translateY(-2px);box-shadow:0 10px 32px rgba(0,0,0,.25)}
+.btn-white-lg{
+  font-size:15px;font-weight:500;color:var(--white);
+  background:transparent;text-decoration:none;
+  padding:.85rem 2rem;border-radius:4px;
+  border:2px solid rgba(255,255,255,.6);
+  transition:all .2s;
+  letter-spacing:-.01em;
+}
+.btn-white-lg:hover{background:rgba(255,255,255,.1);border-color:white;transform:translateY(-2px)}
 
-/* HERO PREVIEW */
-.hero-preview{animation:up .8s .55s ease both;width:100%;max-width:720px;margin:0 auto}
-.browser-wrap{border-radius:14px;border:1px solid var(--border);overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.1),0 4px 12px rgba(0,0,0,.05)}
-.browser-bar{background:#f4f4f6;padding:.6rem 1rem;display:flex;align-items:center;gap:.5rem;border-bottom:1px solid var(--border)}
-.bdot-r{width:10px;height:10px;border-radius:50%;background:#ff5f57;display:inline-block}
-.bdot-y{width:10px;height:10px;border-radius:50%;background:#febc2e;display:inline-block}
-.bdot-g{width:10px;height:10px;border-radius:50%;background:#28c840;display:inline-block}
-.browser-url{font-size:11px;color:#999;font-family:var(--mono);margin-left:.5rem}
-.browser-content{background:white;padding:1.25rem}
-.mini-title{font-size:14px;font-weight:700;letter-spacing:-.01em;color:var(--ink);margin-bottom:.75rem}
-.mini-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-bottom:.9rem}
-.mini-kpi{background:#f4f4f6;border-radius:8px;padding:.6rem .75rem}
-.mini-kpi-v{font-size:20px;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.03em}
-.mini-kpi-l{font-size:9px;color:#999;font-family:var(--mono);text-transform:uppercase}
-.mini-exec{border-left:3px solid var(--purple);background:#f9f9ff;border-radius:0 8px 8px 0;padding:.75rem;margin-bottom:.75rem}
-.mini-exec-label{font-size:9px;color:var(--purple);font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-family:var(--mono);margin-bottom:.3rem}
-.mini-exec-text{font-size:11px;color:#3d3d4e;line-height:1.55}
-.mini-theme{display:flex;align-items:flex-start;gap:.5rem;padding:.5rem .7rem;background:#f9f9ff;border-radius:7px;margin-bottom:.35rem;animation:slideR .4s ease both}
-@keyframes slideR{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
-.tag-card{font-size:9px;font-weight:700;padding:2px 5px;border-radius:3px;background:#efefff;color:var(--purple);font-family:var(--mono);flex-shrink:0;margin-top:1px}
-.tag-loyalty{background:#f0fff8;color:var(--teal)}
-.mini-theme-text{font-size:11px;color:#3d3d4e;line-height:1.4;flex:1}
+/* Hero dashboard preview */
+.hero-right{
+  position:relative;z-index:1;
+  animation:fadeUp .8s .5s ease both;
+}
+.dash-preview{
+  border-radius:10px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:0 32px 80px rgba(0,0,0,.6),0 0 0 1px rgba(26,86,255,.15);
+}
+.dp-bar{
+  background:#1a1a1a;padding:.6rem 1rem;
+  display:flex;align-items:center;gap:.5rem;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.dp-dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.dp-dot-r{background:#ff5f57}.dp-dot-y{background:#febc2e}.dp-dot-g{background:#28c840}
+.dp-url{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.25);margin-left:.5rem}
+.dp-body{background:#111;padding:1.25rem;min-height:260px}
+/* Dashboard tabs */
+.dp-tabs{display:flex;gap:.25rem;margin-bottom:.9rem;background:#1a1a1a;border-radius:5px;padding:.2rem}
+.dp-tab{
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  color:rgba(255,255,255,.4);background:transparent;border:none;
+  padding:.35rem .7rem;border-radius:4px;cursor:pointer;
+  transition:all .2s;flex:1;text-align:center;
+}
+.dp-tab.active{background:var(--blue);color:white}
+.dp-tab:hover:not(.active){color:rgba(255,255,255,.7)}
+.dp-panel{animation:fadeIn .35s ease both}
+.dp-panel.hidden{display:none}
+.dp-panel-label{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.25);margin-bottom:.55rem;text-transform:uppercase;letter-spacing:.06em}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.dp-anim{opacity:0;animation:fadeIn .4s ease forwards}
+/* Sentiment rows in preview */
+.dp-sent-row{display:flex;align-items:center;gap:.5rem;margin-bottom:.45rem}
+.dp-sent-name{font-size:10px;color:rgba(255,255,255,.7);width:60px;flex-shrink:0}
+.dp-sent-track{flex:1;height:4px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden}
+.dp-sent-fill{height:100%;border-radius:2px;transition:width .8s ease}
+.dp-sent-lbl{font-family:var(--mono);font-size:9px;font-weight:600;width:65px;text-align:right}
+/* Posts in preview */
+.dp-post{display:flex;align-items:baseline;gap:.4rem;padding:.35rem .5rem;background:#1a1a1a;border-radius:4px;margin-bottom:.3rem;font-size:10px}
+.dp-post-text{flex:1;color:rgba(255,255,255,.55);line-height:1.35}
+.dp-post-score{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.2);flex-shrink:0}
+/* Diff in preview */
+.dp-diff-wrap{display:flex;gap:.4rem;margin-bottom:.5rem}
+.dp-diff-pane{flex:1;border-radius:4px;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+.dp-diff-changed{border-color:rgba(26,86,255,.4)}
+.dp-diff-ph{background:#1a1a1a;padding:.3rem .5rem;font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.3)}
+.dp-diff-body{background:#111;padding:.4rem .5rem;font-size:10px}
+.dp-diff-same{color:rgba(255,255,255,.25);display:block;margin-bottom:.2rem}
+.dp-diff-old{color:rgba(255,255,255,.25);text-decoration:line-through;display:block;margin-bottom:.2rem}
+.dp-diff-new{background:rgba(26,86,255,.2);color:#7da4ff;display:block;padding:1px 3px;border-radius:2px;margin-bottom:.2rem}
+.dp-alert{background:rgba(255,60,60,.1);border:1px solid rgba(255,60,60,.2);border-radius:4px;padding:.35rem .55rem;font-size:10px;color:#ff8080;font-weight:600}
+.dp-title{font-family:var(--mono);font-size:12px;color:rgba(255,255,255,.9);font-weight:500;margin-bottom:1rem}
+.dp-title span{color:var(--blue)}
+.dp-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-bottom:1rem}
+.dp-kpi{background:#1a1a1a;border-radius:6px;padding:.65rem .75rem;border:1px solid rgba(255,255,255,.05)}
+.dp-kpi-v{font-family:var(--display);font-size:22px;letter-spacing:.02em;color:var(--blue)}
+.dp-kpi-l{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.3);text-transform:uppercase;margin-top:.15rem}
+.dp-exec{border-left:2px solid var(--blue);background:rgba(26,86,255,.07);border-radius:0 6px 6px 0;padding:.75rem;margin-bottom:.75rem}
+.dp-exec-lbl{font-family:var(--mono);font-size:9px;color:var(--blue);font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem}
+.dp-exec-text{font-size:11px;color:rgba(255,255,255,.6);line-height:1.55}
+.dp-theme{display:flex;align-items:flex-start;gap:.5rem;padding:.45rem .65rem;background:#1a1a1a;border-radius:5px;margin-bottom:.35rem;border:1px solid rgba(255,255,255,.04)}
+.dp-tag{font-family:var(--mono);font-size:9px;font-weight:600;padding:2px 5px;border-radius:2px;flex-shrink:0;margin-top:1px}
+.dp-tag-blue{background:rgba(26,86,255,.2);color:#7da4ff}
+.dp-tag-teal{background:rgba(0,184,148,.15);color:#5ee8c8}
+.dp-theme-text{font-size:10px;color:rgba(255,255,255,.55);line-height:1.4;flex:1}
 
-/* STATS */
-.stats-bar{background:white;border-top:1px solid var(--border);border-bottom:1px solid var(--border);display:grid;grid-template-columns:repeat(4,1fr)}
-.stat{padding:2.5rem 2rem;border-right:1px solid var(--border);text-align:center}
-.stat:last-child{border-right:none}
-.stat-val{font-size:40px;font-weight:800;letter-spacing:-.04em;line-height:1;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.stat-label{font-size:13px;color:var(--muted);margin-top:.4rem}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 
-/* ARCH SECTION */
-.arch-section{background:#0d0f1a;padding:5rem 2.5rem;overflow:hidden;position:relative}
-.arch-section::before{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.025) 1px,transparent 1px);background-size:32px 32px}
+/* ── FEATURE TILES ── */
+.tiles-section{padding:5rem 2.5rem;background:var(--white)}
+.tiles-eyebrow{font-family:var(--mono);font-size:11px;color:var(--blue);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem}
+.tiles-title{font-family:var(--display);font-size:clamp(36px,5vw,56px);letter-spacing:.02em;color:var(--black);margin-bottom:3rem;line-height:1}
+.tiles-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid #e0e0e0;border-radius:12px;overflow:hidden}
+.tile{
+  padding:2.2rem 1.8rem;cursor:pointer;text-decoration:none;display:block;
+  transition:transform .25s cubic-bezier(.22,.68,0,1.2),box-shadow .25s ease;
+  border-right:1px solid #e0e0e0;
+  position:relative;overflow:hidden;
+}
+.tile:last-child{border-right:none}
+.tile-white{background:var(--white)}
+.tile-grey{background:var(--grey)}
+.tile-blue{background:var(--blue)}
+.tile-black{background:var(--black)}
+.tile:hover{
+  transform:translateZ(0) scale(1.03) translateY(-4px);
+  box-shadow:0 16px 48px rgba(0,0,0,.15);
+  z-index:2;
+}
+.tile-num{font-family:var(--mono);font-size:11px;color:var(--grey-mid);margin-bottom:1.5rem;letter-spacing:.06em}
+.tile-blue .tile-num{color:rgba(255,255,255,.4)}
+.tile-black .tile-num{color:rgba(255,255,255,.25)}
+.tile-icon{font-size:28px;margin-bottom:1rem;display:block}
+.tile-title{font-family:var(--display);font-size:22px;letter-spacing:.03em;line-height:1;margin-bottom:.6rem}
+.tile-white .tile-title,.tile-grey .tile-title{color:var(--black)}
+.tile-blue .tile-title,.tile-black .tile-title{color:var(--white)}
+.tile-desc{font-size:13px;line-height:1.6;font-weight:300}
+.tile-white .tile-desc,.tile-grey .tile-desc{color:var(--grey-dark)}
+.tile-blue .tile-desc{color:rgba(255,255,255,.7)}
+.tile-black .tile-desc{color:rgba(255,255,255,.5)}
+.tile-arrow{
+  position:absolute;bottom:1.5rem;right:1.5rem;
+  font-size:18px;opacity:.3;
+  transition:opacity .2s,transform .2s;
+}
+.tile-white .tile-arrow,.tile-grey .tile-arrow{color:var(--black)}
+.tile-blue .tile-arrow,.tile-black .tile-arrow{color:var(--white)}
+.tile:hover .tile-arrow{opacity:1;transform:translate(3px,-3px)}
+
+/* ── ARCHITECTURE ── */
+.arch-section{
+  background:#0a0a14;
+  padding:5rem 2.5rem;
+  position:relative;overflow:hidden;
+}
+.arch-section::before{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(rgba(26,86,255,.06) 1px,transparent 1px);
+  background-size:28px 28px;
+}
 .arch-inner{max-width:1100px;margin:0 auto;position:relative;z-index:1}
-.arch-eyebrow{font-size:12px;font-weight:600;font-family:var(--mono);color:var(--teal);margin-bottom:1rem;letter-spacing:.05em;text-transform:uppercase}
-.arch-title{font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-.03em;line-height:1.1;margin-bottom:1rem;color:white}
-.arch-sub{font-size:16px;color:rgba(255,255,255,.5);font-weight:300;max-width:460px;margin-bottom:3.5rem;line-height:1.65}
-.arch-diagram{position:relative;width:100%;height:320px}
+.arch-eyebrow{font-family:var(--mono);font-size:11px;color:var(--blue-light);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem}
+.arch-title{font-family:var(--display);font-size:clamp(36px,5vw,56px);letter-spacing:.03em;color:var(--white);margin-bottom:.75rem;line-height:1}
+.arch-sub{font-size:15px;color:rgba(255,255,255,.4);font-weight:300;max-width:480px;margin-bottom:3rem;line-height:1.65}
+.arch-diagram{position:relative;width:100%;overflow-x:auto}
+.arch-svg-wrap{min-width:700px}
 
-/* Arch nodes */
-.anode{position:absolute;background:rgba(91,91,214,.15);border:1px solid rgba(91,91,214,.35);border-radius:10px;padding:.5rem 1rem;font-size:12px;font-weight:600;color:rgba(255,255,255,.9);font-family:var(--mono);white-space:nowrap;transition:all .3s;cursor:default}
-.anode:hover{background:rgba(91,91,214,.3);border-color:rgba(91,91,214,.6);transform:translateY(-2px);box-shadow:0 0 20px rgba(91,91,214,.3)}
-.anode-center{background:linear-gradient(135deg,rgba(91,91,214,.4),rgba(0,184,148,.3));border-color:rgba(91,91,214,.6);border-width:1.5px;font-size:14px;padding:.75rem 1.5rem}
-.anode-teal{background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.3)}
-.anode-teal:hover{background:rgba(0,184,148,.25);border-color:rgba(0,184,148,.5);box-shadow:0 0 20px rgba(0,184,148,.2)}
+/* ── FEATURE DETAILS (alternating) ── */
+.feat-section{padding:0}
+.feat-row{
+  display:grid;grid-template-columns:1fr 1fr;
+  min-height:520px;
+}
+.feat-text-col{
+  padding:4rem 3rem;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.feat-visual-col{
+  display:flex;align-items:center;justify-content:center;
+  padding:2.5rem;
+  position:relative;overflow:hidden;
+}
+/* Alternating backgrounds */
+.feat-row:nth-child(1) .feat-text-col{background:var(--white)}
+.feat-row:nth-child(1) .feat-visual-col{background:var(--grey)}
+.feat-row:nth-child(2) .feat-text-col{background:var(--black);order:2}
+.feat-row:nth-child(2) .feat-visual-col{background:#111;order:1}
+.feat-row:nth-child(3) .feat-text-col{background:var(--blue)}
+.feat-row:nth-child(3) .feat-visual-col{background:#1240e0}
+.feat-row:nth-child(4) .feat-text-col{background:var(--white);order:2}
+.feat-row:nth-child(4) .feat-visual-col{background:var(--grey);order:1}
 
-/* SVG connector lines */
-.arch-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.feat-num{font-family:var(--mono);font-size:11px;letter-spacing:.1em;margin-bottom:1.25rem}
+.feat-row:nth-child(1) .feat-num{color:var(--blue)}
+.feat-row:nth-child(2) .feat-num{color:rgba(255,255,255,.3)}
+.feat-row:nth-child(3) .feat-num{color:rgba(255,255,255,.5)}
+.feat-row:nth-child(4) .feat-num{color:var(--blue)}
 
-/* Pulsing dots on lines */
-@keyframes traveldot{0%{offset-distance:0%}100%{offset-distance:100%}}
-.travel-dot{position:absolute;width:5px;height:5px;border-radius:50%;background:var(--purple);box-shadow:0 0 6px var(--purple);animation:traveldot 2.5s linear infinite}
+.feat-h3{font-family:var(--display);font-size:clamp(30px,4vw,48px);letter-spacing:.02em;line-height:1.0;margin-bottom:1rem}
+.feat-row:nth-child(1) .feat-h3{color:var(--black)}
+.feat-row:nth-child(2) .feat-h3{color:var(--white)}
+.feat-row:nth-child(3) .feat-h3{color:var(--white)}
+.feat-row:nth-child(4) .feat-h3{color:var(--black)}
 
-/* FEATURES alternating */
-.features-section{padding:0;max-width:1100px;margin:0 auto}
-.feature-row{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;padding:5rem 2.5rem;border-bottom:1px solid var(--border)}
-.feature-row:last-child{border-bottom:none}
-.feature-row.reverse{direction:rtl}
-.feature-row.reverse>*{direction:ltr}
-.feat-text{}
-.feat-eyebrow{font-size:12px;font-weight:600;font-family:var(--mono);color:var(--purple);margin-bottom:.75rem;letter-spacing:.05em;text-transform:uppercase}
-.feat-h2{font-size:clamp(24px,3vw,34px);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:1rem}
-.feat-desc{font-size:15px;color:var(--muted);line-height:1.75;font-weight:400;margin-bottom:1.5rem}
-.feat-stack{display:flex;flex-wrap:wrap;gap:.4rem}
-.feat-chip{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--purple);background:rgba(91,91,214,.07);border:1px solid rgba(91,91,214,.12);padding:.3rem .75rem;border-radius:6px}
-.feat-chip-teal{color:var(--teal);background:rgba(0,184,148,.07);border-color:rgba(0,184,148,.15)}
+.feat-desc{font-size:15px;line-height:1.75;font-weight:300;margin-bottom:1.75rem}
+.feat-row:nth-child(1) .feat-desc{color:var(--grey-dark)}
+.feat-row:nth-child(2) .feat-desc{color:rgba(255,255,255,.5)}
+.feat-row:nth-child(3) .feat-desc{color:rgba(255,255,255,.75)}
+.feat-row:nth-child(4) .feat-desc{color:var(--grey-dark)}
 
-/* Feature preview panels */
-.feat-preview{border-radius:16px;border:1px solid var(--border);overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.07)}
-.fp-header{background:#f4f4f6;padding:.55rem 1rem;display:flex;align-items:center;gap:.4rem;border-bottom:1px solid var(--border)}
-.fp-body{background:white;padding:1.1rem}
-.fp-title{font-size:10px;color:#999;font-family:var(--mono);margin-bottom:.6rem;text-transform:uppercase;letter-spacing:.06em}
+.feat-desc-tech{
+  font-size:13px;line-height:1.7;font-weight:300;
+  margin-bottom:1.75rem;
+  padding:.75rem 1rem;border-radius:4px;
+  border-left:2px solid;
+}
+.feat-row:nth-child(1) .feat-desc-tech{background:rgba(0,0,0,.04);border-color:var(--blue);color:var(--grey-dark)}
+.feat-row:nth-child(2) .feat-desc-tech{background:rgba(255,255,255,.04);border-color:rgba(26,86,255,.5);color:rgba(255,255,255,.45)}
+.feat-row:nth-child(3) .feat-desc-tech{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.65)}
+.feat-row:nth-child(4) .feat-desc-tech{background:rgba(0,0,0,.04);border-color:var(--blue);color:var(--grey-dark)}
+.feat-desc-tech-label{
+  display:block;font-family:var(--mono);font-size:10px;font-weight:500;
+  letter-spacing:.06em;text-transform:uppercase;margin-bottom:.4rem;
+}
+.feat-row:nth-child(1) .feat-desc-tech-label{color:var(--blue)}
+.feat-row:nth-child(2) .feat-desc-tech-label{color:rgba(26,86,255,.7)}
+.feat-row:nth-child(3) .feat-desc-tech-label{color:rgba(255,255,255,.5)}
+.feat-row:nth-child(4) .feat-desc-tech-label{color:var(--blue)}
+/* Feature visual panel slide-in animation */
+.feat-visual-col .feat-panel{
+  opacity:0;transform:translateX(24px);
+  transition:opacity .7s ease,transform .7s ease;
+}
+.feat-row:nth-child(even) .feat-visual-col .feat-panel{
+  transform:translateX(-24px);
+}
+.feat-row.v .feat-visual-col .feat-panel{
+  opacity:1;transform:none;
+  transition-delay:.2s;
+}
+.feat-chips{display:flex;flex-wrap:wrap;gap:.4rem}
+.chip{font-family:var(--mono);font-size:11px;font-weight:500;padding:.3rem .75rem;border-radius:2px}
+.chip-dark{color:rgba(255,255,255,.7);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}
+.chip-light{color:var(--grey-dark);background:rgba(0,0,0,.05);border:1px solid rgba(0,0,0,.08)}
+.chip-blue{color:#7da4ff;background:rgba(26,86,255,.12);border:1px solid rgba(26,86,255,.2)}
 
-/* Preview: NLP */
-.nlp-art{display:flex;flex-direction:column;gap:.3rem}
-.nlp-row{display:flex;align-items:center;gap:.5rem;padding:.35rem .6rem;border-radius:6px;border:1px solid var(--border);font-size:11px;background:white}
-.nlp-src{font-size:9px;color:#999;font-family:var(--mono);width:46px;flex-shrink:0}
-.nlp-txt{color:#3d3d4e;flex:1;line-height:1.3}
-.nlp-dup{background:#efefff;color:var(--purple);font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;font-family:var(--mono);flex-shrink:0}
-.nlp-strike{text-decoration:line-through;color:#bbb}
-.nlp-result{border:1.5px solid var(--purple);border-radius:8px;padding:.65rem .75rem;background:#f9f9ff;margin-top:.4rem}
-.nlp-result-label{font-size:9px;color:var(--purple);font-weight:700;font-family:var(--mono);margin-bottom:.3rem}
-.nlp-result-text{font-size:11px;color:#3d3d4e;line-height:1.5}
-.nlp-result-src{font-size:10px;color:#999;margin-top:.3rem;font-family:var(--mono)}
+/* Feature visual panels */
+.feat-panel{
+  width:100%;border-radius:8px;overflow:hidden;
+  box-shadow:0 8px 32px rgba(0,0,0,.15);
+}
+.fp-header{
+  display:flex;align-items:center;gap:.4rem;
+  padding:.55rem .9rem;border-bottom:1px solid rgba(255,255,255,.06);
+}
+.fp-header-dark{background:#1a1a1a}
+.fp-header-light{background:#e8e8e8;border-color:rgba(0,0,0,.08)}
+.fp-dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.fp-dot-r{background:#ff5f57}.fp-dot-y{background:#febc2e}.fp-dot-g{background:#28c840}
+.fp-body{padding:1rem}
+.fp-dark{background:#111}
+.fp-light{background:#ffffff;border:1px solid rgba(0,0,0,.06)}
+.fp-mono{font-family:var(--mono);font-size:11px}
+/* NLP preview */
+.nlp-item{display:flex;align-items:center;gap:.5rem;padding:.4rem .6rem;border-radius:5px;border:1px solid rgba(255,255,255,.06);background:#1a1a1a;margin-bottom:.3rem;font-size:11px}
+.nlp-src{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.3);width:48px;flex-shrink:0}
+.nlp-txt{color:rgba(255,255,255,.7);flex:1;line-height:1.3}
+.nlp-strike{text-decoration:line-through;color:rgba(255,255,255,.25)}
+.nlp-badge{background:rgba(26,86,255,.25);color:#7da4ff;font-size:9px;font-weight:600;padding:1px 5px;border-radius:2px;font-family:var(--mono);flex-shrink:0}
+.nlp-result{border:1px solid rgba(26,86,255,.4);border-radius:6px;padding:.65rem;background:rgba(26,86,255,.07);margin-top:.4rem}
+.nlp-result-lbl{font-family:var(--mono);font-size:9px;color:var(--blue-light);font-weight:500;margin-bottom:.3rem;letter-spacing:.04em}
+.nlp-result-text{font-size:10px;color:rgba(255,255,255,.65);line-height:1.5}
+/* Sentiment preview */
+.sent-bar-row{display:flex;align-items:center;gap:.6rem;margin-bottom:.55rem}
+.sent-name{font-size:12px;font-weight:500;width:80px;flex-shrink:0;color:rgba(255,255,255,.8)}
+.sent-track{flex:1;height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden}
+.sent-fill{height:100%;border-radius:2px}
+.sent-lbl{font-family:var(--mono);font-size:10px;font-weight:600;width:70px;text-align:right}
+/* Diff preview */
+.diff-pair{display:flex;gap:.5rem;margin-bottom:.5rem}
+.diff-pane{flex:1;border-radius:5px;overflow:hidden}
+.diff-ph{padding:.3rem .6rem;font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.3)}
+.diff-ph-dark{background:#222}
+.diff-ph-blue{background:rgba(26,86,255,.2);color:#7da4ff}
+.diff-body{padding:.5rem .6rem;font-size:10px;background:#1a1a1a}
+.diff-old{color:rgba(255,255,255,.25);text-decoration:line-through;display:block;margin-bottom:.2rem}
+.diff-new{background:rgba(26,86,255,.2);color:#7da4ff;display:block;padding:1px 4px;border-radius:2px;margin-bottom:.2rem}
+.diff-same{color:rgba(255,255,255,.3);display:block;margin-bottom:.2rem}
+.diff-alert{background:rgba(255,60,60,.1);border:1px solid rgba(255,60,60,.2);border-radius:5px;padding:.45rem .65rem;font-size:10px;color:#ff8080;font-weight:600}
+/* Brief preview */
+.brief-input-bar{background:#1a1a1a;border-radius:5px;padding:.5rem .7rem;font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.4);margin-bottom:.5rem;border:1px solid rgba(255,255,255,.06)}
+.brief-block{background:#1a1a1a;border:1px solid rgba(255,255,255,.06);border-radius:6px;padding:.6rem .75rem;margin-bottom:.4rem}
+.brief-block-lbl{font-family:var(--mono);font-size:9px;color:var(--blue-light);margin-bottom:.3rem;text-transform:uppercase;letter-spacing:.04em}
+.brief-block-text{font-size:10px;color:rgba(255,255,255,.6);line-height:1.5}
+.brief-cost{display:flex;align-items:center;justify-content:space-between;background:rgba(0,184,100,.08);border:1px solid rgba(0,184,100,.2);border-radius:5px;padding:.4rem .7rem}
+.brief-cost-val{font-family:var(--mono);font-size:11px;font-weight:600;color:#5ee8a0}
+.brief-cost-meta{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.3)}
 
-/* Preview: sentiment */
-.sent-rows{display:flex;flex-direction:column;gap:.5rem;margin-bottom:.75rem}
-.sent-row{display:flex;align-items:center;gap:.6rem}
-.sent-name{font-size:12px;font-weight:500;width:90px;flex-shrink:0}
-.sent-track{flex:1;height:5px;background:#f0f0f0;border-radius:3px;overflow:hidden}
-.sent-fill{height:100%;border-radius:3px}
-.sent-lbl{font-size:11px;font-weight:600;width:75px;text-align:right;font-family:var(--mono)}
-.reddit-posts{display:flex;flex-direction:column;gap:.3rem}
-.rpost{display:flex;align-items:baseline;gap:.5rem;padding:.4rem .6rem;background:#f9f9ff;border-radius:6px;font-size:11px}
-.rpost-sent{flex-shrink:0;font-size:12px}
-.rpost-title{flex:1;color:#3d3d4e;line-height:1.35}
-.rpost-score{font-size:10px;color:#999;font-family:var(--mono);flex-shrink:0}
+/* ── STACK ── */
+.stack-section{background:var(--grey);padding:3.5rem 2.5rem;border-top:1px solid #e0e0e0}
+.stack-label{font-family:var(--mono);font-size:11px;color:var(--grey-dark);text-transform:uppercase;letter-spacing:.1em;margin-bottom:1.25rem;text-align:center}
+.stack-pills{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;max-width:860px;margin:0 auto}
+.stack-pill{
+  font-family:var(--mono);font-size:12px;font-weight:500;
+  color:var(--ink);background:var(--white);
+  border:1px solid #d4d4d4;padding:.4rem .9rem;border-radius:2px;
+  transition:all .15s;cursor:default;
+}
+.stack-pill:hover{background:var(--black);color:var(--white);border-color:var(--black)}
 
-/* Preview: visual diff */
-.vdiff-wrap{display:flex;gap:.5rem;margin-bottom:.5rem}
-.vdiff-pane{flex:1;border:1px solid var(--border);border-radius:8px;overflow:hidden}
-.vdiff-ph{background:#f4f4f6;padding:.35rem .6rem;font-size:9px;color:#999;font-family:var(--mono);border-bottom:1px solid var(--border)}
-.vdiff-body{padding:.6rem;font-size:11px}
-.vdiff-old{color:#bbb;text-decoration:line-through;display:block;margin-bottom:.25rem}
-.vdiff-new{background:#e6ffec;color:#006600;display:block;padding:1px 4px;border-radius:3px;margin-bottom:.25rem}
-.vdiff-same{color:#999;display:block;margin-bottom:.25rem}
-.vdiff-alert{background:#fff0f0;border-radius:6px;padding:.4rem .6rem;font-size:11px;color:#cc0000;font-weight:600}
-.vdiff-gate{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.5rem}
-.vdiff-skip{font-size:9px;background:#f4f4f6;color:#999;border-radius:4px;padding:2px 6px;font-family:var(--mono)}
-.vdiff-hit{font-size:9px;background:#fff0f0;color:#cc0000;border-radius:4px;padding:2px 6px;font-weight:700;font-family:var(--mono)}
-
-/* Preview: brief */
-.brief-input{background:#f4f4f6;border-radius:6px;padding:.5rem .7rem;font-size:10px;color:#999;margin-bottom:.4rem;font-family:var(--mono)}
-.brief-call{background:white;border:1px solid var(--border);border-radius:8px;padding:.6rem .75rem;margin-bottom:.4rem}
-.brief-call-label{font-size:9px;color:var(--purple);font-weight:700;font-family:var(--mono);margin-bottom:.3rem;text-transform:uppercase}
-.brief-call-text{font-size:11px;color:#3d3d4e;line-height:1.5}
-.brief-cost{display:flex;align-items:center;justify-content:space-between;background:#e6ffec;border-radius:6px;padding:.4rem .7rem}
-.brief-cost-val{font-size:12px;font-weight:700;color:#006600;font-family:var(--mono)}
-.brief-cost-meta{font-size:10px;color:#999;font-family:var(--mono)}
-
-/* Preview: dashboard */
-.dash-preview-mini{display:flex;flex-direction:column;gap:.4rem}
-.dash-code{background:#0d0f1a;border-radius:8px;padding:.6rem .85rem;font-size:11px;color:#7ec8a0;font-family:var(--mono);margin-bottom:.4rem}
-.dash-badge-row{display:flex;gap:.4rem}
-.dash-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:5px;font-family:var(--mono)}
-.dash-badge-g{background:#e6ffec;color:#006600}
-.dash-badge-p{background:#efefff;color:var(--purple)}
-
-/* Preview: automation */
-.ci-steps{display:flex;flex-direction:column;gap:.35rem}
-.ci-step{display:flex;align-items:center;gap:.6rem;padding:.4rem .6rem;border-radius:6px;border:1px solid var(--border)}
-.ci-step-name{font-size:10px;font-family:var(--mono);color:#999;width:85px;flex-shrink:0}
-.ci-bar-wrap{flex:1;height:5px;background:#f0f0f0;border-radius:3px;overflow:hidden}
-.ci-bar{height:100%;border-radius:3px}
-.ci-status{font-size:9px;font-weight:700;font-family:var(--mono);flex-shrink:0;width:60px;text-align:right}
-
-/* STACK */
-.stack-section{background:var(--bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:3.5rem 2.5rem;text-align:center}
-.stack-label{font-size:12px;font-weight:600;font-family:var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:1.5rem}
-.stack-pills{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;max-width:860px;margin:0 auto}
-.stack-pill{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--ink2);background:white;border:1px solid var(--border);padding:.4rem 1rem;border-radius:8px;transition:all .15s;cursor:default}
-.stack-pill:hover{background:var(--purple);color:white;border-color:var(--purple);transform:translateY(-2px);box-shadow:0 4px 12px rgba(91,91,214,.2)}
-
-/* CTA */
-.cta-section{padding:7rem 2.5rem;text-align:center;position:relative;overflow:hidden}
-.cta-section::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:500px;border-radius:50%;background:radial-gradient(ellipse,rgba(91,91,214,.05) 0%,transparent 65%);pointer-events:none}
-.cta-h{font-size:clamp(36px,5vw,56px);font-weight:800;letter-spacing:-.04em;margin-bottom:1rem;line-height:1.1;position:relative;z-index:1}
-.cta-sub{font-size:17px;color:var(--muted);margin-bottom:2.5rem;font-weight:400;position:relative;z-index:1}
-
-/* FOOTER */
-footer{border-top:1px solid var(--border);padding:1.8rem 2.5rem;display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--muted)}
-footer a{color:var(--ink);text-decoration:none;font-weight:500}
-footer a:hover{color:var(--purple)}
+/* ── FOOTER ── */
+footer{
+  background:var(--black);
+  padding:3rem 2.5rem;
+  display:grid;grid-template-columns:1fr auto;
+  align-items:center;gap:2rem;
+}
+.footer-brand{font-family:var(--display);font-size:24px;letter-spacing:.04em;color:var(--white);margin-bottom:.4rem}
+.footer-sub{font-size:13px;color:rgba(255,255,255,.35);font-weight:300}
+.footer-links{display:flex;gap:.75rem}
+.footer-btn{
+  display:flex;align-items:center;gap:.5rem;
+  text-decoration:none;padding:.7rem 1.4rem;border-radius:4px;
+  font-size:13px;font-weight:600;
+  transition:all .2s;
+}
+.footer-btn-linkedin{
+  background:#0A66C2;color:white;
+  box-shadow:0 2px 12px rgba(10,102,194,.3);
+}
+.footer-btn-linkedin:hover{background:#0952a5;transform:translateY(-2px);box-shadow:0 6px 20px rgba(10,102,194,.4)}
+.footer-btn-github{
+  background:rgba(255,255,255,.08);color:white;
+  border:1px solid rgba(255,255,255,.15);
+}
+.footer-btn-github:hover{background:rgba(255,255,255,.15);transform:translateY(-2px)}
+.footer-btn svg{width:16px;height:16px;fill:currentColor;flex-shrink:0}
 
 /* REVEAL */
-.r{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease}
+.r{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
 .r.v{opacity:1;transform:none}
 .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
 
-@media(max-width:900px){
-  .feature-row{grid-template-columns:1fr;gap:2rem;padding:3rem 1.5rem}
-  .feature-row.reverse{direction:ltr}
-  .stats-bar{grid-template-columns:repeat(2,1fr)}
-  .mini-kpis{grid-template-columns:repeat(2,1fr)}
-  .hero{padding:5rem 1.5rem 3rem}
+@media(max-width:960px){
+  .hero{grid-template-columns:1fr;min-height:auto;padding:4rem 1.5rem}
+  .hero-right{display:none}
+  .tiles-grid{grid-template-columns:repeat(2,1fr)}
+  .tile{border-bottom:1px solid #e0e0e0}
+  .feat-row{grid-template-columns:1fr}
+  .feat-row:nth-child(2) .feat-text-col,.feat-row:nth-child(2) .feat-visual-col,
+  .feat-row:nth-child(4) .feat-text-col,.feat-row:nth-child(4) .feat-visual-col{order:unset}
+  footer{grid-template-columns:1fr;text-align:center}
+  .footer-links{justify-content:center}
   nav{padding:0 1.5rem}
-  footer{flex-direction:column;gap:.5rem;text-align:center}
-  .arch-diagram{height:500px}
 }
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
-  <span class="nav-brand">Competitive Intelligence</span>
+  <span class="nav-brand">COMPETITIVE INTEL</span>
   <div class="nav-links">
     <a href="#features" class="nav-link">Features</a>
     <a href="#architecture" class="nav-link">Architecture</a>
     <a href="#stack" class="nav-link">Stack</a>
   </div>
   <div class="nav-actions">
-    <a href="https://github.com/tasmiahr/ai-competitive-intelligence" target="_blank" class="btn-ghost-sm">GitHub ↗</a>
-    <a href="dashboard.html" class="btn-grad-sm">Dashboard →</a>
+    <a href="https://github.com/tasmiahr/ai-competitive-intelligence" target="_blank" class="nav-btn-ghost">GitHub ↗</a>
+    <a href="dashboard.html" class="nav-btn-blue">Dashboard →</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-mesh"></div>
-  <div class="hero-inner">
-    <div class="hero-badge"><span class="badge-dot"></span>Automated · Monthly · AI-Powered</div>
-    <h1 class="hero-h1">Competitive intelligence<br><span class="grad-text">at the speed of data.</span></h1>
-    <p class="hero-sub">Monitors travel credit card competitors across news, social sentiment, and offer pages — processing thousands of signals into one structured monthly brief.</p>
+  <div class="hero-left">
+    <h1 class="hero-h1">
+      COMPETITIVE<br>
+      <span style="-webkit-text-fill-color:white;color:white;">INTELLIGENCE</span>
+    </h1>
+    <p class="hero-sub">Monitors competitors across news, social sentiment, and product pages — processing thousands of signals into one structured brief.</p>
     <div class="hero-ctas">
-      <a href="dashboard.html" class="btn-primary">View Dashboard →</a>
-      <a href="https://github.com/tasmiahr/ai-competitive-intelligence" target="_blank" class="btn-secondary">View on GitHub ↗</a>
+      <a href="dashboard.html" class="btn-blue-lg">View Dashboard →</a>
+      <a href="https://github.com/tasmiahr/ai-competitive-intelligence" target="_blank" class="btn-white-lg">GitHub ↗</a>
     </div>
-    <div class="hero-preview">
-      <div class="browser-wrap">
-        <div class="browser-bar">
-          <span class="bdot-r"></span><span class="bdot-y"></span><span class="bdot-g"></span>
-          <span class="browser-url">competitive-intel.github.io/dashboard.html</span>
+  </div>
+  <div class="hero-right">
+    <div class="dash-preview">
+      <div class="dp-bar">
+        <span class="dp-dot dp-dot-r"></span>
+        <span class="dp-dot dp-dot-y"></span>
+        <span class="dp-dot dp-dot-g"></span>
+        <span class="dp-url">competitive-intel.github.io/dashboard.html</span>
+      </div>
+      <div class="dp-body" id="dp-body">
+        <!-- Animated tabs -->
+        <div class="dp-tabs">
+          <button class="dp-tab active" data-tab="signals">Market Signals</button>
+          <button class="dp-tab" data-tab="sentiment">Social Sentiment</button>
+          <button class="dp-tab" data-tab="visual">Visual Changes</button>
         </div>
-        <div class="browser-content">
-          <div class="mini-title">Competitive Brief <span style="color:var(--purple)">/</span> 2026-04</div>
-          <div class="mini-kpis">
-            <div class="mini-kpi"><div class="mini-kpi-v">12</div><div class="mini-kpi-l">Competitors</div></div>
-            <div class="mini-kpi"><div class="mini-kpi-v">107</div><div class="mini-kpi-l">Themes</div></div>
-            <div class="mini-kpi"><div class="mini-kpi-v">2,312</div><div class="mini-kpi-l">Articles</div></div>
-            <div class="mini-kpi"><div class="mini-kpi-v">847</div><div class="mini-kpi-l">Reddit Posts</div></div>
+
+        <!-- Market Signals panel -->
+        <div class="dp-panel" id="tab-signals">
+          <div class="dp-panel-label">MARKET SIGNALS · April 2026</div>
+          <div class="dp-theme dp-anim" style="animation-delay:.1s">
+            <span class="dp-tag dp-tag-blue">CARD</span>
+            <span class="dp-theme-text">Issuer A rebranded business card with 150K bonus, intensifying competition for high-value acquisition.</span>
           </div>
-          <div class="mini-exec">
-            <div class="mini-exec-label">Executive Summary</div>
-            <div class="mini-exec-text">April 2026 saw aggressive positioning across premium travel cards, with Chase upgrading Sapphire Reserve to 150K points and Capital One launching Venture Business with 150K bonus miles...</div>
+          <div class="dp-theme dp-anim" style="animation-delay:.2s">
+            <span class="dp-tag dp-tag-teal">LOYALTY</span>
+            <span class="dp-theme-text">Issuer B elevated hotel redemption to 2.5cpp, raising the bar for competing programs.</span>
           </div>
-          <div class="mini-theme" style="animation-delay:.3s"><span class="tag-card">CARD</span><span class="mini-theme-text">Capital One rebranded Spark Miles to Venture Business with 150K bonus, intensifying competition for business card acquisition.</span></div>
-          <div class="mini-theme" style="animation-delay:.45s"><span class="tag-card tag-loyalty">LOYALTY</span><span class="mini-theme-text">Chase elevated hotel redemption to 2.5cpp, raising the bar for competing travel card programs.</span></div>
+          <div class="dp-theme dp-anim" style="animation-delay:.3s">
+            <span class="dp-tag dp-tag-blue">CARD</span>
+            <span class="dp-theme-text">Issuer C launched 150K sign-up bonus on Sapphire Reserve, signaling aggressive acquisition push.</span>
+          </div>
+          <div class="dp-theme dp-anim" style="animation-delay:.4s">
+            <span class="dp-tag" style="background:rgba(245,166,35,.2);color:#f5c842">COMPANY</span>
+            <span class="dp-theme-text">Issuer D missed Q1 estimates, suggesting reduced investment in rewards offerings.</span>
+          </div>
+        </div>
+
+        <!-- Social Sentiment panel -->
+        <div class="dp-panel hidden" id="tab-sentiment">
+          <div class="dp-panel-label">SOCIAL SENTIMENT · r/creditcards + r/churning</div>
+          <div class="dp-sent-row dp-anim" style="animation-delay:.1s">
+            <span class="dp-sent-name">Issuer C</span>
+            <div class="dp-sent-track"><div class="dp-sent-fill" style="width:78%;background:#1a56ff"></div></div>
+            <span class="dp-sent-lbl" style="color:#7da4ff">🟢 Positive</span>
+          </div>
+          <div class="dp-sent-row dp-anim" style="animation-delay:.2s">
+            <span class="dp-sent-name">Issuer A</span>
+            <div class="dp-sent-track"><div class="dp-sent-fill" style="width:55%;background:#1a56ff"></div></div>
+            <span class="dp-sent-lbl" style="color:#7da4ff">🟢 Positive</span>
+          </div>
+          <div class="dp-sent-row dp-anim" style="animation-delay:.3s">
+            <span class="dp-sent-name">Issuer B</span>
+            <div class="dp-sent-track"><div class="dp-sent-fill" style="width:38%;background:rgba(255,255,255,.3)"></div></div>
+            <span class="dp-sent-lbl" style="color:rgba(255,255,255,.5)">⚪ Neutral</span>
+          </div>
+          <div class="dp-sent-row dp-anim" style="animation-delay:.4s">
+            <span class="dp-sent-name">Issuer D</span>
+            <div class="dp-sent-track"><div class="dp-sent-fill" style="width:18%;background:#cc4444"></div></div>
+            <span class="dp-sent-lbl" style="color:#ff8080">🔴 Negative</span>
+          </div>
+          <div class="dp-post dp-anim" style="animation-delay:.5s">
+            <span>🟢</span><span class="dp-post-text">150K offer is insane — never seen it this high</span><span class="dp-post-score">▲847</span>
+          </div>
+          <div class="dp-post dp-anim" style="animation-delay:.6s">
+            <span>🔴</span><span class="dp-post-text">Issuer D bankruptcy fears — should I cancel my card?</span><span class="dp-post-score">▲341</span>
+          </div>
+        </div>
+
+        <!-- Visual Changes panel -->
+        <div class="dp-panel hidden" id="tab-visual">
+          <div class="dp-panel-label">VISUAL CHANGES · Issuer A detected</div>
+          <div class="dp-diff-wrap dp-anim" style="animation-delay:.15s">
+            <div class="dp-diff-pane">
+              <div class="dp-diff-ph">Mar 2026</div>
+              <div class="dp-diff-body">
+                <span class="dp-diff-same">Earn unlimited miles</span>
+                <span class="dp-diff-old">75,000 bonus miles</span>
+                <span class="dp-diff-same">No annual fee yr 1</span>
+              </div>
+            </div>
+            <div class="dp-diff-pane dp-diff-changed">
+              <div class="dp-diff-ph" style="color:#7da4ff">Apr 2026</div>
+              <div class="dp-diff-body">
+                <span class="dp-diff-same">Earn unlimited miles</span>
+                <span class="dp-diff-new">150,000 bonus miles</span>
+                <span class="dp-diff-same">No annual fee yr 1</span>
+              </div>
+            </div>
+          </div>
+          <div class="dp-alert dp-anim" style="animation-delay:.4s">🔴 HIGH — Bonus increase: 75K → 150K detected</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- STATS -->
-<div class="stats-bar r">
-  <div class="stat"><div class="stat-val">2,300+</div><div class="stat-label">Articles processed monthly</div></div>
-  <div class="stat"><div class="stat-val">~100</div><div class="stat-label">Themes extracted</div></div>
-  <div class="stat"><div class="stat-val">$0.20</div><div class="stat-label">Cost per monthly run</div></div>
-  <div class="stat"><div class="stat-val">1</div><div class="stat-label">Claude call for full brief</div></div>
-</div>
+<!-- FEATURE TILES -->
+<section class="tiles-section" id="features">
+  <div class="tiles-eyebrow r">What it tracks</div>
+  <div class="tiles-title r">FOUR LAYERS.<br>ONE BRIEF.</div>
+  <div class="tiles-grid r">
+    <a class="tile tile-white" href="#feat-news">
+      <div class="tile-num">01</div>
+      <span class="tile-icon">📰</span>
+      <div class="tile-title">MARKET SIGNALS</div>
+      <div class="tile-desc">Automatically monitors major shifts, product launches, and updates across the competitive landscape — filtering out noise so only high-impact developments make the cut.</div>
+      <span class="tile-arrow">↗</span>
+    </a>
+    <a class="tile tile-grey" href="#feat-social">
+      <div class="tile-num">02</div>
+      <span class="tile-icon">📱</span>
+      <div class="tile-title">SOCIAL SENTIMENT</div>
+      <div class="tile-desc">Aggregates real customer discussions and reactions to see exactly how competitor changes are being received by the market — beyond what press releases say.</div>
+      <span class="tile-arrow">↗</span>
+    </a>
+    <a class="tile tile-blue" href="#feat-visual">
+      <div class="tile-num">03</div>
+      <span class="tile-icon">🖼️</span>
+      <div class="tile-title">VISUAL CHANGES</div>
+      <div class="tile-desc">Monitors competitor digital footprints and captures under-the-radar updates, design overhauls, and offer changes the moment they go live.</div>
+      <span class="tile-arrow">↗</span>
+    </a>
+    <a class="tile tile-black" href="#feat-brief">
+      <div class="tile-num">04</div>
+      <span class="tile-icon">🤖</span>
+      <div class="tile-title">EXEC BRIEFS</div>
+      <div class="tile-desc">Synthesizes all signals into a clean, actionable summary tailored for product leadership — competitor summaries, executive overview, and top market trends.</div>
+      <span class="tile-arrow">↗</span>
+    </a>
+  </div>
+</section>
 
-<!-- ARCHITECTURE (Stripe-style dark animated) -->
+<!-- ARCHITECTURE -->
 <section class="arch-section" id="architecture">
   <div class="arch-inner">
     <div class="arch-eyebrow r">Pipeline architecture</div>
-    <h2 class="arch-title r">Three data layers.<br>One automated brief.</h2>
-    <p class="arch-sub r">Each source runs independently then converges into a single AI synthesis step.</p>
+    <h2 class="arch-title r">HOW IT<br>ALL CONNECTS.</h2>
+    <p class="arch-sub r">Three data layers run independently then converge into a single AI synthesis step.</p>
+    <div class="arch-diagram r">
+      <div class="arch-svg-wrap">
+        <svg viewBox="0 0 1000 320" width="100%" preserveAspectRatio="xMidYMid meet" style="font-family:'JetBrains Mono',monospace">
+          <defs>
+            <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+              <path d="M2 2L8 5L2 8" fill="none" stroke="rgba(26,86,255,.6)" stroke-width="1.5" stroke-linecap="round"/>
+            </marker>
+            <marker id="aht" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+              <path d="M2 2L8 5L2 8" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1.5" stroke-linecap="round"/>
+            </marker>
+          </defs>
 
-    <div class="arch-diagram r" style="height:340px">
-      <svg class="arch-svg" viewBox="0 0 1000 340" preserveAspectRatio="xMidYMid meet">
-        <defs>
-          <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-            <path d="M2 2L8 5L2 8" fill="none" stroke="rgba(91,91,214,.6)" stroke-width="1.5" stroke-linecap="round"/>
-          </marker>
-          <marker id="aht" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-            <path d="M2 2L8 5L2 8" fill="none" stroke="rgba(0,184,148,.6)" stroke-width="1.5" stroke-linecap="round"/>
-          </marker>
-        </defs>
+          <!-- Source nodes -->
+          <rect x="20" y="18" width="130" height="34" rx="4" fill="rgba(26,86,255,.15)" stroke="rgba(26,86,255,.4)" stroke-width="1"/>
+          <text x="85" y="40" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.85)" font-weight="500">News RSS</text>
 
-        <!-- Layer 1: Sources -->
-        <!-- News -->
-        <rect x="30" y="20" width="120" height="36" rx="8" fill="rgba(91,91,214,.12)" stroke="rgba(91,91,214,.3)" stroke-width="1"/>
-        <text x="90" y="43" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" fill="rgba(255,255,255,.85)" font-weight="600">News RSS</text>
+          <rect x="20" y="74" width="130" height="34" rx="4" fill="rgba(26,86,255,.15)" stroke="rgba(26,86,255,.4)" stroke-width="1"/>
+          <text x="85" y="96" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.85)" font-weight="500">Reddit JSON</text>
 
-        <!-- Social -->
-        <rect x="30" y="80" width="120" height="36" rx="8" fill="rgba(91,91,214,.12)" stroke="rgba(91,91,214,.3)" stroke-width="1"/>
-        <text x="90" y="103" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" fill="rgba(255,255,255,.85)" font-weight="600">Reddit JSON</text>
+          <rect x="20" y="130" width="130" height="34" rx="4" fill="rgba(26,86,255,.15)" stroke="rgba(26,86,255,.4)" stroke-width="1"/>
+          <text x="85" y="152" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.85)" font-weight="500">Screenshots</text>
 
-        <!-- Website -->
-        <rect x="30" y="140" width="120" height="36" rx="8" fill="rgba(91,91,214,.12)" stroke="rgba(91,91,214,.3)" stroke-width="1"/>
-        <text x="90" y="163" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" fill="rgba(255,255,255,.85)" font-weight="600">Screenshots</text>
+          <!-- NLP nodes -->
+          <rect x="210" y="18" width="148" height="34" rx="4" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+          <text x="284" y="33" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.7)">Guide filter</text>
+          <text x="284" y="46" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.3)">Remove noise</text>
 
-        <!-- Layer 2: NLP -->
-        <rect x="220" y="20" width="140" height="36" rx="8" fill="rgba(91,91,214,.15)" stroke="rgba(91,91,214,.4)" stroke-width="1"/>
-        <text x="290" y="38" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(255,255,255,.8)" font-weight="500">Guide filter</text>
-        <text x="290" y="51" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(255,255,255,.45)">Remove listicles</text>
+          <rect x="210" y="68" width="148" height="34" rx="4" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+          <text x="284" y="83" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.7)">BERT dedup</text>
+          <text x="284" y="96" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.3)">Semantic similarity</text>
 
-        <rect x="220" y="76" width="140" height="36" rx="8" fill="rgba(91,91,214,.15)" stroke="rgba(91,91,214,.4)" stroke-width="1"/>
-        <text x="290" y="94" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(255,255,255,.8)" font-weight="500">BERT dedup</text>
-        <text x="290" y="107" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(255,255,255,.45)">Semantic similarity</text>
+          <rect x="210" y="118" width="148" height="34" rx="4" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+          <text x="284" y="133" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.7)">DBSCAN cluster</text>
+          <text x="284" y="146" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.3)">Group same stories</text>
 
-        <rect x="220" y="132" width="140" height="36" rx="8" fill="rgba(91,91,214,.15)" stroke="rgba(91,91,214,.4)" stroke-width="1"/>
-        <text x="290" y="150" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(255,255,255,.8)" font-weight="500">DBSCAN cluster</text>
-        <text x="290" y="163" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(255,255,255,.45)">Group same stories</text>
+          <rect x="210" y="200" width="148" height="34" rx="4" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+          <text x="284" y="215" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.6)">Sentiment score</text>
+          <text x="284" y="228" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.25)">+/− per competitor</text>
 
-        <!-- Social processing -->
-        <rect x="220" y="220" width="140" height="36" rx="8" fill="rgba(0,184,148,.1)" stroke="rgba(0,184,148,.3)" stroke-width="1"/>
-        <text x="290" y="238" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(255,255,255,.8)" font-weight="500">Sentiment score</text>
-        <text x="290" y="251" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(255,255,255,.45)">+/− per competitor</text>
+          <rect x="210" y="254" width="148" height="34" rx="4" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+          <text x="284" y="269" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.6)">Pixel diff gate</text>
+          <text x="284" y="282" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.25)">Pillow → crop → Vision</text>
 
-        <!-- Visual processing -->
-        <rect x="220" y="276" width="140" height="36" rx="8" fill="rgba(0,184,148,.1)" stroke="rgba(0,184,148,.3)" stroke-width="1"/>
-        <text x="290" y="294" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="rgba(255,255,255,.8)" font-weight="500">Pixel diff gate</text>
-        <text x="290" y="307" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(255,255,255,.45)">Pillow → crop → Vision</text>
+          <!-- Claude summarization -->
+          <rect x="428" y="88" width="148" height="50" rx="6" fill="rgba(26,86,255,.2)" stroke="rgba(26,86,255,.5)" stroke-width="1.5"/>
+          <text x="502" y="108" text-anchor="middle" font-size="12" fill="white" font-weight="600">Claude Haiku</text>
+          <text x="502" y="126" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.5)">1 call / theme</text>
 
-        <!-- Center: Claude summarization -->
-        <rect x="440" y="90" width="160" height="52" rx="10" fill="rgba(91,91,214,.25)" stroke="rgba(91,91,214,.6)" stroke-width="1.5"/>
-        <text x="520" y="112" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" fill="white" font-weight="700">Claude Haiku</text>
-        <text x="520" y="130" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(255,255,255,.55)">1 call / theme</text>
+          <!-- generate_brief -->
+          <rect x="648" y="102" width="148" height="50" rx="6" fill="rgba(26,86,255,.15)" stroke="rgba(26,86,255,.4)" stroke-width="1.5"/>
+          <text x="722" y="122" text-anchor="middle" font-size="11" fill="white" font-weight="600">generate_brief</text>
+          <text x="722" y="140" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.45)">1 call · full brief</text>
 
-        <!-- generate_brief -->
-        <rect x="680" y="110" width="160" height="52" rx="10" fill="linear-gradient(135deg,rgba(91,91,214,.3),rgba(0,184,148,.2))" stroke="rgba(91,91,214,.5)" stroke-width="1.5"/>
-        <rect x="680" y="110" width="160" height="52" rx="10" fill="rgba(91,91,214,.2)" stroke="rgba(91,91,214,.5)" stroke-width="1.5"/>
-        <text x="760" y="132" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" fill="white" font-weight="700">generate_brief</text>
-        <text x="760" y="150" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(255,255,255,.55)">1 call · full brief</text>
+          <!-- Dashboard -->
+          <rect x="864" y="102" width="116" height="50" rx="6" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.15)" stroke-width="1.5"/>
+          <text x="922" y="122" text-anchor="middle" font-size="11" fill="white" font-weight="600">Dashboard</text>
+          <text x="922" y="140" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.4)">GitHub Pages</text>
 
-        <!-- Output -->
-        <rect x="880" y="110" width="100" height="52" rx="10" fill="rgba(0,184,148,.2)" stroke="rgba(0,184,148,.5)" stroke-width="1.5"/>
-        <text x="930" y="132" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="white" font-weight="700">Dashboard</text>
-        <text x="930" y="150" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(255,255,255,.55)">GitHub Pages</text>
+          <!-- Connector lines -->
+          <line x1="150" y1="35" x2="210" y2="35" stroke="rgba(26,86,255,.5)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#ah)"/>
+          <line x1="150" y1="91" x2="210" y2="85" stroke="rgba(26,86,255,.5)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#ah)"/>
+          <line x1="150" y1="147" x2="210" y2="135" stroke="rgba(26,86,255,.5)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#ah)"/>
+          <line x1="150" y1="91" x2="210" y2="217" stroke="rgba(255,255,255,.12)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#aht)"/>
+          <line x1="150" y1="147" x2="210" y2="271" stroke="rgba(255,255,255,.12)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#aht)"/>
+          <line x1="358" y1="113" x2="428" y2="113" stroke="rgba(26,86,255,.5)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#ah)"/>
+          <line x1="358" y1="217" x2="428" y2="125" stroke="rgba(255,255,255,.15)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#aht)"/>
+          <line x1="358" y1="271" x2="428" y2="130" stroke="rgba(255,255,255,.15)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#aht)"/>
+          <line x1="576" y1="113" x2="648" y2="127" stroke="rgba(26,86,255,.5)" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#ah)"/>
+          <line x1="796" y1="127" x2="864" y2="127" stroke="rgba(255,255,255,.2)" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#aht)"/>
 
-        <!-- Connector lines: sources → NLP -->
-        <line x1="150" y1="38" x2="220" y2="38" stroke="rgba(91,91,214,.4)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#ah)"/>
-        <line x1="150" y1="98" x2="220" y2="94" stroke="rgba(91,91,214,.4)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#ah)"/>
-        <line x1="150" y1="158" x2="220" y2="150" stroke="rgba(91,91,214,.4)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#ah)"/>
-        <!-- Reddit → sentiment -->
-        <line x1="150" y1="98" x2="220" y2="238" stroke="rgba(0,184,148,.3)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#aht)"/>
-        <!-- Screenshots → pixel diff -->
-        <line x1="150" y1="158" x2="220" y2="294" stroke="rgba(0,184,148,.3)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#aht)"/>
-
-        <!-- NLP → Claude -->
-        <line x1="360" y1="116" x2="440" y2="116" stroke="rgba(91,91,214,.4)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#ah)"/>
-        <line x1="360" y1="238" x2="440" y2="130" stroke="rgba(0,184,148,.35)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#aht)"/>
-        <line x1="360" y1="294" x2="440" y2="136" stroke="rgba(0,184,148,.35)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#aht)"/>
-
-        <!-- Claude → brief → dashboard -->
-        <line x1="600" y1="136" x2="680" y2="136" stroke="rgba(91,91,214,.5)" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#ah)"/>
-        <line x1="840" y1="136" x2="880" y2="136" stroke="rgba(0,184,148,.5)" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#aht)"/>
-
-        <!-- Animated travel dots -->
-        <circle r="3" fill="#5b5bd6" opacity=".9">
-          <animateMotion dur="2.5s" repeatCount="indefinite" path="M150,38 L220,38"/>
-        </circle>
-        <circle r="3" fill="#5b5bd6" opacity=".9">
-          <animateMotion dur="2.8s" repeatCount="indefinite" begin="0.4s" path="M150,98 L220,94"/>
-        </circle>
-        <circle r="3" fill="#00b894" opacity=".9">
-          <animateMotion dur="3s" repeatCount="indefinite" begin="0.8s" path="M150,158 L220,150"/>
-        </circle>
-        <circle r="3" fill="#5b5bd6" opacity=".9">
-          <animateMotion dur="2.2s" repeatCount="indefinite" begin="1s" path="M360,116 L440,116"/>
-        </circle>
-        <circle r="3" fill="#00b894" opacity=".9">
-          <animateMotion dur="2.6s" repeatCount="indefinite" begin="1.4s" path="M360,238 L440,130"/>
-        </circle>
-        <circle r="3" fill="#5b5bd6" opacity=".9">
-          <animateMotion dur="2s" repeatCount="indefinite" begin="1.8s" path="M600,136 L680,136"/>
-        </circle>
-        <circle r="3" fill="#00b894" opacity=".9">
-          <animateMotion dur="1.8s" repeatCount="indefinite" begin="2.2s" path="M840,136 L880,136"/>
-        </circle>
-      </svg>
+          <!-- Animated dots -->
+          <circle r="3" fill="#1a56ff"><animateMotion dur="2.5s" repeatCount="indefinite" path="M150,35 L210,35"/></circle>
+          <circle r="3" fill="#1a56ff"><animateMotion dur="2.8s" repeatCount="indefinite" begin=".4s" path="M150,91 L210,85"/></circle>
+          <circle r="3" fill="rgba(255,255,255,.4)"><animateMotion dur="3s" repeatCount="indefinite" begin=".8s" path="M150,147 L210,135"/></circle>
+          <circle r="3" fill="#1a56ff"><animateMotion dur="2.2s" repeatCount="indefinite" begin="1s" path="M358,113 L428,113"/></circle>
+          <circle r="3" fill="rgba(255,255,255,.3)"><animateMotion dur="2.6s" repeatCount="indefinite" begin="1.4s" path="M358,217 L428,125"/></circle>
+          <circle r="3" fill="#1a56ff"><animateMotion dur="2s" repeatCount="indefinite" begin="1.8s" path="M576,113 L648,127"/></circle>
+          <circle r="3" fill="rgba(255,255,255,.3)"><animateMotion dur="1.8s" repeatCount="indefinite" begin="2.2s" path="M796,127 L864,127"/></circle>
+        </svg>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- FEATURES alternating -->
-<section id="features" style="border-top:1px solid var(--border)">
-<div class="features-section">
+<!-- FEATURE DETAIL ROWS -->
+<section class="feat-section">
 
-  <!-- 1. News — text left, preview right -->
-  <div class="feature-row r">
-    <div class="feat-text">
-      <div class="feat-eyebrow">01 — News intelligence</div>
-      <h3 class="feat-h2">From 2,300 articles to <span class="grad-text">~100 themes</span></h3>
-      <p class="feat-desc">Scrapes Google News RSS across three query buckets per competitor — loyalty changes, card products, and company news. A four-stage NLP pipeline removes evergreen content, deduplicates with BERT embeddings, and clusters same-story articles with DBSCAN. Each cluster is summarized by Claude Haiku as one actionable sentence.</p>
-      <div class="feat-stack">
-        <span class="feat-chip">Google News RSS</span>
-        <span class="feat-chip">BERT embeddings</span>
-        <span class="feat-chip">DBSCAN</span>
-        <span class="feat-chip">scikit-learn</span>
-        <span class="feat-chip">sentence-transformers</span>
-        <span class="feat-chip">Claude Haiku</span>
+  <!-- 1: News Intelligence — text left, visual right -->
+  <div class="feat-row r" id="feat-news" style="scroll-margin-top:58px">
+    <div class="feat-text-col">
+      <div class="feat-num">01 — NEWS INTELLIGENCE</div>
+      <h3 class="feat-h3">THOUSANDS<br>OF ARTICLES.<br>ONLY WHAT<br>MATTERS.</h3>
+      <p class="feat-desc">Automatically pulls news across multiple sources per competitor and filters out noise — listicles, evergreen content, and duplicate coverage — so only the stories that actually matter reach the brief.</p>
+      <p class="feat-desc-tech"><span class="feat-desc-tech-label">How it works</span>Google News RSS scraped across 3 query buckets per competitor. A four-stage NLP pipeline applies a guide filter, exact deduplication, BERT semantic deduplication (cosine similarity threshold 0.88), and DBSCAN clustering to group same-story articles regardless of volume. Each cluster is summarized by Claude Haiku as one actionable sentence.</p>
+      <div class="feat-chips">
+        <span class="chip chip-light">Google News RSS</span>
+        <span class="chip chip-light">BERT</span>
+        <span class="chip chip-light">DBSCAN</span>
+        <span class="chip chip-light">Claude Haiku</span>
+        <span class="chip chip-light">sentence-transformers</span>
       </div>
     </div>
-    <div class="feat-preview">
-      <div class="fp-header"><span class="bdot-r"></span><span class="bdot-y"></span><span class="bdot-g"></span></div>
-      <div class="fp-body">
-        <div class="fp-title">NLP dedup + clustering</div>
-        <div class="nlp-art">
-          <div class="nlp-row"><span class="nlp-src">CNBC</span><span class="nlp-txt">Capital One rebrands Spark Miles as Venture Business</span></div>
-          <div class="nlp-row" style="opacity:.6"><span class="nlp-src">Forbes</span><span class="nlp-txt nlp-strike">Capital One launches new Venture Business card</span><span class="nlp-dup">dup</span></div>
-          <div class="nlp-row" style="opacity:.5"><span class="nlp-src">TPG</span><span class="nlp-txt nlp-strike">Capital One closes Spark Miles card</span><span class="nlp-dup">dup</span></div>
-          <div class="nlp-row" style="opacity:.4"><span class="nlp-src">NerdWallet</span><span class="nlp-txt nlp-strike">Meet Capital One's new business card</span><span class="nlp-dup">dup</span></div>
+    <div class="feat-visual-col">
+      <div class="feat-panel" style="width:100%">
+        <div class="fp-header fp-header-dark"><span class="fp-dot fp-dot-r"></span><span class="fp-dot fp-dot-y"></span><span class="fp-dot fp-dot-g"></span></div>
+        <div class="fp-body fp-dark">
+          <div class="fp-mono" style="color:rgba(255,255,255,.3);margin-bottom:.5rem">INPUT — 4 articles, same story</div>
+          <div class="nlp-item"><span class="nlp-src">CNBC</span><span class="nlp-txt">Issuer A rebrands business card as Venture Business</span></div>
+          <div class="nlp-item" style="opacity:.55"><span class="nlp-src">Forbes</span><span class="nlp-txt nlp-strike">Issuer A launches new business card</span><span class="nlp-badge">dup</span></div>
+          <div class="nlp-item" style="opacity:.4"><span class="nlp-src">TPG</span><span class="nlp-txt nlp-strike">Issuer A closes old business product</span><span class="nlp-badge">dup</span></div>
+          <div class="nlp-item" style="opacity:.3"><span class="nlp-src">NerdWallet</span><span class="nlp-txt nlp-strike">Meet the new Issuer A business card</span><span class="nlp-badge">dup</span></div>
+          <div style="text-align:center;color:rgba(255,255,255,.2);font-size:18px;margin:.4rem 0">↓</div>
           <div class="nlp-result">
-            <div class="nlp-result-label">1 THEME · 4 ARTICLES CLUSTERED</div>
-            <div class="nlp-result-text">Capital One rebranded Spark Miles to Venture Business with 150K bonus, intensifying competition for business card acquisition.</div>
-            <div class="nlp-result-src">CNBC · Forbes · TPG · NerdWallet</div>
+            <div class="nlp-result-lbl">1 THEME · 4 ARTICLES CLUSTERED</div>
+            <div class="nlp-result-text">Issuer A rebranded business card with 150K bonus, intensifying competition for high-value business card acquisition.</div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 2. Social — preview left, text right -->
-  <div class="feature-row reverse r">
-    <div class="feat-text">
-      <div class="feat-eyebrow">02 — Social sentiment</div>
-      <h3 class="feat-h2">What cardholders <span class="grad-text">actually say</span></h3>
-      <p class="feat-desc">Queries r/creditcards, r/churning, r/awardtravel, and r/personalfinance via Reddit's public JSON endpoints — no API key required. Posts are scored for sentiment and aggregated into per-competitor signals, surfacing real cardholder opinion alongside press release coverage.</p>
-      <div class="feat-stack">
-        <span class="feat-chip-teal feat-chip">Reddit public JSON</span>
-        <span class="feat-chip-teal feat-chip">4 subreddits</span>
-        <span class="feat-chip">Sentiment scoring</span>
-        <span class="feat-chip">Keyword matching</span>
+  <!-- 2: Social Sentiment — visual left, text right -->
+  <div class="feat-row r" id="feat-social" style="scroll-margin-top:58px">
+    <div class="feat-text-col">
+      <div class="feat-num">02 — SOCIAL SENTIMENT</div>
+      <h3 class="feat-h3">WHAT THE<br>MARKET<br>ACTUALLY SAYS</h3>
+      <p class="feat-desc">Shows how the market is actually reacting to competitor moves — not just what press releases say. Surfaces real customer discussions from relevant communities and scores sentiment per competitor so you can see what's resonating and what's not.</p>
+      <p class="feat-desc-tech"><span class="feat-desc-tech-label">How it works</span>Queries relevant subreddits via Reddit's public JSON endpoints — no API key required. Posts mentioning each competitor are keyword-matched, scored positive/negative/neutral, and aggregated into per-competitor signals with top posts surfaced by upvote count.</p>
+      <div class="feat-chips">
+        <span class="chip chip-dark">Reddit JSON</span>
+        <span class="chip chip-dark">Sentiment scoring</span>
       </div>
     </div>
-    <div class="feat-preview">
-      <div class="fp-header"><span class="bdot-r"></span><span class="bdot-y"></span><span class="bdot-g"></span></div>
-      <div class="fp-body">
-        <div class="fp-title">Reddit sentiment — April 2026</div>
-        <div class="sent-rows">
-          <div class="sent-row"><span class="sent-name">Chase</span><div class="sent-track"><div class="sent-fill" style="width:78%;background:var(--teal)"></div></div><span class="sent-lbl" style="color:var(--teal)">🟢 Positive</span></div>
-          <div class="sent-row"><span class="sent-name">Capital One</span><div class="sent-track"><div class="sent-fill" style="width:55%;background:var(--teal)"></div></div><span class="sent-lbl" style="color:var(--teal)">🟢 Positive</span></div>
-          <div class="sent-row"><span class="sent-name">Amex</span><div class="sent-track"><div class="sent-fill" style="width:42%;background:#f5a623"></div></div><span class="sent-lbl" style="color:#f5a623">⚪ Neutral</span></div>
-          <div class="sent-row"><span class="sent-name">JetBlue</span><div class="sent-track"><div class="sent-fill" style="width:22%;background:#ff5e5e"></div></div><span class="sent-lbl" style="color:#ff5e5e">🔴 Negative</span></div>
-        </div>
-        <div class="reddit-posts">
-          <div class="rpost"><span class="rpost-sent">🟢</span><span class="rpost-title">150K Sapphire Reserve offer is insane — never seen it this high</span><span class="rpost-score">▲847</span></div>
-          <div class="rpost"><span class="rpost-sent">🟢</span><span class="rpost-title">Just got approved for CSR — 25x hotel points sealed it for me</span><span class="rpost-score">▲512</span></div>
-          <div class="rpost"><span class="rpost-sent">🔴</span><span class="rpost-title">JetBlue bankruptcy fears — should I cancel my card?</span><span class="rpost-score">▲341</span></div>
+    <div class="feat-visual-col">
+      <div class="feat-panel" style="width:100%">
+        <div class="fp-header fp-header-dark"><span class="fp-dot fp-dot-r"></span><span class="fp-dot fp-dot-y"></span><span class="fp-dot fp-dot-g"></span></div>
+        <div class="fp-body fp-dark">
+          <div class="fp-mono" style="color:rgba(255,255,255,.3);margin-bottom:.65rem">Sentiment · This Month</div>
+          <div class="sent-bar-row"><span class="sent-name">Issuer B</span><div class="sent-track"><div class="sent-fill" style="width:78%;background:#1a56ff"></div></div><span class="sent-lbl" style="color:#7da4ff">🟢 78%</span></div>
+          <div class="sent-bar-row"><span class="sent-name">Issuer A</span><div class="sent-track"><div class="sent-fill" style="width:55%;background:#1a56ff"></div></div><span class="sent-lbl" style="color:#7da4ff">🟢 55%</span></div>
+          <div class="sent-bar-row"><span class="sent-name">Issuer C</span><div class="sent-track"><div class="sent-fill" style="width:40%;background:rgba(255,255,255,.3)"></div></div><span class="sent-lbl" style="color:rgba(255,255,255,.5)">⚪ 40%</span></div>
+          <div class="sent-bar-row" style="margin-bottom:.75rem"><span class="sent-name">Issuer D</span><div class="sent-track"><div class="sent-fill" style="width:22%;background:#cc4444"></div></div><span class="sent-lbl" style="color:#ff8080">🔴 22%</span></div>
+          <div style="background:#1a1a1a;border-radius:5px;padding:.5rem .65rem;margin-bottom:.3rem;border:1px solid rgba(255,255,255,.05)">
+            <div style="display:flex;align-items:baseline;gap:.4rem"><span style="font-size:12px">🟢</span><span style="font-size:10px;color:rgba(255,255,255,.6);flex:1">The 150K offer is insane — never seen it this high</span><span style="font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.2)">▲847</span></div>
+          </div>
+          <div style="background:#1a1a1a;border-radius:5px;padding:.5rem .65rem;border:1px solid rgba(255,255,255,.05)">
+            <div style="display:flex;align-items:baseline;gap:.4rem"><span style="font-size:12px">🔴</span><span style="font-size:10px;color:rgba(255,255,255,.6);flex:1">Issuer D bankruptcy fears — should I cancel?</span><span style="font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.2)">▲341</span></div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 3. Visual tracking — text left, preview right -->
-  <div class="feature-row r">
-    <div class="feat-text">
-      <div class="feat-eyebrow">03 — Visual change tracking</div>
-      <h3 class="feat-h2">Pixel-level <span class="grad-text">offer monitoring</span></h3>
-      <p class="feat-desc">Playwright takes full-page screenshots of competitor card offer pages monthly. A Pillow pixel diff check acts as a free gatekeeper — only pages with more than 500 changed pixels are sent to Claude Vision. The changed region is cropped to its bounding box before the API call, reducing token cost by ~70%.</p>
-      <div class="feat-stack">
-        <span class="feat-chip">Playwright</span>
-        <span class="feat-chip">Pillow pixel diff</span>
-        <span class="feat-chip">Bounding box crop</span>
-        <span class="feat-chip">Claude Sonnet Vision</span>
+  <!-- 3: Visual Tracking — text left, visual right -->
+  <div class="feat-row r" id="feat-visual" style="scroll-margin-top:58px">
+    <div class="feat-text-col">
+      <div class="feat-num">03 — VISUAL CHANGE TRACKING</div>
+      <h3 class="feat-h3">PIXEL-LEVEL<br>PAGE<br>MONITORING</h3>
+      <p class="feat-desc">Catches competitor page changes that never make the news — updated offer amounts, new product messaging, redesigned pages, or quietly removed benefits. Monitors the digital footprint directly so nothing slips through.</p>
+      <p class="feat-desc-tech"><span class="feat-desc-tech-label">How it works</span>Playwright takes full-page screenshots monthly. Pillow pixel diff compares to the previous month — pages with fewer than 500 changed pixels are skipped entirely. Changed regions are cropped to their bounding box before being sent to Claude Sonnet Vision, reducing token cost by ~70%.</p>
+      <div class="feat-chips">
+        <span class="chip chip-dark">Playwright</span>
+        <span class="chip chip-dark">Pillow pixel diff</span>
+        <span class="chip chip-dark">Bounding box crop</span>
+        <span class="chip chip-dark">Claude Sonnet</span>
       </div>
     </div>
-    <div class="feat-preview">
-      <div class="fp-header"><span class="bdot-r"></span><span class="bdot-y"></span><span class="bdot-g"></span></div>
-      <div class="fp-body">
-        <div class="fp-title">Pixel diff gate — 16 sites</div>
-        <div class="vdiff-gate">
-          <span class="vdiff-skip">Chase — skip</span>
-          <span class="vdiff-skip">Delta — skip</span>
-          <span class="vdiff-hit">● Capital One — changed</span>
-          <span class="vdiff-skip">Amex — skip</span>
-        </div>
-        <div class="vdiff-wrap">
-          <div class="vdiff-pane">
-            <div class="vdiff-ph">Mar 2026</div>
-            <div class="vdiff-body">
-              <span class="vdiff-same">Earn unlimited miles</span>
-              <span class="vdiff-old">75,000 bonus miles</span>
-              <span class="vdiff-same">No annual fee first year</span>
+    <div class="feat-visual-col">
+      <div class="feat-panel" style="width:100%">
+        <div class="fp-header fp-header-dark"><span class="fp-dot fp-dot-r"></span><span class="fp-dot fp-dot-y"></span><span class="fp-dot fp-dot-g"></span></div>
+        <div class="fp-body fp-dark">
+          <div class="fp-mono" style="color:rgba(255,255,255,.3);margin-bottom:.5rem">Pixel diff gate — 16 sites</div>
+          <div style="display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.65rem">
+            <span style="font-family:var(--mono);font-size:9px;background:#1a1a1a;border:1px solid rgba(255,255,255,.07);color:rgba(255,255,255,.3);padding:2px 7px;border-radius:2px">Issuer B — skip</span>
+            <span style="font-family:var(--mono);font-size:9px;background:#1a1a1a;border:1px solid rgba(255,255,255,.07);color:rgba(255,255,255,.3);padding:2px 7px;border-radius:2px">Issuer C — skip</span>
+            <span style="font-family:var(--mono);font-size:9px;background:rgba(26,86,255,.12);border:1px solid rgba(26,86,255,.3);color:#7da4ff;padding:2px 7px;border-radius:2px;font-weight:600">● Issuer A — changed</span>
+          </div>
+          <div class="diff-pair">
+            <div class="diff-pane">
+              <div class="diff-ph diff-ph-dark">Mar 2026</div>
+              <div class="diff-body">
+                <span class="diff-same">Earn unlimited miles</span>
+                <span class="diff-old">75,000 bonus miles</span>
+                <span class="diff-same">No annual fee yr 1</span>
+              </div>
+            </div>
+            <div class="diff-pane" style="border:1px solid rgba(26,86,255,.3)">
+              <div class="diff-ph diff-ph-blue">Apr 2026</div>
+              <div class="diff-body">
+                <span class="diff-same">Earn unlimited miles</span>
+                <span class="diff-new">150,000 bonus miles</span>
+                <span class="diff-same">No annual fee yr 1</span>
+              </div>
             </div>
           </div>
-          <div class="vdiff-pane" style="border-color:var(--purple)">
-            <div class="vdiff-ph">Apr 2026</div>
-            <div class="vdiff-body">
-              <span class="vdiff-same">Earn unlimited miles</span>
-              <span class="vdiff-new">150,000 bonus miles</span>
-              <span class="vdiff-same">No annual fee first year</span>
-            </div>
+          <div class="diff-alert">🔴 HIGH — Bonus increase: 75K → 150K detected</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4: Brief Generation — visual left, text right -->
+  <div class="feat-row r" id="feat-brief" style="scroll-margin-top:58px">
+    <div class="feat-text-col">
+      <div class="feat-num">04 — BRIEF GENERATION</div>
+      <h3 class="feat-h3">ONE CALL.<br>FULL BRIEF.<br>AUTOMATED.</h3>
+      <p class="feat-desc">Brings everything together into a single, exec-ready brief — competitor summaries, an executive overview, and the top market trends for the month. Structured for quick scanning, not just reading.</p>
+      <p class="feat-desc-tech"><span class="feat-desc-tech-label">How it works</span>All theme summaries (~30 tokens each) are passed to Claude Haiku in a single structured API call returning a JSON object with competitor paragraphs, executive summary, and five market trends. The brief is rendered as a self-contained HTML dashboard deployed to GitHub Pages, and exported as a Word document via python-docx.</p>
+      <div class="feat-chips">
+        <span class="chip chip-light">Claude Haiku</span>
+        <span class="chip chip-light">Structured JSON</span>
+        <span class="chip chip-light">python-docx export</span>
+        <span class="chip chip-light">GitHub Pages</span>
+      </div>
+    </div>
+    <div class="feat-visual-col">
+      <div class="feat-panel" style="width:100%">
+        <div class="fp-header fp-header-dark"><span class="fp-dot fp-dot-r"></span><span class="fp-dot fp-dot-y"></span><span class="fp-dot fp-dot-g"></span></div>
+        <div class="fp-body fp-dark">
+          <div class="brief-input-bar">INPUT: 107 themes × ~30 tokens = <span style="color:#7da4ff;font-weight:600">~3,400 tokens</span></div>
+          <div class="brief-block">
+            <div class="brief-block-lbl">Executive Summary</div>
+            <div class="brief-block-text">April saw aggressive positioning across the competitive landscape, with multiple players raising sign-up incentives and one issuer launching a rebranded business product...</div>
+          </div>
+          <div class="brief-block">
+            <div class="brief-block-lbl">Trend 01</div>
+            <div class="brief-block-text">Welcome Bonus Escalation: Multiple issuers raised sign-up incentives this month, setting a new competitive floor for premium card acquisition...</div>
+          </div>
+          <div class="brief-cost">
+            <span class="brief-cost-val">✓ $0.003 total</span>
+            <span class="brief-cost-meta">1 API call · 12 competitors · 5 trends</span>
           </div>
         </div>
-        <div class="vdiff-alert">🔴 HIGH — Bonus increase: 75K → 150K miles</div>
       </div>
     </div>
   </div>
 
-  <!-- 4. Brief gen — preview left, text right -->
-  <div class="feature-row reverse r">
-    <div class="feat-text">
-      <div class="feat-eyebrow">04 — Brief generation</div>
-      <h3 class="feat-h2">One API call. <span class="grad-text">Full brief.</span></h3>
-      <p class="feat-desc">Theme summaries (~30 tokens each) are passed to Claude Haiku in a single structured call returning competitor paragraphs, an executive summary, and five market trends. Splitting per-competitor would cost ~12× more with no quality improvement. Total cost: ~$0.003 per run.</p>
-      <div class="feat-stack">
-        <span class="feat-chip">Claude Haiku</span>
-        <span class="feat-chip">Structured JSON output</span>
-        <span class="feat-chip">python-docx export</span>
-      </div>
-    </div>
-    <div class="feat-preview">
-      <div class="fp-header"><span class="bdot-r"></span><span class="bdot-y"></span><span class="bdot-g"></span></div>
-      <div class="fp-body">
-        <div class="fp-title">generate_brief.py</div>
-        <div class="brief-input">INPUT: 107 themes × ~30 tokens = <span style="color:var(--purple);font-weight:700">~3,400 tokens</span></div>
-        <div class="brief-call">
-          <div class="brief-call-label">Executive Summary</div>
-          <div class="brief-call-text">April 2026 saw aggressive positioning across premium travel cards, with Chase upgrading Sapphire Reserve to 150K and Capital One launching Venture Business...</div>
-        </div>
-        <div class="brief-call">
-          <div class="brief-call-label">Trend 1</div>
-          <div class="brief-call-text">Welcome Bonus Escalation: Chase, Capital One, and Amex all raised sign-up incentives this month...</div>
-        </div>
-        <div class="brief-cost">
-          <span class="brief-cost-val">✓ $0.003 total</span>
-          <span class="brief-cost-meta">1 API call · 12 competitors · 5 trends</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 5. Dashboard — text left, preview right -->
-  <div class="feature-row r">
-    <div class="feat-text">
-      <div class="feat-eyebrow">05 — Self-contained dashboard</div>
-      <h3 class="feat-h2">No server. <span class="grad-text">No dependencies.</span></h3>
-      <p class="feat-desc">A Python script bakes all data into a static HTML file at build time. The dashboard includes charts, competitor sections, Reddit sentiment, and a Word document export button. It opens in any browser and deploys to GitHub Pages automatically on every run.</p>
-      <div class="feat-stack">
-        <span class="feat-chip">Static HTML</span>
-        <span class="feat-chip">Chart.js</span>
-        <span class="feat-chip">GitHub Pages</span>
-        <span class="feat-chip">python-docx export</span>
-      </div>
-    </div>
-    <div class="feat-preview">
-      <div class="fp-header"><span class="bdot-r"></span><span class="bdot-y"></span><span class="bdot-g"></span></div>
-      <div class="fp-body">
-        <div class="fp-title">reports/dashboard.html</div>
-        <div class="dash-code">$ python core/generate_html.py<br><span style="color:rgba(255,255,255,.4)"># → docs/dashboard.html</span><br><span style="color:#7ec8a0">✓ 107 themes · 12 competitors</span></div>
-        <div class="dash-badge-row" style="margin-bottom:.75rem">
-          <span class="dash-badge dash-badge-g">✓ NO SERVER</span>
-          <span class="dash-badge dash-badge-p">✓ SELF-CONTAINED</span>
-          <span class="dash-badge dash-badge-g">✓ AUTO-DEPLOY</span>
-        </div>
-        <div style="border:1px solid var(--border);border-radius:8px;padding:.6rem .85rem;font-size:11px;color:#3d3d4e">Opens directly in any browser · 847KB · includes all data</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 6. Automation — preview left, text right -->
-  <div class="feature-row reverse r">
-    <div class="feat-text">
-      <div class="feat-eyebrow">06 — Fully automated</div>
-      <h3 class="feat-h2">Runs itself. <span class="grad-text">Every month.</span></h3>
-      <p class="feat-desc">Three GitHub Actions workflows handle the full cycle: news scraping on the 1st, screenshots on the 28th, and card extraction on demand. All outputs — CSVs, Excel, JSON, and the HTML dashboard — are committed to the repository automatically with zero manual steps.</p>
-      <div class="feat-stack">
-        <span class="feat-chip">GitHub Actions</span>
-        <span class="feat-chip">Cron scheduling</span>
-        <span class="feat-chip">Auto-commit</span>
-        <span class="feat-chip">DuckDB</span>
-      </div>
-    </div>
-    <div class="feat-preview">
-      <div class="fp-header"><span class="bdot-r"></span><span class="bdot-y"></span><span class="bdot-g"></span></div>
-      <div class="fp-body">
-        <div class="fp-title">Monthly Competitive Intelligence · Run #47</div>
-        <div class="ci-steps">
-          <div class="ci-step"><span class="ci-step-name">01-scrape</span><div class="ci-bar-wrap"><div class="ci-bar" style="width:100%;background:var(--teal)"></div></div><span class="ci-status" style="color:var(--teal)">✓ done</span></div>
-          <div class="ci-step"><span class="ci-step-name">02-cluster</span><div class="ci-bar-wrap"><div class="ci-bar" style="width:100%;background:var(--teal)"></div></div><span class="ci-status" style="color:var(--teal)">✓ done</span></div>
-          <div class="ci-step"><span class="ci-step-name">03-reddit</span><div class="ci-bar-wrap"><div class="ci-bar" style="width:100%;background:var(--teal)"></div></div><span class="ci-status" style="color:var(--teal)">✓ done</span></div>
-          <div class="ci-step"><span class="ci-step-name">04-brief</span><div class="ci-bar-wrap"><div class="ci-bar" style="width:65%;background:var(--purple);animation:grow .8s ease forwards"></div></div><span class="ci-status" style="color:var(--purple)">running</span></div>
-          <div class="ci-step"><span class="ci-step-name">05-publish</span><div class="ci-bar-wrap"><div class="ci-bar" style="width:0%;background:var(--purple)"></div></div><span class="ci-status" style="color:#bbb">queued</span></div>
-        </div>
-        <div style="margin-top:.6rem;font-size:10px;color:#999;font-family:var(--mono)">All outputs auto-committed → GitHub Pages</div>
-      </div>
-    </div>
-  </div>
-
-</div>
 </section>
 
 <!-- STACK -->
@@ -629,25 +889,64 @@ footer a:hover{color:var(--purple)}
   </div>
 </div>
 
-<!-- CTA -->
-<div class="cta-section r">
-  <h2 class="cta-h">See it in action.</h2>
-  <p class="cta-sub">Live dashboard updated monthly with real competitive data.</p>
-  <a href="dashboard.html" class="btn-primary" style="font-size:16px;padding:1rem 2.5rem">Open Dashboard →</a>
-</div>
-
+<!-- FOOTER -->
 <footer>
-  <span>AI Competitive Intelligence System</span>
-  <span>
-    <a href="https://www.linkedin.com/in/riditasmiah" target="_blank">Ridi Tasmiah</a>
-    &nbsp;·&nbsp;
-    <a href="https://github.com/tasmiahr/ai-competitive-intelligence" target="_blank">GitHub ↗</a>
-  </span>
+  <div>
+    <div class="footer-brand">COMPETITIVE INTEL</div>
+    <div class="footer-sub">AI-Powered Intelligence Pipeline · Built by Ridi Tasmiah</div>
+  </div>
+  <div class="footer-links">
+    <a href="https://www.linkedin.com/in/riditasmiah" target="_blank" class="footer-btn footer-btn-linkedin">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      LinkedIn
+    </a>
+    <a href="https://github.com/tasmiahr/ai-competitive-intelligence" target="_blank" class="footer-btn footer-btn-github">
+      <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+      GitHub
+    </a>
+  </div>
 </footer>
 
 <script>
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('v')}),{threshold:.08});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('v')}),{threshold:.07});
 document.querySelectorAll('.r').forEach(el=>io.observe(el));
+
+// Dashboard tab switching with auto-rotate
+const tabs = document.querySelectorAll('.dp-tab');
+const panels = document.querySelectorAll('.dp-panel');
+let autoInterval;
+
+function switchTab(tabName) {
+  tabs.forEach(t => t.classList.remove('active'));
+  panels.forEach(p => p.classList.add('hidden'));
+  document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+  const panel = document.getElementById(`tab-${tabName}`);
+  panel.classList.remove('hidden');
+  // Re-trigger animations
+  panel.querySelectorAll('.dp-anim').forEach((el,i) => {
+    el.style.opacity = '0';
+    el.style.animation = 'none';
+    setTimeout(() => {
+      el.style.animation = '';
+      el.style.animationDelay = `${i * 0.1}s`;
+    }, 10);
+  });
+}
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    clearInterval(autoInterval);
+    switchTab(tab.dataset.tab);
+  });
+});
+
+// Auto-rotate every 3.5s
+const tabOrder = ['signals', 'sentiment', 'visual'];
+let current = 0;
+autoInterval = setInterval(() => {
+  current = (current + 1) % tabOrder.length;
+  switchTab(tabOrder[current]);
+}, 3500);
 </script>
 </body>
 </html>
