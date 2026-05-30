@@ -2,7 +2,9 @@
 
 A multi-source competitive intelligence that tracks competitor news, program changes, and user sentiment from social platforms.
 
-This pipeline eliminates manual research and automates the full pipeline: multi-source data collection, NLP-based deduplication and clustering, AI-driven summarization, and report generation. This engine can process thousands of articles into a structured brief using a single Claude API call at $0.20 per run, improving time-to-insight by 95%.
+This pipeline eliminates manual research and automates the full pipeline: multi-source data collection, NLP-based deduplication and clustering, AI-driven summarization, and report generation. 
+
+This engine can process thousands of articles into a structured brief using a single Claude API call at $0.20 per run, improving time-to-insight by 95%.
 
 
 **[View Project →](https://tasmiahr.github.io/ai-competitive-intelligence/)** 
