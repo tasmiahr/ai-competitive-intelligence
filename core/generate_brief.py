@@ -157,7 +157,7 @@ def generate_brief(data_dir, year_month=None):
     # Build all themes text grouped by competitor
     # Use Claude-generated summaries from Excel — already concise, fits in one prompt
     # Order: Credit Card Product + Loyalty first, Company News last
-    CATEGORY_ORDER = {"Credit Card Product": 0, "Loyalty / Program": 1, "Company News": 2}
+    CATEGORY_ORDER = {"Product Launch": 0, "Ecosystem": 1, "Company News": 2}
     all_themes_lines = []
 
     def is_clean_summary(text):
@@ -221,7 +221,7 @@ def generate_brief(data_dir, year_month=None):
             )
 
     # ── Step 3: Save outputs ───────────────────────────────────
-    output_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+    output_dir = args.output_dir
     os.makedirs(output_dir, exist_ok=True)
 
     fname = f"monthly_market_trends_{year_month.replace('-', '_')}"

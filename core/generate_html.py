@@ -40,7 +40,7 @@ def generate_html(data_dir="data"):
     theme_summaries     = brief.get("theme_summaries", [])
 
     # Build competitor sections HTML
-    CATEGORY_ORDER = {"Credit Card Product": 0, "Loyalty / Program": 1, "Company News": 2}
+    CATEGORY_ORDER = {"Product Launch": 0, "Ecosystem": 1, "Company News": 2}
     competitor_html = ""
     companies = list(competitor_summaries.keys())
 
