@@ -1,6 +1,6 @@
 {
   "year_month": "2026-04",
-  "generated_at": "2026-05-31T17:11:16.746462",
+  "generated_at": "2026-05-31T17:49:39.332355",
   "subreddits_monitored": [
     "creditcards",
     "churning",
@@ -9,7 +9,7 @@
   ],
   "competitor_sentiment": [
     {
-      "competitor": "Issuer A",
+      "competitor": "Apple",
       "total_posts": 0,
       "total_score": 0,
       "total_comments": 0,
@@ -20,7 +20,7 @@
       "top_posts": []
     },
     {
-      "competitor": "Issuer B",
+      "competitor": "Google",
       "total_posts": 0,
       "total_score": 0,
       "total_comments": 0,
@@ -31,7 +31,29 @@
       "top_posts": []
     },
     {
-      "competitor": "Issuer C",
+      "competitor": "Microsoft",
+      "total_posts": 0,
+      "total_score": 0,
+      "total_comments": 0,
+      "positive": 0,
+      "negative": 0,
+      "neutral": 0,
+      "sentiment": "neutral",
+      "top_posts": []
+    },
+    {
+      "competitor": "Amazon",
+      "total_posts": 0,
+      "total_score": 0,
+      "total_comments": 0,
+      "positive": 0,
+      "negative": 0,
+      "neutral": 0,
+      "sentiment": "neutral",
+      "top_posts": []
+    },
+    {
+      "competitor": "Meta",
       "total_posts": 0,
       "total_score": 0,
       "total_comments": 0,
