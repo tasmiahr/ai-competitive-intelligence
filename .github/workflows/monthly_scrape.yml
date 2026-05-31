@@ -1,5 +1,10 @@
 name: Monthly Competitive Intelligence
 on:
+  # Automated schedule is intentionally disabled — manual trigger only
+  # To re-enable: uncomment the schedule block below
+  # schedule:
+  #   - cron: '0 9 1 * *'   # 1st of every month, 9am UTC
+
   workflow_dispatch:
     inputs:
       year:
