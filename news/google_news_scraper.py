@@ -34,6 +34,9 @@ from urllib.parse import quote
 
 import requests
 from summarizer import summarize, check_api_key
+import sys, os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'core'))
+sys.path.insert(0, os.path.dirname(__file__))
 from config import GOOGLE_NEWS_QUERIES, NEWSROOM_SOURCES
 
 
