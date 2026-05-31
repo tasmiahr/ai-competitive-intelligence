@@ -9,11 +9,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --blue:#1a56ff;--black:#0a0a0a;--white:#fff;
+  --blue:#1a56ff;--blue-dark:#0f36cc;--blue-light:rgba(26,86,255,.08);
+  --black:#0a0a0a;--white:#fff;
   --bg:#f2f2f2;--surf:#fff;--border:#e0e0e0;
   --ink:#111;--ink2:#3d3d4e;--muted:#666;--muted2:#aaa;
-  --teal:#00b894;--gold:#f5a623;--red:#e53935;
-  --grad:linear-gradient(135deg,#1a56ff,#00b894);
+  --teal:#00b894;--gold:#f5a623;--red:#e53935;--green:#00b894;
   --display:'Bebas Neue',sans-serif;
   --body:'DM Sans',sans-serif;--mono:'JetBrains Mono',monospace;
 }
@@ -29,161 +29,132 @@ body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14p
   background:var(--black);
   border-bottom:1px solid rgba(255,255,255,.07);
 }
-.topnav-brand{font-family:var(--display);font-size:18px;letter-spacing:.06em;color:var(--white);white-space:nowrap}
+.topnav-brand{font-family:var(--display);font-size:18px;letter-spacing:.06em;color:var(--white)}
 .nav-chips{display:flex;gap:.2rem;overflow-x:auto;scrollbar-width:none;flex:1}
-.nav-chip{
-  font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.4);
-  text-decoration:none;padding:.25rem .65rem;border-radius:20px;
-  white-space:nowrap;transition:all .15s;
-}
+.nav-chip{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.4);text-decoration:none;padding:.25rem .65rem;border-radius:20px;white-space:nowrap;transition:all .15s}
 .nav-chip:hover{color:var(--white);background:rgba(255,255,255,.08)}
 .topnav-right{display:flex;gap:.75rem;align-items:center;flex-shrink:0}
 .topnav-date{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.3)}
-.topnav-back{
-  font-size:12px;font-weight:600;color:var(--white);
-  background:var(--blue);text-decoration:none;
-  padding:.35rem .9rem;border-radius:4px;white-space:nowrap;
-  transition:all .15s;
+.topnav-back{font-size:12px;font-weight:600;color:var(--white);background:var(--blue);text-decoration:none;padding:.35rem .9rem;border-radius:4px;white-space:nowrap;transition:all .15s}
+.topnav-back:hover{background:var(--blue-dark)}
+
+/* HERO */
+.hero{
+  background:var(--blue);
+  padding:3rem 2rem 2.5rem;
+  position:relative;overflow:hidden;
 }
-.topnav-back:hover{background:#0f36cc}
+.hero::before{
+  content:'';position:absolute;top:-40%;right:-10%;
+  width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.1) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-inner{max-width:1080px;margin:0 auto;position:relative;z-index:1}
+.hero-top{display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+.hero-title{font-family:var(--display);font-size:clamp(32px,5vw,52px);letter-spacing:.03em;line-height:1;color:var(--white)}
+.hero-title em{font-style:normal;color:rgba(255,255,255,.6)}
+.hero-meta{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.5);margin-top:.4rem}
+.demo-badge{display:inline-flex;align-items:center;gap:.4rem;font-family:var(--mono);font-size:10px;font-weight:500;color:var(--gold);background:rgba(245,166,35,.15);border:1px solid rgba(245,166,35,.3);padding:.25rem .75rem;border-radius:2px;margin-top:.5rem}
 
 /* PAGE */
-.page{max-width:1080px;margin:0 auto;padding:2.5rem 2rem 5rem}
-.page-header{margin-bottom:2rem}
-.page-title{font-family:var(--display);font-size:40px;letter-spacing:.03em;line-height:1;color:var(--black)}
-.page-title em{font-style:normal;color:var(--blue)}
-.page-sub{color:var(--muted);font-size:12px;margin-top:.4rem;font-family:var(--mono)}
-.demo-badge{
-  display:inline-flex;align-items:center;gap:.4rem;
-  font-family:var(--mono);font-size:10px;font-weight:500;
-  color:var(--gold);background:rgba(245,166,35,.1);
-  border:1px solid rgba(245,166,35,.25);
-  padding:.25rem .75rem;border-radius:2px;margin-top:.5rem;
-}
-
-/* KPI ROW */
-.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:2.5rem}
-.kpi{background:var(--surf);padding:1.4rem 1.6rem;transition:background .15s}
-.kpi:hover{background:#f8f8f8}
-.kpi-val{font-family:var(--display);font-size:34px;letter-spacing:.02em;color:var(--blue)}
-.kpi-lbl{font-size:11px;color:var(--muted);margin-top:.2rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em}
+.page{max-width:1080px;margin:0 auto;padding:2rem 2rem 5rem}
 
 /* SECTION */
-.dash-section{margin-bottom:3rem}
-.section-head{display:flex;align-items:baseline;gap:.75rem;margin-bottom:1.1rem}
+.dash-section{margin-bottom:2.5rem}
+.section-head{display:flex;align-items:baseline;gap:.75rem;margin-bottom:1rem}
 .section-label{font-family:var(--display);font-size:13px;letter-spacing:.1em;color:var(--muted)}
 .section-count{font-family:var(--mono);font-size:11px;color:var(--muted2)}
 
+/* TWO COL LAYOUT for charts */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2.5rem}
+
 /* EXEC CARD */
-.exec-card{
-  background:var(--black);border-radius:10px;
-  padding:1.8rem 2rem;position:relative;overflow:hidden;
-}
-.exec-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad)}
-.exec-label{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem}
-.exec-text{font-size:15px;color:rgba(255,255,255,.85);line-height:1.8;font-weight:300}
+.exec-card{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:1.8rem 2rem;position:relative;overflow:hidden}
+.exec-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--teal))}
+.exec-label{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem}
+.exec-text{font-size:14px;color:var(--ink2);line-height:1.8;font-weight:300}
+.exec-bullets{margin-top:.75rem;display:flex;flex-direction:column;gap:.4rem}
+.exec-bullet{display:flex;align-items:flex-start;gap:.6rem;font-size:13px;color:var(--ink2);line-height:1.6;font-weight:300}
+.exec-bullet::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:.5rem}
+
+/* CHART CARDS */
+.chart-card{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:1.4rem}
+.chart-label{font-family:var(--display);font-size:12px;letter-spacing:.08em;color:var(--muted);margin-bottom:1rem}
+.chart-wrap{height:180px}
+
+/* SENTIMENT TABLE */
+.sent-table{display:flex;flex-direction:column;gap:.3rem;margin-top:.5rem}
+.sent-row{display:flex;align-items:center;gap:.75rem;padding:.5rem .7rem;background:var(--bg);border-radius:6px}
+.sent-name{font-size:12px;font-weight:600;width:90px;flex-shrink:0}
+.sent-bar-bg{flex:1;height:5px;background:#e0e0e0;border-radius:3px;overflow:hidden}
+.sent-bar{height:100%;border-radius:3px;transition:width .8s ease}
+.sent-label{font-family:var(--mono);font-size:10px;font-weight:600;width:80px;text-align:right}
 
 /* TRENDS */
 .trends-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
 .trends-row2{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-top:1rem}
-.trend-card{
-  background:var(--surf);border:1px solid var(--border);
-  border-radius:10px;padding:1.3rem;
-  position:relative;overflow:hidden;
-  transition:transform .2s,box-shadow .2s;
-}
-.trend-card::after{
-  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
-  background:var(--grad);transform:scaleX(0);transform-origin:left;
-  transition:transform .3s ease;
-}
-.trend-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.08)}
-.trend-card:hover::after{transform:scaleX(1)}
-.trend-num{font-family:var(--mono);font-size:10px;color:var(--muted2);margin-bottom:.5rem;letter-spacing:.06em}
-.trend-icon{font-size:20px;margin-bottom:.5rem}
-.trend-title{font-size:13px;font-weight:600;margin-bottom:.4rem;letter-spacing:-.01em}
-.trend-body{font-size:12px;color:var(--muted);line-height:1.6;font-weight:300}
-
-/* CHART */
-.chart-card{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:1.5rem}
-.chart-wrap{height:200px}
-
-/* SENTIMENT TABLE */
-.sent-table{background:var(--surf);border:1px solid var(--border);border-radius:10px;overflow:hidden}
-.sent-header{display:grid;grid-template-columns:160px 1fr 120px 60px;gap:1rem;padding:.7rem 1.4rem;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:.06em}
-.sent-row{display:grid;grid-template-columns:160px 1fr 120px 60px;gap:1rem;align-items:center;padding:.85rem 1.4rem;border-bottom:1px solid var(--border);transition:background .15s}
-.sent-row:last-child{border-bottom:none}
-.sent-row:hover{background:#f8f8f8}
-.sent-name{font-size:13px;font-weight:600}
-.sent-bar-bg{height:5px;background:var(--bg);border-radius:3px;overflow:hidden}
-.sent-bar{height:100%;border-radius:3px}
-.sent-label{font-size:12px;font-weight:600;text-align:center;font-family:var(--mono)}
-.sent-count{font-family:var(--mono);font-size:11px;color:var(--muted);text-align:right}
+.trend-card{border-radius:10px;padding:1.4rem;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;border:1px solid transparent}
+.trend-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+.trend-card.t-blue{background:var(--blue);border-color:var(--blue)}
+.trend-card.t-green{background:var(--green);border-color:var(--green)}
+.trend-card.t-white{background:var(--white);border-color:var(--border)}
+.trend-card.t-grey{background:#e8e8e8;border-color:#d4d4d4}
+.trend-card.t-black{background:var(--black);border-color:var(--black)}
+.trend-num{font-family:var(--mono);font-size:10px;margin-bottom:.5rem;letter-spacing:.06em}
+.t-blue .trend-num,.t-green .trend-num,.t-black .trend-num{color:rgba(255,255,255,.4)}
+.t-white .trend-num,.t-grey .trend-num{color:var(--muted)}
+.trend-icon{font-size:22px;margin-bottom:.5rem;line-height:1}
+.trend-title{font-family:var(--display);font-size:18px;letter-spacing:.02em;margin-bottom:.4rem;line-height:1.1}
+.t-blue .trend-title,.t-green .trend-title,.t-black .trend-title{color:var(--white)}
+.t-white .trend-title,.t-grey .trend-title{color:var(--black)}
+.trend-body{font-size:12px;line-height:1.6;font-weight:300}
+.t-blue .trend-body,.t-green .trend-body,.t-black .trend-body{color:rgba(255,255,255,.7)}
+.t-white .trend-body,.t-grey .trend-body{color:var(--muted)}
 
 /* COMPETITOR CARDS */
 .comp-grid{display:flex;flex-direction:column;gap:1.25rem}
-.comp-card{
-  background:var(--surf);border:1px solid var(--border);
-  border-radius:12px;padding:1.6rem 1.8rem;
-  transition:box-shadow .2s;
-}
+.comp-card{background:var(--surf);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:box-shadow .2s}
 .comp-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.07)}
-.comp-header{display:flex;align-items:center;gap:.85rem;margin-bottom:1rem}
-.comp-avatar{
-  width:40px;height:40px;border-radius:10px;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--display);font-weight:400;font-size:18px;letter-spacing:.02em;color:white;
-}
+.comp-header{display:flex;align-items:center;gap:.85rem;padding:1.4rem 1.6rem;border-bottom:1px solid var(--border)}
+.comp-avatar{width:40px;height:40px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:18px;letter-spacing:.02em;color:white}
 .comp-name{font-family:var(--display);font-size:20px;letter-spacing:.03em}
 .comp-meta{font-family:var(--mono);font-size:11px;color:var(--muted)}
-.comp-summary{
-  font-size:13px;color:var(--ink2);line-height:1.75;font-weight:300;
-  padding:1rem 1.2rem;background:var(--bg);border-radius:6px;
-  border-left:3px solid var(--blue);margin-bottom:1rem;
-}
-.themes-wrap{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.75rem}
-.theme-item{
-  padding:.7rem .9rem;background:var(--bg);border-radius:7px;
-  border:1px solid var(--border);transition:border-color .15s;
-}
-.theme-item:hover{border-color:rgba(26,86,255,.2)}
-.cat-tag{
-  display:inline-block;font-family:var(--mono);font-size:10px;
-  font-weight:600;padding:2px 7px;border-radius:3px;border:1px solid;
-  margin-bottom:.35rem;letter-spacing:.03em;
-}
-.theme-body{font-size:13px;color:var(--ink);margin-bottom:.25rem;line-height:1.5}
-.theme-foot{font-size:11px;color:var(--muted)}
-.src-link{color:var(--blue);text-decoration:none}
+/* Summary — blue bg */
+.comp-summary-wrap{background:var(--blue);padding:1.1rem 1.6rem}
+.comp-summary{font-size:13px;color:rgba(255,255,255,.9);line-height:1.75;font-weight:300}
+/* Themes — black bg */
+.comp-themes-wrap{background:var(--black);padding:1rem 1.6rem}
+.themes-label{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.65rem}
+.theme-item{padding:.65rem .85rem;background:rgba(255,255,255,.04);border-radius:6px;border:1px solid rgba(255,255,255,.07);margin-bottom:.4rem;transition:border-color .15s}
+.theme-item:last-child{margin-bottom:0}
+.theme-item:hover{border-color:rgba(26,86,255,.4)}
+.cat-tag{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:600;padding:2px 7px;border-radius:3px;border:1px solid;margin-bottom:.3rem;letter-spacing:.03em}
+.theme-body{font-size:12px;color:rgba(255,255,255,.7);margin-bottom:.2rem;line-height:1.5}
+.theme-foot{font-size:11px;color:rgba(255,255,255,.3)}
+.src-link{color:rgba(26,86,255,.8);text-decoration:none}
 .src-link:hover{text-decoration:underline}
 
 /* REDDIT */
-.reddit-block{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:.9rem 1.1rem}
+.comp-reddit-wrap{background:#111;padding:1rem 1.6rem;border-top:1px solid rgba(255,255,255,.05)}
 .reddit-head{display:flex;align-items:center;gap:.75rem;margin-bottom:.65rem;flex-wrap:wrap}
-.reddit-label{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.reddit-label{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.25)}
 .reddit-badge{font-size:12px;font-weight:600;font-family:var(--mono)}
-.rpost{display:flex;align-items:baseline;gap:.5rem;padding:.4rem 0;border-bottom:1px solid var(--border);text-decoration:none;color:var(--ink);transition:color .15s}
+.rpost{display:flex;align-items:baseline;gap:.5rem;padding:.4rem 0;border-bottom:1px solid rgba(255,255,255,.05);text-decoration:none;color:rgba(255,255,255,.7);transition:color .15s}
 .rpost:last-child{border-bottom:none}
-.rpost:hover .rpost-title{color:var(--blue)}
+.rpost:hover .rpost-title{color:rgba(26,86,255,.9)}
 .rpost-icon{font-size:11px;flex-shrink:0}
 .rpost-title{font-size:12px;flex:1;line-height:1.4}
-.rpost-score{font-family:var(--mono);font-size:10px;color:var(--muted);flex-shrink:0}
+.rpost-score{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.2);flex-shrink:0}
 
 /* FOOTER */
-.dash-footer{
-  margin-top:4rem;padding-top:2rem;
-  border-top:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;
-  font-family:var(--mono);font-size:11px;color:var(--muted2);
-}
+.dash-footer{margin-top:4rem;padding-top:2rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--muted2)}
 .dash-footer a{color:var(--blue);text-decoration:none}
 
 @media(max-width:768px){
-  .kpi-row{grid-template-columns:repeat(2,1fr)}
-  .trends-grid{grid-template-columns:1fr}
-  .trends-row2{grid-template-columns:1fr}
-  .sent-header,.sent-row{grid-template-columns:120px 1fr 80px 40px}
+  .trends-grid,.trends-row2,.two-col{grid-template-columns:1fr}
   .page{padding:1.5rem 1rem}
+  .hero{padding:2rem 1rem 1.5rem}
 }
 </style>
 </head>
@@ -204,29 +175,74 @@ body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14p
   </div>
 </nav>
 
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div>
+        <h1 class="hero-title">COMPETITIVE BRIEF <em>/ 2026-04</em></h1>
+        <p class="hero-meta">Generated May 1, 2026</p>
+        <div class="demo-badge">⚡ Demo dashboard — synthetic data for illustration</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <main class="page">
 
-  <header class="page-header">
-    <h1 class="page-title">COMPETITIVE BRIEF <em>/</em> 2026-04</h1>
-    <p class="page-sub">Generated May 1, 2026 · Claude AI · DBSCAN clustering · Reddit sentiment</p>
-    <div class="demo-badge">⚡ Demo dashboard — synthetic data for illustration</div>
-  </header>
-
-  <div class="kpi-row">
-    <div class="kpi"><div class="kpi-val">5</div><div class="kpi-lbl">Competitors</div></div>
-    <div class="kpi"><div class="kpi-val">84</div><div class="kpi-lbl">Themes</div></div>
-    <div class="kpi"><div class="kpi-val">2,140</div><div class="kpi-lbl">Articles</div></div>
-    <div class="kpi"><div class="kpi-val">1,203</div><div class="kpi-lbl">Reddit Posts</div></div>
-  </div>
-
   <!-- EXEC SUMMARY -->
-  <section class="dash-section">
+  <section class="dash-section" style="margin-top:2rem">
     <div class="section-head"><span class="section-label">EXECUTIVE SUMMARY</span></div>
     <div class="exec-card">
       <div class="exec-label">April 2026</div>
-      <p class="exec-text">April 2026 was defined by an accelerating AI arms race across all five competitors. Microsoft deepened Copilot integration across its enterprise suite, driving meaningful productivity adoption gains. Google countered with Gemini 2.0 Ultra, outperforming benchmarks and pressuring OpenAI partnerships. Apple's surprise AI chip announcement set the stage for on-device intelligence at scale, while Amazon expanded Bedrock enterprise offerings and cut cloud pricing aggressively. Meta's Llama 4 open-source release disrupted the proprietary model market and shifted developer sentiment significantly in its favor.</p>
+      <p class="exec-text">April 2026 was defined by an accelerating AI arms race across all five competitors. Key developments this month:</p>
+      <div class="exec-bullets">
+        <div class="exec-bullet"><span><strong>Microsoft</strong> deepened Copilot integration across its enterprise suite, driving 42% QoQ seat growth among Fortune 500 accounts.</span></div>
+        <div class="exec-bullet"><span><strong>Google</strong> countered with Gemini 2.0 Ultra, outperforming benchmarks across coding, reasoning, and multimodal tasks — reversing the narrative of falling behind in AI.</span></div>
+        <div class="exec-bullet"><span><strong>Apple</strong> announced its M4 Ultra chip with a 40% ML performance improvement, reinforcing a hardware-led on-device AI strategy built on privacy and performance.</span></div>
+        <div class="exec-bullet"><span><strong>Amazon</strong> cut Bedrock inference pricing by 30%, positioning AWS as the cost-competitive choice while Nova model performance continues to trail rivals.</span></div>
+        <div class="exec-bullet"><span><strong>Meta</strong>'s Llama 4 open-source release exceeded proprietary benchmarks and surpassed 2M downloads in week one, significantly shifting developer platform sentiment.</span></div>
+      </div>
     </div>
   </section>
+
+  <!-- CHARTS ROW -->
+  <div class="two-col">
+    <div class="chart-card">
+      <div class="chart-label">ACTIVITY BY COMPETITOR</div>
+      <div class="chart-wrap"><canvas id="activityChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-label">SOCIAL SENTIMENT</div>
+      <div class="sent-table">
+        <div class="sent-row">
+          <span class="sent-name">Meta</span>
+          <div class="sent-bar-bg"><div class="sent-bar" style="width:81%;background:var(--blue)"></div></div>
+          <span class="sent-label" style="color:var(--blue)">🟢 Positive</span>
+        </div>
+        <div class="sent-row">
+          <span class="sent-name">Apple</span>
+          <div class="sent-bar-bg"><div class="sent-bar" style="width:74%;background:var(--blue)"></div></div>
+          <span class="sent-label" style="color:var(--blue)">🟢 Positive</span>
+        </div>
+        <div class="sent-row">
+          <span class="sent-name">Google</span>
+          <div class="sent-bar-bg"><div class="sent-bar" style="width:58%;background:var(--blue)"></div></div>
+          <span class="sent-label" style="color:var(--blue)">🟢 Positive</span>
+        </div>
+        <div class="sent-row">
+          <span class="sent-name">Microsoft</span>
+          <div class="sent-bar-bg"><div class="sent-bar" style="width:44%;background:var(--gold)"></div></div>
+          <span class="sent-label" style="color:var(--gold)">⚪ Neutral</span>
+        </div>
+        <div class="sent-row">
+          <span class="sent-name">Amazon</span>
+          <div class="sent-bar-bg"><div class="sent-bar" style="width:29%;background:var(--red)"></div></div>
+          <span class="sent-label" style="color:var(--red)">🔴 Negative</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- TRENDS -->
   <section class="dash-section">
@@ -235,88 +251,37 @@ body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14p
       <span class="section-count">5 identified this month</span>
     </div>
     <div class="trends-grid">
-      <div class="trend-card">
+      <div class="trend-card t-blue">
         <div class="trend-num">01</div>
-        <div class="trend-icon">🤖</div>
-        <div class="trend-title">On-Device AI Becoming Table Stakes</div>
-        <div class="trend-body">Apple and Google both announced significant on-device model improvements in April. The shift from cloud-dependent AI to local inference is accelerating faster than anticipated, with privacy and latency as the primary drivers.</div>
+        <div class="trend-icon">💻</div>
+        <div class="trend-title">ON-DEVICE AI BECOMING TABLE STAKES</div>
+        <div class="trend-body">Apple and Google both announced significant on-device model improvements. The shift from cloud-dependent AI to local inference is accelerating, with privacy and latency as the primary drivers.</div>
       </div>
-      <div class="trend-card">
+      <div class="trend-card t-white">
         <div class="trend-num">02</div>
         <div class="trend-icon">📉</div>
-        <div class="trend-title">Cloud Pricing War Intensifies</div>
-        <div class="trend-body">Amazon cut EC2 and Bedrock pricing for the third consecutive quarter. Microsoft and Google followed within weeks. The commoditization of compute is compressing margins industry-wide and forcing differentiation up the stack.</div>
+        <div class="trend-title">CLOUD PRICING WAR INTENSIFIES</div>
+        <div class="trend-body">Amazon cut EC2 and Bedrock pricing for the third consecutive quarter. Microsoft and Google followed within weeks. Compute commoditization is forcing differentiation up the stack.</div>
       </div>
-      <div class="trend-card">
+      <div class="trend-card t-green">
         <div class="trend-num">03</div>
         <div class="trend-icon">🔓</div>
-        <div class="trend-title">Open Source Disrupting Proprietary Models</div>
-        <div class="trend-body">Meta's Llama 4 release outperformed several closed models on key benchmarks. Developer adoption surged within days. Competitors with proprietary-only strategies face increasing pressure to justify premium pricing.</div>
+        <div class="trend-title">OPEN SOURCE DISRUPTING PROPRIETARY MODELS</div>
+        <div class="trend-body">Meta's Llama 4 outperformed several closed models on key benchmarks. Developer adoption surged within days. Competitors with proprietary-only strategies face increasing pressure to justify premium pricing.</div>
       </div>
     </div>
     <div class="trends-row2">
-      <div class="trend-card">
+      <div class="trend-card t-grey">
         <div class="trend-num">04</div>
         <div class="trend-icon">🏢</div>
-        <div class="trend-title">Enterprise AI Adoption Crossing the Chasm</div>
-        <div class="trend-body">Microsoft reported Copilot seat growth of 42% QoQ among Fortune 500 customers. Enterprise AI is moving from pilot to production at scale, with workflow integration depth becoming the key competitive differentiator.</div>
+        <div class="trend-title">ENTERPRISE AI CROSSING THE CHASM</div>
+        <div class="trend-body">Microsoft reported Copilot seat growth of 42% QoQ among Fortune 500 customers. Enterprise AI is moving from pilot to production at scale, with workflow integration depth as the key differentiator.</div>
       </div>
-      <div class="trend-card">
+      <div class="trend-card t-black">
         <div class="trend-num">05</div>
-        <div class="trend-icon">🛡️</div>
-        <div class="trend-title">AI Regulation Shaping Product Roadmaps</div>
-        <div class="trend-body">EU AI Act compliance deadlines are influencing product decisions across all five competitors. Apple and Microsoft are leading on transparency features. Google and Meta face more scrutiny given their data scale and open model strategies.</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ACTIVITY CHART -->
-  <section class="dash-section">
-    <div class="section-head"><span class="section-label">ACTIVITY BY COMPETITOR</span></div>
-    <div class="chart-card">
-      <div class="chart-wrap"><canvas id="chart"></canvas></div>
-    </div>
-  </section>
-
-  <!-- REDDIT SENTIMENT -->
-  <section class="dash-section">
-    <div class="section-head">
-      <span class="section-label">SOCIAL SENTIMENT</span>
-      <span class="section-count">r/technology · r/programming · r/MachineLearning · r/artificial</span>
-    </div>
-    <div class="sent-table">
-      <div class="sent-header">
-        <span>Competitor</span><span>Positive %</span><span>Sentiment</span><span>Posts</span>
-      </div>
-      <div class="sent-row">
-        <span class="sent-name">Meta</span>
-        <div class="sent-bar-bg"><div class="sent-bar" style="width:81%;background:var(--blue)"></div></div>
-        <span class="sent-label" style="color:var(--blue)">🟢 Positive</span>
-        <span class="sent-count">312</span>
-      </div>
-      <div class="sent-row">
-        <span class="sent-name">Apple</span>
-        <div class="sent-bar-bg"><div class="sent-bar" style="width:74%;background:var(--blue)"></div></div>
-        <span class="sent-label" style="color:var(--blue)">🟢 Positive</span>
-        <span class="sent-count">287</span>
-      </div>
-      <div class="sent-row">
-        <span class="sent-name">Google</span>
-        <div class="sent-bar-bg"><div class="sent-bar" style="width:58%;background:var(--blue)"></div></div>
-        <span class="sent-label" style="color:var(--blue)">🟢 Positive</span>
-        <span class="sent-count">241</span>
-      </div>
-      <div class="sent-row">
-        <span class="sent-name">Microsoft</span>
-        <div class="sent-bar-bg"><div class="sent-bar" style="width:44%;background:var(--gold)"></div></div>
-        <span class="sent-label" style="color:var(--gold)">⚪ Neutral</span>
-        <span class="sent-count">198</span>
-      </div>
-      <div class="sent-row">
-        <span class="sent-name">Amazon</span>
-        <div class="sent-bar-bg"><div class="sent-bar" style="width:29%;background:var(--red)"></div></div>
-        <span class="sent-label" style="color:var(--red)">🔴 Negative</span>
-        <span class="sent-count">165</span>
+        <div class="trend-icon">🛡</div>
+        <div class="trend-title">AI REGULATION SHAPING ROADMAPS</div>
+        <div class="trend-body">EU AI Act compliance deadlines are influencing product decisions across all five competitors. Apple and Microsoft lead on transparency features. Google and Meta face greater scrutiny given their data scale.</div>
       </div>
     </div>
   </section>
@@ -325,7 +290,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14p
   <section class="dash-section">
     <div class="section-head">
       <span class="section-label">COMPETITOR ANALYSIS</span>
-      <span class="section-count">5 competitors · themes ordered by category then volume</span>
+      <span class="section-count">5 competitors</span>
     </div>
     <div class="comp-grid">
 
@@ -338,33 +303,36 @@ body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14p
             <div class="comp-meta">18 themes · 487 articles</div>
           </div>
         </div>
-        <p class="comp-summary">Apple dominated April with a surprise AI chip announcement and expanded on-device ML capabilities across its device lineup. The M4 Ultra benchmarks significantly outperform competitors in ML inference tasks, signaling a hardware-led AI strategy that prioritizes privacy and performance over cloud dependency. Developer ecosystem investments surged, with new Core ML frameworks reducing barriers to on-device AI integration.</p>
-        <div class="themes-wrap">
+        <div class="comp-summary-wrap">
+          <p class="comp-summary">Apple dominated April with a surprise AI chip announcement and expanded on-device ML capabilities across its lineup. M4 Ultra benchmarks significantly outperform competitors in ML inference, signaling a hardware-led AI strategy that prioritizes privacy and performance over cloud dependency. Developer ecosystem investments surged with new Core ML frameworks lowering barriers to on-device AI integration.</p>
+        </div>
+        <div class="comp-themes-wrap">
+          <div class="themes-label">Themes</div>
           <div class="theme-item">
-            <span class="cat-tag" style="color:var(--blue);background:rgba(26,86,255,.08);border-color:rgba(26,86,255,.2)">PRODUCT LAUNCH</span>
+            <span class="cat-tag" style="color:#7da4ff;background:rgba(26,86,255,.15);border-color:rgba(26,86,255,.3)">PRODUCT LAUNCH</span>
             <p class="theme-body">Apple unveiled M4 Ultra chip with 40% ML performance improvement, positioning on-device AI as a core differentiator against cloud-dependent competitors.</p>
             <div class="theme-foot">14 articles · Apr 8–12 · <a href="#" class="src-link">The Verge ↗</a></div>
           </div>
           <div class="theme-item">
-            <span class="cat-tag" style="color:var(--blue);background:rgba(26,86,255,.08);border-color:rgba(26,86,255,.2)">PRODUCT LAUNCH</span>
-            <p class="theme-body">Apple Intelligence expanded to 15 new languages and added real-time translation in FaceTime, increasing international addressable market for premium devices.</p>
+            <span class="cat-tag" style="color:#7da4ff;background:rgba(26,86,255,.15);border-color:rgba(26,86,255,.3)">PRODUCT LAUNCH</span>
+            <p class="theme-body">Apple Intelligence expanded to 15 new languages with real-time FaceTime translation, increasing international addressable market for premium devices.</p>
             <div class="theme-foot">11 articles · Apr 15–18 · <a href="#" class="src-link">9to5Mac ↗</a></div>
           </div>
           <div class="theme-item">
-            <span class="cat-tag" style="color:var(--teal);background:rgba(0,184,148,.08);border-color:rgba(0,184,148,.2)">ECOSYSTEM</span>
+            <span class="cat-tag" style="color:#5ee8c8;background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.25)">ECOSYSTEM</span>
             <p class="theme-body">Apple deepened third-party developer access to on-device models via new Core ML APIs, accelerating AI app development within the App Store ecosystem.</p>
             <div class="theme-foot">8 articles · Apr 22–24 · <a href="#" class="src-link">TechCrunch ↗</a></div>
           </div>
           <div class="theme-item">
-            <span class="cat-tag" style="color:var(--gold);background:rgba(245,166,35,.08);border-color:rgba(245,166,35,.2)">COMPANY NEWS</span>
+            <span class="cat-tag" style="color:#f5c842;background:rgba(245,166,35,.12);border-color:rgba(245,166,35,.25)">COMPANY NEWS</span>
             <p class="theme-body">Apple reported Q2 earnings above estimates with services revenue up 14% YoY, providing capital to accelerate AI infrastructure investment.</p>
             <div class="theme-foot">9 articles · Apr 30 · <a href="#" class="src-link">Bloomberg ↗</a></div>
           </div>
         </div>
-        <div class="reddit-block">
+        <div class="comp-reddit-wrap">
           <div class="reddit-head">
-            <span class="reddit-label">Reddit Sentiment</span>
-            <span class="reddit-badge" style="color:var(--blue)">🟢 Positive · 287 posts · +214 / −41 / ~32</span>
+            <span class="reddit-label">Reddit</span>
+            <span class="reddit-badge" style="color:#7da4ff">🟢 Positive · 287 posts</span>
           </div>
           <a href="#" class="rpost"><span class="rpost-icon">🟢</span><span class="rpost-title">The M4 Ultra ML benchmarks are insane — on-device AI finally makes sense</span><span class="rpost-score">▲2.4k</span></a>
           <a href="#" class="rpost"><span class="rpost-icon">🟢</span><span class="rpost-title">Apple Intelligence translation in FaceTime just worked flawlessly — this is the future</span><span class="rpost-score">▲1.8k</span></a>
@@ -381,33 +349,36 @@ body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14p
             <div class="comp-meta">21 themes · 531 articles</div>
           </div>
         </div>
-        <p class="comp-summary">Google had its strongest product month in over a year, with Gemini 2.0 Ultra outperforming GPT-4o on most third-party benchmarks and driving significant re-evaluation among enterprise buyers. Search AI Overviews reached 1.5 billion monthly users, cementing AI-first search as the new default. The acquisition of character.ai talent signals an aggressive push into conversational AI experiences beyond productivity use cases.</p>
-        <div class="themes-wrap">
+        <div class="comp-summary-wrap">
+          <p class="comp-summary">Google had its strongest product month in over a year. Gemini 2.0 Ultra outperformed GPT-4o on most third-party benchmarks, driving significant re-evaluation among enterprise buyers. Search AI Overviews reached 1.5 billion monthly users, cementing AI-first search as the new default. The acquisition of character.ai talent signals an aggressive push into conversational AI beyond productivity use cases.</p>
+        </div>
+        <div class="comp-themes-wrap">
+          <div class="themes-label">Themes</div>
           <div class="theme-item">
-            <span class="cat-tag" style="color:var(--blue);background:rgba(26,86,255,.08);border-color:rgba(26,86,255,.2)">PRODUCT LAUNCH</span>
+            <span class="cat-tag" style="color:#7da4ff;background:rgba(26,86,255,.15);border-color:rgba(26,86,255,.3)">PRODUCT LAUNCH</span>
             <p class="theme-body">Gemini 2.0 Ultra launched with state-of-the-art benchmark scores, surpassing GPT-4o on coding, reasoning, and multimodal tasks — reversing the narrative of Google falling behind in AI.</p>
             <div class="theme-foot">18 articles · Apr 3–6 · <a href="#" class="src-link">Ars Technica ↗</a></div>
           </div>
           <div class="theme-item">
-            <span class="cat-tag" style="color:var(--blue);background:rgba(26,86,255,.08);border-color:rgba(26,86,255,.2)">PRODUCT LAUNCH</span>
+            <span class="cat-tag" style="color:#7da4ff;background:rgba(26,86,255,.15);border-color:rgba(26,86,255,.3)">PRODUCT LAUNCH</span>
             <p class="theme-body">Google Workspace added Gemini-powered document summarization and meeting transcription, directly competing with Microsoft Copilot in enterprise productivity.</p>
             <div class="theme-foot">12 articles · Apr 10–14 · <a href="#" class="src-link">VentureBeat ↗</a></div>
           </div>
           <div class="theme-item">
-            <span class="cat-tag" style="color:var(--teal);background:rgba(0,184,148,.08);border-color:rgba(0,184,148,.2)">ECOSYSTEM</span>
-            <p class="theme-body">Google expanded Vertex AI agent builder tools, enabling enterprise developers to build multi-agent workflows without deep ML expertise — competing directly with Microsoft Copilot Studio.</p>
+            <span class="cat-tag" style="color:#5ee8c8;background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.25)">ECOSYSTEM</span>
+            <p class="theme-body">Google expanded Vertex AI agent builder tools, enabling enterprise developers to build multi-agent workflows without deep ML expertise.</p>
             <div class="theme-foot">9 articles · Apr 17–20 · <a href="#" class="src-link">InfoWorld ↗</a></div>
           </div>
           <div class="theme-item">
-            <span class="cat-tag" style="color:var(--gold);background:rgba(245,166,35,.08);border-color:rgba(245,166,35,.2)">COMPANY NEWS</span>
-            <p class="theme-body">Google Cloud revenue grew 28% YoY, accelerating from prior quarter and signaling successful AI-driven enterprise expansion despite competitive pressure.</p>
+            <span class="cat-tag" style="color:#f5c842;background:rgba(245,166,35,.12);border-color:rgba(245,166,35,.25)">COMPANY NEWS</span>
+            <p class="theme-body">Google Cloud revenue grew 28% YoY, accelerating from prior quarter and signaling successful AI-driven enterprise expansion.</p>
             <div class="theme-foot">11 articles · Apr 29 · <a href="#" class="src-link">Reuters ↗</a></div>
           </div>
         </div>
-        <div class="reddit-block">
+        <div class="comp-reddit-wrap">
           <div class="reddit-head">
-            <span class="reddit-label">Reddit Sentiment</span>
-            <span class="reddit-badge" style="color:var(--blue)">🟢 Positive · 241 posts · +168 / −42 / ~31</span>
+            <span class="reddit-label">Reddit</span>
+            <span class="reddit-badge" style="color:#7da4ff">🟢 Positive · 241 posts</span>
           </div>
           <a href="#" class="rpost"><span class="rpost-icon">🟢</span><span class="rpost-title">Gemini 2.0 Ultra coding benchmark just destroyed GPT-4o — Google is back</span><span class="rpost-score">▲3.1k</span></a>
           <a href="#" class="rpost"><span class="rpost-icon">🟢</span><span class="rpost-title">Google Workspace AI features are genuinely useful now — wasn't expecting this</span><span class="rpost-score">▲1.2k</span></a>
@@ -424,30 +395,33 @@ body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14p
             <div class="comp-meta">19 themes · 448 articles</div>
           </div>
         </div>
-        <p class="comp-summary">Microsoft continued its methodical enterprise AI monetization strategy in April, with Copilot seat growth accelerating to 42% QoQ among Fortune 500 accounts. The Azure AI Foundry relaunch simplified multi-model deployment and is winning deals from both AWS and GCP. However, a high-profile Copilot reliability incident generated significant negative press and raised concerns about enterprise readiness at scale.</p>
-        <div class="themes-wrap">
+        <div class="comp-summary-wrap">
+          <p class="comp-summary">Microsoft continued its methodical enterprise AI monetization strategy in April, with Copilot seat growth accelerating to 42% QoQ among Fortune 500 accounts. The Azure AI Foundry relaunch simplified multi-model deployment and is winning deals from both AWS and GCP. However, a high-profile Copilot reliability incident generated significant negative press and raised concerns about enterprise readiness at scale.</p>
+        </div>
+        <div class="comp-themes-wrap">
+          <div class="themes-label">Themes</div>
           <div class="theme-item">
-            <span class="cat-tag" style="color:var(--blue);background:rgba(26,86,255,.08);border-color:rgba(26,86,255,.2)">PRODUCT LAUNCH</span>
-            <p class="theme-body">Microsoft launched Copilot for Security GA with SOC workflow automation, targeting the $200B enterprise security market and deepening Azure ecosystem stickiness.</p>
+            <span class="cat-tag" style="color:#7da4ff;background:rgba(26,86,255,.15);border-color:rgba(26,86,255,.3)">PRODUCT LAUNCH</span>
+            <p class="theme-body">Microsoft launched Copilot for Security GA with SOC workflow automation, targeting the enterprise security market and deepening Azure ecosystem stickiness.</p>
             <div class="theme-foot">13 articles · Apr 2–5 · <a href="#" class="src-link">ZDNet ↗</a></div>
           </div>
           <div class="theme-item">
-            <span class="cat-tag" style="color:var(--teal);background:rgba(0,184,148,.08);border-color:rgba(0,184,148,.2)">ECOSYSTEM</span>
-            <p class="theme-body">Azure AI Foundry relaunched with unified model catalog and simplified multi-agent orchestration, directly competing with Google Vertex AI and AWS Bedrock for enterprise AI platform share.</p>
+            <span class="cat-tag" style="color:#5ee8c8;background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.25)">ECOSYSTEM</span>
+            <p class="theme-body">Azure AI Foundry relaunched with unified model catalog and simplified multi-agent orchestration, competing directly with Google Vertex AI and AWS Bedrock.</p>
             <div class="theme-foot">10 articles · Apr 9–12 · <a href="#" class="src-link">CNBC ↗</a></div>
           </div>
           <div class="theme-item">
-            <span class="cat-tag" style="color:var(--gold);background:rgba(245,166,35,.08);border-color:rgba(245,166,35,.2)">COMPANY NEWS</span>
+            <span class="cat-tag" style="color:#f5c842;background:rgba(245,166,35,.12);border-color:rgba(245,166,35,.25)">COMPANY NEWS</span>
             <p class="theme-body">Copilot outage affecting 40,000+ enterprise users generated significant reputational damage, raising questions about reliability SLAs and enterprise readiness.</p>
             <div class="theme-foot">16 articles · Apr 19–21 · <a href="#" class="src-link">The Register ↗</a></div>
           </div>
         </div>
-        <div class="reddit-block">
+        <div class="comp-reddit-wrap">
           <div class="reddit-head">
-            <span class="reddit-label">Reddit Sentiment</span>
-            <span class="reddit-badge" style="color:var(--gold)">⚪ Neutral · 198 posts · +89 / −72 / ~37</span>
+            <span class="reddit-label">Reddit</span>
+            <span class="reddit-badge" style="color:var(--gold)">⚪ Neutral · 198 posts</span>
           </div>
-          <a href="#" class="rpost"><span class="rpost-icon">🟢</span><span class="rpost-title">Copilot for Security is actually impressive — finally an enterprise AI tool that earns its cost</span><span class="rpost-score">▲1.4k</span></a>
+          <a href="#" class="rpost"><span class="rpost-icon">🟢</span><span class="rpost-title">Copilot for Security is impressive — finally an enterprise AI tool that earns its cost</span><span class="rpost-score">▲1.4k</span></a>
           <a href="#" class="rpost"><span class="rpost-icon">🔴</span><span class="rpost-title">The Copilot outage took down 3 of our production workflows — unacceptable for enterprise</span><span class="rpost-score">▲2.1k</span></a>
           <a href="#" class="rpost"><span class="rpost-icon">⚪</span><span class="rpost-title">Azure AI Foundry looks good on paper but the pricing model is still confusing</span><span class="rpost-score">▲643</span></a>
         </div>
@@ -462,28 +436,31 @@ body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14p
             <div class="comp-meta">15 themes · 362 articles</div>
           </div>
         </div>
-        <p class="comp-summary">Amazon took an aggressive pricing stance in April, cutting Bedrock inference costs by 30% and announcing spot instance pricing for AI workloads. While this strengthened AWS's position as the cost-competitive cloud choice, it compressed near-term margins and drew criticism about sustainability. Nova model performance still trails Anthropic and OpenAI equivalents, creating tension between the platform play and proprietary model strategy.</p>
-        <div class="themes-wrap">
+        <div class="comp-summary-wrap">
+          <p class="comp-summary">Amazon took an aggressive pricing stance in April, cutting Bedrock inference costs by 30% and announcing spot instance pricing for AI workloads. While this strengthened AWS's cost-competitive position, it compressed near-term margins. Nova model performance still trails Anthropic and OpenAI equivalents, creating tension between the platform play and proprietary model strategy.</p>
+        </div>
+        <div class="comp-themes-wrap">
+          <div class="themes-label">Themes</div>
           <div class="theme-item">
-            <span class="cat-tag" style="color:var(--blue);background:rgba(26,86,255,.08);border-color:rgba(26,86,255,.2)">PRODUCT LAUNCH</span>
+            <span class="cat-tag" style="color:#7da4ff;background:rgba(26,86,255,.15);border-color:rgba(26,86,255,.3)">PRODUCT LAUNCH</span>
             <p class="theme-body">Amazon cut Bedrock inference pricing by 30% and introduced spot pricing for AI workloads, positioning AWS as the cost-efficient choice for high-volume AI applications.</p>
             <div class="theme-foot">12 articles · Apr 4–7 · <a href="#" class="src-link">AWS Blog ↗</a></div>
           </div>
           <div class="theme-item">
-            <span class="cat-tag" style="color:var(--teal);background:rgba(0,184,148,.08);border-color:rgba(0,184,148,.2)">ECOSYSTEM</span>
-            <p class="theme-body">Amazon Alexa+ launched with LLM-powered conversation and third-party app integration, representing a major architecture overhaul to compete with AI assistant products from Apple and Google.</p>
+            <span class="cat-tag" style="color:#5ee8c8;background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.25)">ECOSYSTEM</span>
+            <p class="theme-body">Amazon Alexa+ launched with LLM-powered conversation and third-party app integration, representing a major architecture overhaul to compete with AI assistants from Apple and Google.</p>
             <div class="theme-foot">10 articles · Apr 16–19 · <a href="#" class="src-link">TechCrunch ↗</a></div>
           </div>
           <div class="theme-item">
-            <span class="cat-tag" style="color:var(--gold);background:rgba(245,166,35,.08);border-color:rgba(245,166,35,.2)">COMPANY NEWS</span>
+            <span class="cat-tag" style="color:#f5c842;background:rgba(245,166,35,.12);border-color:rgba(245,166,35,.25)">COMPANY NEWS</span>
             <p class="theme-body">AWS revenue grew 17% YoY but missed analyst estimates, with management citing increased competition and pricing pressure as contributing factors to guidance revision.</p>
             <div class="theme-foot">14 articles · Apr 30 · <a href="#" class="src-link">WSJ ↗</a></div>
           </div>
         </div>
-        <div class="reddit-block">
+        <div class="comp-reddit-wrap">
           <div class="reddit-head">
-            <span class="reddit-label">Reddit Sentiment</span>
-            <span class="reddit-badge" style="color:var(--red)">🔴 Negative · 165 posts · +48 / −91 / ~26</span>
+            <span class="reddit-label">Reddit</span>
+            <span class="reddit-badge" style="color:var(--red)">🔴 Negative · 165 posts</span>
           </div>
           <a href="#" class="rpost"><span class="rpost-icon">🟢</span><span class="rpost-title">Bedrock price cut is massive — finally makes sense for production AI workloads</span><span class="rpost-score">▲1.9k</span></a>
           <a href="#" class="rpost"><span class="rpost-icon">🔴</span><span class="rpost-title">Nova Pro still can't touch Claude or GPT-4o on complex reasoning — Amazon needs to close the gap</span><span class="rpost-score">▲2.8k</span></a>
@@ -500,28 +477,31 @@ body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14p
             <div class="comp-meta">11 themes · 312 articles</div>
           </div>
         </div>
-        <p class="comp-summary">Meta's Llama 4 release was the defining competitive event of April — an open-weight model that matched or exceeded several proprietary competitors on key benchmarks, shifting developer sentiment dramatically. Downloads exceeded 2M in the first week. Combined with strong Q1 ad revenue and Reality Labs showing its first signs of VR traction, Meta entered May with significant momentum across both AI and hardware fronts.</p>
-        <div class="themes-wrap">
+        <div class="comp-summary-wrap">
+          <p class="comp-summary">Meta's Llama 4 release was the defining competitive event of April — an open-weight model that matched or exceeded several proprietary competitors on key benchmarks, with 2M+ downloads in the first week. Combined with strong Q1 ad revenue and Reality Labs showing first signs of VR traction, Meta entered May with significant momentum across both AI and hardware fronts.</p>
+        </div>
+        <div class="comp-themes-wrap">
+          <div class="themes-label">Themes</div>
           <div class="theme-item">
-            <span class="cat-tag" style="color:var(--blue);background:rgba(26,86,255,.08);border-color:rgba(26,86,255,.2)">PRODUCT LAUNCH</span>
+            <span class="cat-tag" style="color:#7da4ff;background:rgba(26,86,255,.15);border-color:rgba(26,86,255,.3)">PRODUCT LAUNCH</span>
             <p class="theme-body">Meta released Llama 4 open-weight model matching GPT-4o performance on major benchmarks, generating 2M+ downloads in week one and significantly shifting developer platform allegiances.</p>
             <div class="theme-foot">19 articles · Apr 5–9 · <a href="#" class="src-link">Hugging Face ↗</a></div>
           </div>
           <div class="theme-item">
-            <span class="cat-tag" style="color:var(--teal);background:rgba(0,184,148,.08);border-color:rgba(0,184,148,.2)">ECOSYSTEM</span>
+            <span class="cat-tag" style="color:#5ee8c8;background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.25)">ECOSYSTEM</span>
             <p class="theme-body">Meta AI assistant reached 500M monthly active users across WhatsApp, Instagram, and Messenger, establishing the largest consumer AI distribution footprint of any competitor.</p>
             <div class="theme-foot">8 articles · Apr 14–17 · <a href="#" class="src-link">Reuters ↗</a></div>
           </div>
           <div class="theme-item">
-            <span class="cat-tag" style="color:var(--gold);background:rgba(245,166,35,.08);border-color:rgba(245,166,35,.2)">COMPANY NEWS</span>
+            <span class="cat-tag" style="color:#f5c842;background:rgba(245,166,35,.12);border-color:rgba(245,166,35,.25)">COMPANY NEWS</span>
             <p class="theme-body">Meta Q1 earnings beat estimates with 27% revenue growth driven by ad targeting improvements, generating capital for continued AI infrastructure and Reality Labs investment.</p>
             <div class="theme-foot">10 articles · Apr 30 · <a href="#" class="src-link">Bloomberg ↗</a></div>
           </div>
         </div>
-        <div class="reddit-block">
+        <div class="comp-reddit-wrap">
           <div class="reddit-head">
-            <span class="reddit-label">Reddit Sentiment</span>
-            <span class="reddit-badge" style="color:var(--blue)">🟢 Positive · 312 posts · +252 / −38 / ~22</span>
+            <span class="reddit-label">Reddit</span>
+            <span class="reddit-badge" style="color:#7da4ff">🟢 Positive · 312 posts</span>
           </div>
           <a href="#" class="rpost"><span class="rpost-icon">🟢</span><span class="rpost-title">Llama 4 just changed everything — why would anyone pay for GPT-4o now</span><span class="rpost-score">▲4.2k</span></a>
           <a href="#" class="rpost"><span class="rpost-icon">🟢</span><span class="rpost-title">Fine-tuned Llama 4 on my dataset in 2 hours — the open source AI future is here</span><span class="rpost-score">▲2.9k</span></a>
@@ -540,33 +520,25 @@ body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14p
 </main>
 
 <script>
-new Chart(document.getElementById('chart').getContext('2d'),{
+new Chart(document.getElementById('activityChart').getContext('2d'),{
   type:'bar',
   data:{
     labels:['Apple','Google','Microsoft','Amazon','Meta'],
     datasets:[{
       data:[487,531,448,362,312],
-      backgroundColor:[
-        'rgba(26,86,255,.12)',
-        'rgba(26,86,255,.18)',
-        'rgba(26,86,255,.12)',
-        'rgba(26,86,255,.08)',
-        'rgba(26,86,255,.15)',
-      ],
+      backgroundColor:'rgba(26,86,255,.15)',
       borderColor:'rgba(26,86,255,.7)',
       borderWidth:1.5,borderRadius:6,borderSkipped:false,
-      hoverBackgroundColor:'rgba(26,86,255,.22)',
+      hoverBackgroundColor:'rgba(26,86,255,.25)',
     }]
   },
   options:{
-    responsive:true,
-    maintainAspectRatio:false,
+    responsive:true,maintainAspectRatio:false,
     plugins:{
       legend:{display:false},
       tooltip:{
         callbacks:{label:ctx=>` ${ctx.parsed.y} articles`},
-        backgroundColor:'rgba(10,10,20,.9)',
-        padding:10,cornerRadius:6,
+        backgroundColor:'rgba(10,10,20,.9)',padding:10,cornerRadius:6,
         titleFont:{family:'JetBrains Mono',size:11},
         bodyFont:{family:'JetBrains Mono',size:11},
       }
