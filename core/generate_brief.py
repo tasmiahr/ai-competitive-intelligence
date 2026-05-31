@@ -221,7 +221,7 @@ def generate_brief(data_dir, year_month=None):
             )
 
     # ── Step 3: Save outputs ───────────────────────────────────
-    output_dir = args.output_dir
+    output_dir = "data"
     os.makedirs(output_dir, exist_ok=True)
 
     fname = f"monthly_market_trends_{year_month.replace('-', '_')}"
