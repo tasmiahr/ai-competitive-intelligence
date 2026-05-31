@@ -41,8 +41,8 @@ from config import GOOGLE_NEWS_QUERIES, NEWSROOM_SOURCES
 
 
 QUERY_BUCKETS = [
-    ("Loyalty / Program",   "loyalty_query"),
-    ("Credit Card Product", "product_query"),
+    ("Ecosystem",   "loyalty_query"),
+    ("Product Launch", "product_query"),
     ("Company News",        "company_query"),
 ]
 
@@ -338,7 +338,7 @@ def source_diversity_filter(rows, window_days=7, eps=0.20, min_samples=2, eps_by
     """Pass 3 — DBSCAN clustering within company + date windows.
     For each cluster keeps the best-ranked source, saves cluster as a theme.
     Noise points (label=-1) are kept as-is since they are unique articles.
-    eps_by_category: dict mapping category name to eps override e.g. {"Credit Card Product": 0.25}
+    eps_by_category: dict mapping category name to eps override e.g. {"Product Launch": 0.25}
     Returns (kept_articles, themes)."""
     if eps_by_category is None:
         eps_by_category = {}
@@ -719,7 +719,7 @@ def main():
     all_articles          = filter_guides(all_articles)
     deduped               = deduplicate_exact(all_articles)
     deduped               = deduplicate_semantic(deduped, threshold=args.threshold)
-    deduped, themes       = source_diversity_filter(deduped, window_days=7, eps=0.20, min_samples=2, eps_by_category={"Credit Card Product": 0.25, "Loyalty / Program": 0.25})
+    deduped, themes       = source_diversity_filter(deduped, window_days=7, eps=0.20, min_samples=2, eps_by_category={"Product Launch": 0.25, "Ecosystem": 0.25})
 
     # Summarize themes only (much cheaper than per-article)
     if do_summarize:
