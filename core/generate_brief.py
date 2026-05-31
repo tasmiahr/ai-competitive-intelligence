@@ -34,19 +34,19 @@ import pandas as pd
 # PROMPTS — Claude used only here
 # ─────────────────────────────────────────────
 
-SINGLE_CALL_PROMPT = """You are a competitive intelligence analyst for a product team.
+SINGLE_CALL_PROMPT = """You are a competitive intelligence analyst for a travel credit card product team.
 
 Month: {month}
 Competitors: {competitors}
 
 Here are all competitive news themes this month, grouped by competitor.
-Themes are ordered: Product and Loyalty/Program themes first, then Company News.
+Themes are ordered: Credit Card Product and Loyalty/Program themes first, then Company News.
 
 {all_themes}
 
 Return a single JSON object with EXACTLY this structure — no markdown, no preamble:
 {{
-  "executive_summary": "4-5 sentence summary of the month most important competitive developments. Lead with product and loyalty program changes, then company news implications. Reference specific competitors, offer amounts, and strategic moves.",
+  "executive_summary": "4-5 sentence summary of the month most important competitive developments. Lead with card product and loyalty program changes, then company news implications. Reference specific competitors, offer amounts, and strategic moves.",
   "market_trends": [
     "Trend title: 2 sentence explanation with specific competitor examples",
     "Trend title: 2 sentence explanation with specific competitor examples",
@@ -55,7 +55,7 @@ Return a single JSON object with EXACTLY this structure — no markdown, no prea
     "Trend title: 2 sentence explanation with specific competitor examples"
   ],
   "competitor_summaries": {{
-    "CompetitorName": "3-4 sentence paragraph. Lead with product/loyalty program changes and their competitive implications. Then cover company news that affects product strategy. If only corrupted or unavailable data exists for some themes, write the summary based on the themes you do have — never say you cannot provide a summary.",
+    "CompetitorName": "3-4 sentence paragraph. Lead with card product/loyalty program changes and their competitive implications. Then cover company news that affects card strategy. If only corrupted or unavailable data exists for some themes, write the summary based on the themes you do have — never say you cannot provide a summary.",
     "CompetitorName2": "..."
   }}
 }}
