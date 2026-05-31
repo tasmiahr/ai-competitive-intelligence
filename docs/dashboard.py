@@ -136,7 +136,7 @@ market_trends        = brief.get("market_trends", [])
 # ─────────────────────────────────────────────
 
 st.markdown("# 🛡️ Competitive Intelligence Brief")
-st.markdown(f"**{year_month}** — Travel Credit Card Market Monitor")
+st.markdown(f"**{year_month}** — Market Monitor")
 
 c1, c2, c3, c4 = st.columns(4)
 c1.metric("Competitors", len(selected_companies))
