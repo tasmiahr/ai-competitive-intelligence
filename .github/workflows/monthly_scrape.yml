@@ -69,7 +69,7 @@ jobs:
           PYTHONPATH: ${{ github.workspace }}/core
         run: |
           mkdir -p data
-          python core/generate_brief.py --data-dir news/data --output-dir data
+          python core/generate_brief.py --data-dir news/data
 
       - name: Generate HTML dashboard
         run: |
