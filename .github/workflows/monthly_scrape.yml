@@ -47,6 +47,7 @@ jobs:
       - name: Run news scraper
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          PYTHONPATH: ${{ github.workspace }}/core
         run: |
           NO_SUMMARY=""
           if [ "${{ github.event.inputs.no_summary }}" = "true" ]; then
@@ -56,6 +57,8 @@ jobs:
           python news/google_news_scraper.py ${{ steps.date_args.outputs.args }} $NO_SUMMARY
 
       - name: Run Reddit sentiment scraper
+        env:
+          PYTHONPATH: ${{ github.workspace }}/core
         run: |
           mkdir -p social/data
           python social/reddit_scraper.py ${{ steps.date_args.outputs.args }}
@@ -63,6 +66,9 @@ jobs:
       - name: Generate monthly brief
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          PYTHONPATH: ${{ github.workspace }}/core
         run: |
           mkdir -p data
           python core/generate_brief.py --data-dir news/data
