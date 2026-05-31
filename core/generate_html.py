@@ -58,7 +58,7 @@ def generate_html(data_dir="data"):
         reddit_by_company[s["competitor"]] = s
 
     # ── Competitor sections ────────────────────────────────────
-    CATEGORY_ORDER = {"Credit Card Product": 0, "Loyalty / Program": 1, "Company News": 2}
+    CATEGORY_ORDER = {"Product": 0, "Loyalty / Program": 1, "Company News": 2}
     trend_icons    = ["📈", "🔄", "💳", "✈️", "⚡"]
 
     competitor_html = ""
@@ -74,7 +74,7 @@ def generate_html(data_dir="data"):
         theme_rows = ""
         for t in themes:
             cat_color = {
-                "Credit Card Product": "#00d4aa",
+                "Product": "#00d4aa",
                 "Loyalty / Program":   "#7c6fcd",
                 "Company News":        "#e8634a",
             }.get(t.get("category",""), "#888")
