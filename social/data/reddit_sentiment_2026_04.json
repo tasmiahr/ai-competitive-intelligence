@@ -1,0 +1,46 @@
+{
+  "year_month": "2026-04",
+  "generated_at": "2026-05-31T17:11:16.746462",
+  "subreddits_monitored": [
+    "creditcards",
+    "churning",
+    "awardtravel",
+    "personalfinance"
+  ],
+  "competitor_sentiment": [
+    {
+      "competitor": "Issuer A",
+      "total_posts": 0,
+      "total_score": 0,
+      "total_comments": 0,
+      "positive": 0,
+      "negative": 0,
+      "neutral": 0,
+      "sentiment": "neutral",
+      "top_posts": []
+    },
+    {
+      "competitor": "Issuer B",
+      "total_posts": 0,
+      "total_score": 0,
+      "total_comments": 0,
+      "positive": 0,
+      "negative": 0,
+      "neutral": 0,
+      "sentiment": "neutral",
+      "top_posts": []
+    },
+    {
+      "competitor": "Issuer C",
+      "total_posts": 0,
+      "total_score": 0,
+      "total_comments": 0,
+      "positive": 0,
+      "negative": 0,
+      "neutral": 0,
+      "sentiment": "neutral",
+      "top_posts": []
+    }
+  ],
+  "total_posts": 0
+}
