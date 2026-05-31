@@ -231,7 +231,7 @@ st.markdown("---")
 st.markdown('<div class="section-title">🏢 Competitor Analysis</div>', unsafe_allow_html=True)
 
 for company in selected_companies:
-    CATEGORY_ORDER = {"Credit Card Product": 0, "Loyalty / Program": 1, "Company News": 2}
+    CATEGORY_ORDER = {"Product": 0, "Loyalty / Program": 1, "Company News": 2}
     company_themes = sorted(
         [t for t in theme_summaries if t["company"] == company],
         key=lambda t: (CATEGORY_ORDER.get(t.get("category", ""), 3), -t.get("article_count", 0))
