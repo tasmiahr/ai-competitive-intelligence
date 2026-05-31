@@ -94,6 +94,21 @@ def generate_html(data_dir="data"):
             <p class="trend-body">{body}</p>
         </div>"""
 
+    # Pre-build trends row 2 HTML to avoid nested f-string issues
+    def _tc(i, trend):
+        parts = trend.split(":",1)
+        title = parts[0].strip() if len(parts)>1 else f"Trend {i+1}"
+        body  = parts[1].strip() if len(parts)>1 else trend
+        icon  = trend_icons[i % len(trend_icons)]
+        return f'<div class="trend-card"><div class="trend-number">{icon}</div><h4 class="trend-title">{title}</h4><p class="trend-body">{body}</p></div>'
+
+    trends_html = "".join(_tc(i, market_trends[i]) for i in range(min(3,len(market_trends))))
+    if len(market_trends) > 3:
+        inner = "".join(_tc(i, market_trends[i]) for i in range(3,min(5,len(market_trends))))
+        trends_row2_html = f'<div class="trends-row2">{inner}</div>'
+    else:
+        trends_row2_html = ""
+
     # Build activity chart data
     chart_data = {}
     for t in theme_summaries:
@@ -332,8 +347,8 @@ def generate_html(data_dir="data"):
 
   <!-- TRENDS ROW 1 -->
   <div class="section-label">Top Market Trends</div>
-  <div class="trends-grid">{"".join(f'<div class="trend-card"><div class="trend-number">{trend_icons[i % len(trend_icons)]}</div><h4 class="trend-title">{market_trends[i].split(":",1)[0].strip() if ":" in market_trends[i] else f"Trend {i+1}"}</h4><p class="trend-body">{market_trends[i].split(":",1)[1].strip() if ":" in market_trends[i] else market_trends[i]}</p></div>' for i in range(min(3, len(market_trends))))}</div>
-  {"" if len(market_trends) <= 3 else f'<div class="trends-row2">{"".join(f"""<div class="trend-card"><div class="trend-number">{trend_icons[i % len(trend_icons)]}</div><h4 class="trend-title">{market_trends[i].split(":",1)[0].strip() if ":" in market_trends[i] else f"Trend {i+1}"}</h4><p class="trend-body">{market_trends[i].split(":",1)[1].strip() if ":" in market_trends[i] else market_trends[i]}</p></div>""" for i in range(3, min(5, len(market_trends))))}</div>'}
+  <div class="trends-grid">{trends_html}</div>
+  {trends_row2_html}
 
   <!-- ACTIVITY CHART -->
   <div class="section-label">Activity by Competitor</div>
