@@ -34,21 +34,21 @@ import pandas as pd
 # PROMPTS — Claude used only here
 # ─────────────────────────────────────────────
 
-SINGLE_CALL_PROMPT = """You are a competitive intelligence analyst for a travel credit card product team.
+SINGLE_CALL_PROMPT = """You are a competitive intelligence analyst tracking the AI and technology competitive landscape.
 
 Month: {month}
 Competitors: {competitors}
 
 Here are all competitive news themes this month, grouped by competitor.
-Themes are ordered: Credit Card Product and Loyalty/Program themes first, then Company News.
+Themes are ordered: Product Launch and Ecosystem themes first, then Company News.
 
 {all_themes}
 
 Return a single JSON object with EXACTLY this structure — no markdown, no preamble:
 {{
-  "executive_summary": "4-5 sentence summary of the month most important competitive developments. Lead with card product and loyalty program changes, then company news implications. Reference specific competitors, offer amounts, and strategic moves.",
+  "executive_summary": "4-5 sentence summary of the most important competitive developments this month. Reference specific competitors, key product launches, strategic moves, and market implications.",
   "market_trends": [
-    "Trend title: 2 sentence explanation with specific competitor examples",
+    "Trend title: 2 sentence explanation of the AI/tech market trend with specific competitor examples",
     "Trend title: 2 sentence explanation with specific competitor examples",
     "Trend title: 2 sentence explanation with specific competitor examples",
     "Trend title: 2 sentence explanation with specific competitor examples",
@@ -65,6 +65,7 @@ IMPORTANT:
 - competitor_summaries must include ALL competitors listed above
 - For competitors with limited data, write what you can from available themes
 - Never return "I cannot provide" — always write something based on available data
+- Do NOT reference "travel credit cards", "card products", or "payment products" — focus on AI and technology competitive dynamics
 - Return ONLY the JSON object, no markdown fences
 }}"""
 
@@ -176,7 +177,7 @@ def generate_brief(data_dir, year_month=None):
         if not company_themes:
             continue
         all_themes_lines.append(f"\n### {company}")
-        for t in company_themes:
+        for t in company_themes[:8]:  # cap at 8 themes per competitor
             # Use Claude summary from Excel — already one clean sentence
             summary = t.get("summary", "")
             if not is_clean_summary(summary):
