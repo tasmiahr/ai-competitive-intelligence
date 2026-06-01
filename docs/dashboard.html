@@ -3,740 +3,489 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Competitive Intelligence Brief — 2026-04</title>
+<title>Competitive Intelligence — 2026-05</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap');
-
-  :root {
-    --bg:        #0a0a0f;
-    --surface:   #13131a;
-    --surface2:  #1a1a25;
-    --border:    #2a2a3a;
-    --accent:    #00d4aa;
-    --accent2:   #7c6fcd;
-    --danger:    #e8634a;
-    --text:      #e8e8f0;
-    --muted:     #6b6b80;
-    --font:      'DM Sans', sans-serif;
-    --mono:      'DM Mono', monospace;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font);
-    font-size: 14px;
-    line-height: 1.6;
-    min-height: 100vh;
-  }
-
-  /* NAV */
-  .nav {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(10,10,15,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    padding: 0 2rem;
-    display: flex; align-items: center; gap: 2rem;
-    height: 56px;
-  }
-  .nav-brand {
-    font-weight: 700; font-size: 13px; letter-spacing: 0.08em;
-    text-transform: uppercase; color: var(--accent);
-    white-space: nowrap;
-  }
-  .nav-links { display: flex; gap: 0.25rem; overflow-x: auto; scrollbar-width: none; flex: 1; }
-  .nav-link {
-    color: var(--muted); text-decoration: none; font-size: 12px;
-    padding: 0.3rem 0.7rem; border-radius: 4px; white-space: nowrap;
-    transition: all 0.15s;
-  }
-  .nav-link:hover { color: var(--text); background: var(--surface2); }
-  .nav-date { font-size: 11px; color: var(--muted); font-family: var(--mono); white-space: nowrap; }
-
-  /* LAYOUT */
-  .page { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem 4rem; }
-
-  /* HEADER */
-  .page-header { margin-bottom: 2.5rem; }
-  .page-title { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
-  .page-title span { color: var(--accent); }
-  .page-sub { color: var(--muted); font-size: 13px; margin-top: 0.4rem; }
-
-  /* SECTION LABEL */
-  .section-label {
-    font-size: 10px; font-weight: 700; letter-spacing: 0.15em;
-    text-transform: uppercase; color: var(--muted);
-    margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;
-  }
-  .section-label::after {
-    content: ''; flex: 1; height: 1px; background: var(--border);
-  }
-
-  /* EXEC SUMMARY */
-  .exec-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--accent);
-    border-radius: 10px;
-    padding: 1.5rem 2rem;
-    margin-bottom: 2.5rem;
-    font-size: 15px; line-height: 1.75; color: #c8c8d8;
-  }
-
-  /* KPI ROW */
-  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2.5rem; }
-  .kpi-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 10px; padding: 1.2rem 1.5rem;
-    transition: border-color 0.2s;
-  }
-  .kpi-card:hover { border-color: var(--accent); }
-  .kpi-value { font-size: 28px; font-weight: 700; color: var(--accent); font-family: var(--mono); }
-  .kpi-label { font-size: 11px; color: var(--muted); margin-top: 0.3rem; text-transform: uppercase; letter-spacing: 0.08em; }
-
-  /* TRENDS */
-  .trends-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2.5rem; }
-  .trends-grid .trend-card:nth-child(4),
-  .trends-grid .trend-card:nth-child(5) { grid-column: span 1; }
-  .trends-row2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 2.5rem; }
-  .trend-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 10px; padding: 1.2rem 1.4rem;
-    transition: transform 0.2s, border-color 0.2s;
-  }
-  .trend-card:hover { transform: translateY(-2px); border-color: var(--accent2); }
-  .trend-number { font-size: 20px; margin-bottom: 0.5rem; }
-  .trend-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; }
-  .trend-body { font-size: 12px; color: var(--muted); line-height: 1.6; }
-
-  /* CHART */
-  .chart-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 10px; padding: 1.5rem;
-    margin-bottom: 2.5rem;
-  }
-  .chart-wrap { height: 220px; }
-
-  /* COMPETITOR CARDS */
-  .competitors-grid { display: flex; flex-direction: column; gap: 1.5rem; }
-  .competitor-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 12px; padding: 1.5rem 2rem;
-    transition: border-color 0.2s;
-  }
-  .competitor-card:hover { border-color: var(--border); }
-  .comp-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
-  .comp-initial {
-    width: 40px; height: 40px; border-radius: 10px;
-    background: linear-gradient(135deg, var(--accent2), var(--accent));
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 16px; flex-shrink: 0;
-  }
-  .comp-name { font-size: 16px; font-weight: 600; }
-  .comp-count { font-size: 11px; color: var(--muted); }
-  .comp-summary {
-    font-size: 13px; color: #b0b0c0; line-height: 1.7;
-    padding: 1rem 1.2rem; background: var(--surface2);
-    border-radius: 8px; margin-bottom: 1.2rem;
-    border-left: 2px solid var(--accent2);
-  }
-  .themes-list { display: flex; flex-direction: column; gap: 0.5rem; }
-  .theme-row {
-    padding: 0.8rem 1rem; background: var(--bg);
-    border-radius: 8px; border: 1px solid var(--border);
-    transition: border-color 0.15s;
-  }
-  .theme-row:hover { border-color: var(--border); }
-  .cat-badge {
-    display: inline-block; font-size: 10px; font-weight: 600;
-    letter-spacing: 0.05em; padding: 2px 8px; border-radius: 20px;
-    border: 1px solid; margin-bottom: 0.4rem;
-  }
-  .theme-text { font-size: 13px; color: var(--text); margin-bottom: 0.3rem; }
-  .theme-meta { font-size: 11px; color: var(--muted); }
-  .source-link { color: var(--accent); text-decoration: none; }
-  .source-link:hover { text-decoration: underline; }
-
-  /* FOOTER */
-  .footer {
-    margin-top: 4rem; padding-top: 2rem;
-    border-top: 1px solid var(--border);
-    text-align: center; font-size: 11px; color: var(--muted);
-  }
-  .footer a { color: var(--accent); text-decoration: none; }
-
-  /* RESPONSIVE */
-  @media (max-width: 768px) {
-    .kpi-row { grid-template-columns: repeat(2, 1fr); }
-    .trends-grid { grid-template-columns: 1fr; }
-    .trends-row2 { grid-template-columns: 1fr; }
-    .page { padding: 1.5rem 1rem; }
-  }
+:root{
+  --blue:#1a56ff;--blue-dark:#0f36cc;
+  --black:#0a0a0a;--white:#fff;
+  --bg:#f2f2f2;--surf:#fff;--border:#e0e0e0;
+  --ink:#111;--ink2:#3d3d4e;--muted:#666;--muted2:#aaa;
+  --teal:#00b894;--green:#00b894;--gold:#f5a623;--red:#e53935;
+  --display:'Bebas Neue',sans-serif;
+  --body:'DM Sans',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.topnav{position:sticky;top:0;z-index:100;height:56px;display:flex;align-items:center;gap:1.5rem;padding:0 2rem;background:var(--black);border-bottom:1px solid rgba(255,255,255,.07)}
+.topnav-brand{font-family:var(--display);font-size:18px;letter-spacing:.06em;color:var(--white)}
+.nav-chips{display:flex;gap:.2rem;overflow-x:auto;scrollbar-width:none;flex:1}
+.nav-chip{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.4);text-decoration:none;padding:.25rem .65rem;border-radius:20px;white-space:nowrap;transition:all .15s}
+.nav-chip:hover{color:var(--white);background:rgba(255,255,255,.08)}
+.topnav-right{display:flex;gap:.75rem;align-items:center;flex-shrink:0}
+.topnav-date{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.3)}
+.topnav-back{font-size:12px;font-weight:600;color:var(--white);background:var(--blue);text-decoration:none;padding:.35rem .9rem;border-radius:4px;white-space:nowrap}
+.topnav-back:hover{background:var(--blue-dark)}
+.hero{background:var(--blue);padding:3rem 2rem 2.5rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40%;right:-10%;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.1) 0%,transparent 65%);pointer-events:none}
+.hero-inner{max-width:1080px;margin:0 auto;position:relative;z-index:1}
+.hero-title{font-family:var(--display);font-size:clamp(32px,5vw,52px);letter-spacing:.03em;line-height:1;color:var(--white)}
+.hero-title em{font-style:normal;color:rgba(255,255,255,.6)}
+.hero-meta{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.5);margin-top:.4rem}
+.hero-competitors{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.75rem}
+.hero-comp{font-family:var(--mono);font-size:11px;font-weight:500;color:rgba(255,255,255,.9);background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);padding:.25rem .75rem;border-radius:20px}
+.page{max-width:1080px;margin:0 auto;padding:2rem 2rem 5rem}
+.dash-section{margin-bottom:2.5rem}
+.section-head{display:flex;align-items:baseline;gap:.75rem;margin-bottom:1rem}
+.section-label{font-family:var(--display);font-size:13px;letter-spacing:.1em;color:var(--muted)}
+.section-count{font-family:var(--mono);font-size:11px;color:var(--muted2)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2.5rem}
+.exec-card{background:var(--green);border-radius:10px;padding:1.8rem 2rem;position:relative;overflow:hidden}
+.exec-label{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem}
+.exec-text{font-size:14px;color:rgba(255,255,255,.95);line-height:1.8;font-weight:300}
+.exec-bullets{margin-top:.75rem;display:flex;flex-direction:column;gap:.4rem}
+.exec-bullet{display:flex;align-items:flex-start;gap:.6rem;font-size:13px;color:rgba(255,255,255,.9);line-height:1.6;font-weight:300}
+.exec-bullet::before{content:'';width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.7);flex-shrink:0;margin-top:.5rem}
+.chart-card{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:1.4rem}
+.chart-label{font-family:var(--display);font-size:12px;letter-spacing:.08em;color:var(--muted);margin-bottom:1rem}
+.chart-wrap{height:180px}
+.sent-table{display:flex;flex-direction:column;gap:.3rem;margin-top:.5rem}
+.sent-row{display:flex;align-items:center;gap:.75rem;padding:.5rem .7rem;background:var(--bg);border-radius:6px}
+.sent-name{font-size:12px;font-weight:600;width:90px;flex-shrink:0}
+.sent-bar-bg{flex:1;height:5px;background:#e0e0e0;border-radius:3px;overflow:hidden}
+.sent-bar{height:100%;border-radius:3px}
+.sent-label{font-family:var(--mono);font-size:10px;font-weight:600;width:80px;text-align:right}
+.trends-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.trends-row2{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-top:1rem}
+.trend-card{border-radius:10px;padding:1.4rem;position:relative;border:1px solid transparent;transition:transform .2s,box-shadow .2s}
+.trend-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+.t-blue{background:var(--blue);border-color:var(--blue)}
+.t-white{background:var(--white);border-color:var(--border)}
+.t-green{background:var(--green);border-color:var(--green)}
+.t-grey{background:#e8e8e8;border-color:#d4d4d4}
+.t-black{background:var(--black);border-color:var(--black)}
+.trend-num{font-family:var(--mono);font-size:10px;margin-bottom:.5rem;letter-spacing:.06em}
+.t-blue .trend-num,.t-green .trend-num,.t-black .trend-num{color:rgba(255,255,255,.4)}
+.t-white .trend-num,.t-grey .trend-num{color:var(--muted)}
+.trend-icon{font-size:22px;margin-bottom:.5rem;line-height:1}
+.trend-title{font-family:var(--display);font-size:17px;letter-spacing:.02em;margin-bottom:.4rem;line-height:1.1}
+.t-blue .trend-title,.t-green .trend-title,.t-black .trend-title{color:var(--white)}
+.t-white .trend-title,.t-grey .trend-title{color:var(--black)}
+.trend-body{font-size:12px;line-height:1.6;font-weight:300}
+.t-blue .trend-body,.t-green .trend-body,.t-black .trend-body{color:rgba(255,255,255,.7)}
+.t-white .trend-body,.t-grey .trend-body{color:var(--muted)}
+.comp-grid{display:flex;flex-direction:column;gap:1.25rem}
+.comp-card{background:var(--surf);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:box-shadow .2s}
+.comp-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.07)}
+.comp-header{display:flex;align-items:center;gap:.85rem;padding:1.4rem 1.6rem;border-bottom:1px solid var(--border)}
+.comp-avatar{width:40px;height:40px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:18px;letter-spacing:.02em;color:white}
+.comp-name{font-family:var(--display);font-size:20px;letter-spacing:.03em}
+.comp-meta{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.comp-summary-wrap{background:var(--blue);padding:1.1rem 1.6rem}
+.comp-summary{font-size:13px;color:rgba(255,255,255,.9);line-height:1.75;font-weight:300}
+.comp-themes-wrap{background:var(--green);padding:1rem 1.6rem}
+.themes-label{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.65rem}
+.theme-item{padding:.65rem .85rem;background:rgba(255,255,255,.12);border-radius:6px;border:1px solid rgba(255,255,255,.15);margin-bottom:.4rem;transition:border-color .15s}
+.theme-item:last-child{margin-bottom:0}
+.theme-item:hover{border-color:rgba(255,255,255,.4)}
+.cat-tag{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:600;padding:2px 7px;border-radius:3px;border:1px solid;margin-bottom:.3rem;letter-spacing:.03em}
+.theme-body{font-size:12px;color:rgba(255,255,255,.85);margin-bottom:.2rem;line-height:1.5}
+.theme-foot{font-size:11px;color:rgba(255,255,255,.45)}
+.src-link{color:rgba(255,255,255,.7);text-decoration:none}
+.src-link:hover{text-decoration:underline}
+.comp-reddit-wrap{background:var(--white);padding:1rem 1.6rem;border-top:1px solid var(--border)}
+.reddit-head{display:flex;align-items:center;gap:.75rem;margin-bottom:.65rem;flex-wrap:wrap}
+.reddit-label{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.reddit-badge{font-size:12px;font-weight:600;font-family:var(--mono)}
+.rpost{display:flex;align-items:baseline;gap:.5rem;padding:.4rem 0;border-bottom:1px solid var(--border);text-decoration:none;color:var(--ink2);transition:color .15s}
+.rpost:last-child{border-bottom:none}
+.rpost:hover .rpost-title{color:var(--blue)}
+.rpost-icon{font-size:11px;flex-shrink:0}
+.rpost-title{font-size:12px;flex:1;line-height:1.4}
+.rpost-score{font-family:var(--mono);font-size:10px;color:var(--muted);flex-shrink:0}
+.dash-footer{margin-top:4rem;padding-top:2rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--muted2)}
+.dash-footer a{color:var(--blue);text-decoration:none}
+@media(max-width:768px){
+  .trends-grid,.trends-row2,.two-col{grid-template-columns:1fr}
+  .page{padding:1.5rem 1rem}
+  .hero{padding:2rem 1rem 1.5rem}
+}
 </style>
 </head>
 <body>
 
-<nav class="nav">
-  <span class="nav-brand">🛡 Competitive Intel</span>
-  <div class="nav-links"><a href="#comp-amazon" class="nav-link">Amazon</a><a href="#comp-apple" class="nav-link">Apple</a><a href="#comp-google" class="nav-link">Google</a><a href="#comp-meta" class="nav-link">Meta</a><a href="#comp-microsoft" class="nav-link">Microsoft</a></div>
-  <span class="nav-date">2026-04</span>
+<nav class="topnav">
+  <span class="topnav-brand">COMPETITIVE INTEL</span>
+  <div class="nav-chips">
+    <a href="#exec" class="nav-chip">Executive Summary</a>
+    <a href="#trends" class="nav-chip">Market Trends</a>
+    <a href="#competitors" class="nav-chip">Competitor Analysis</a>
+  </div>
+  <div class="topnav-right">
+    <span class="topnav-date">2026-05</span>
+    <a href="index.html" class="topnav-back">← Back</a>
+  </div>
 </nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <h1 class="hero-title">COMPETITIVE BRIEF <em>/ 2026-05</em></h1>
+    <p class="hero-meta">Generated June 01, 2026</p>
+    <div class="hero-competitors">
+      <span class="hero-comp">Amazon</span><span class="hero-comp">Apple</span><span class="hero-comp">Google</span><span class="hero-comp">Meta</span><span class="hero-comp">Microsoft</span>
+    </div>
+  </div>
+</div>
 
 <main class="page">
 
-  <header class="page-header">
-    <h1 class="page-title">Competitive Intelligence Brief <span>/ 2026-04</span></h1>
-    <p class="page-sub">Travel credit card market monitor · Generated May 31, 2026 · Powered by Claude AI + DBSCAN clustering</p>
-  </header>
-
-  <!-- KPIs -->
-  <div class="kpi-row">
-    <div class="kpi-card">
-      <div class="kpi-value">5</div>
-      <div class="kpi-label">Competitors Tracked</div>
+  <section class="dash-section" id="exec" style="margin-top:2rem;scroll-margin-top:58px">
+    <div class="section-head"><span class="section-label">EXECUTIVE SUMMARY</span></div>
+    <div class="exec-card">
+      <div class="exec-label">2026-05</div>
+      <p class="exec-text">May 2026 demonstrates accelerating AI integration across all major tech platforms, with Amazon, Google, and Apple leading ecosystem expansions through Claude, Gemini, and Apple Intelligence respectively. Meta is aggressively pivoting toward agentic AI and fintech services while expanding WhatsApp capabilities, positioning messaging platforms as alternative transaction channels. Microsoft is selectively deploying AI across enterprise tools while facing significant security vulnerabilities that could undermine platform reliability. The competitive landscape is shifting from standalone AI features toward embedded autonomous agents integrated into existing ecosystems, with implications for how financial services will be distributed and consumed.</p>
+      <div class="exec-bullets"><div class="exec-bullet"><span><strong>Amazon</strong> Amazon has significantly expanded its competitive positioning through deep Claude AI integration across AWS, enabling enhanced personalization and fraud detection capabilities that competitors will struggle to match without equivalent AI infrastructure investments.</span></div>
+<div class="exec-bullet"><span><strong>Apple</strong> Apple is pursuing aggressive AI customization and personalization through iOS 27's multiple AI assistant integration and WWDC 2026 announcements, positioning device-level AI as a primary user engagement mechanism that financial service providers must integrate with rather than compete against.</span></div>
+<div class="exec-bullet"><span><strong>Google</strong> Google's I/O 2026 announcements demonstrate aggressive expansion into personalized financial assistance through Gemini's proactive capabilities and AI subscriptions that directly compete with premium service offerings.</span></div>
+<div class="exec-bullet"><span><strong>Meta</strong> Meta is making a strategic pivot toward agentic AI and fintech services expansion, with 7,000 employees reassigned to AI-focused roles and plans for advanced autonomous financial transaction capabilities that directly threaten traditional financial service models.</span></div>
+<div class="exec-bullet"><span><strong>Microsoft</strong> Microsoft is taking a measured approach to AI integration, deprioritizing some consumer-facing AI features in Xbox while investing heavily in enterprise AI through Copilot collaboration tools and Azure billing expansion partnerships with Amdocs.</span></div>
+</div>
     </div>
-    <div class="kpi-card">
-      <div class="kpi-value">83</div>
-      <div class="kpi-label">News Themes</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-value">309</div>
-      <div class="kpi-label">Articles Processed</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-value">5</div>
-      <div class="kpi-label">Market Trends</div>
-    </div>
-  </div>
+  </section>
 
-  <!-- EXEC SUMMARY -->
-  <div class="section-label">Executive Summary</div>
-  <div class="exec-card">April 2026 competitive intelligence reveals a dramatic acceleration in AI-powered travel personalization across all major tech competitors, with Amazon, Google, Microsoft, and Apple all launching or expanding agentic AI platforms that threaten traditional travel card value propositions. Amazon's infrastructure investments in AI drug discovery, hospitality expansion, and deepened partnerships with Anthropic and Meta position AWS as a powerful backend for competing payment products, while Google's 63% Cloud revenue growth and Gemini Enterprise Agent Platform enable sophisticated real-time travel recommendations and fraud detection capabilities. Microsoft's multi-agent Copilot Studio updates and Apple's iOS Intelligence enhancements signal a shift toward embedded AI travel assistants that could bypass standalone card benefits, while Meta's $21 billion AI investment in reasoning and open-source models threatens to commoditize card personalization features. The competitive landscape now centers on which issuer can best integrate these AI capabilities into seamless in-app experiences, with Apple and Microsoft leading on ecosystem lock-in through device integration, while Amazon and Google leverage data advantages for superior travel insights.</div>
-
-  <!-- TRENDS ROW 1 -->
-  <div class="section-label">Top Market Trends</div>
-  <div class="trends-grid"><div class="trend-card"><div class="trend-number">📈</div><h4 class="trend-title">AI-Powered Travel Personalization Arms Race</h4><p class="trend-body">Amazon, Google, Microsoft, and Apple are all launching enterprise-grade agentic AI platforms designed to power real-time travel recommendations, spending insights, and booking integrations that threaten traditional travel card differentiation. These capabilities enable competitors to offer superior personalized experiences directly within their ecosystems, bypassing standalone card benefits and shifting value capture upstream to tech platforms.</p></div><div class="trend-card"><div class="trend-number">🔄</div><h4 class="trend-title">Embedded Payment Integration in Hardware/OS</h4><p class="trend-body">Apple's iOS Intelligence features, Microsoft's Copilot integration in Outlook and CarPlay, and Google's Gemini in Polestar vehicles signal a strategic shift toward embedding payment and booking functionality directly into devices and operating systems. Travel card issuers must now compete for wallet share within these locked ecosystems rather than as standalone products, requiring deeper technical partnerships and API integrations.</p></div><div class="trend-card"><div class="trend-number">💳</div><h4 class="trend-title">Cloud Infrastructure as Competitive Advantage</h4><p class="trend-body">Google's 63% Cloud revenue growth and Microsoft's expanded cloud connectivity enable both competitors to build sophisticated data analytics and fraud detection capabilities that travel card issuers cannot match independently. Amazon's AWS infrastructure investments with Anthropic and Meta partnerships further entrench cloud-based AI advantages that will power next-generation rival card offerings.</p></div></div>
-  <div class="trends-row2"><div class="trend-card"><div class="trend-number">✈️</div><h4 class="trend-title">Open-Source AI Model Commoditization</h4><p class="trend-body">Meta's potential open-sourcing of AI models and Microsoft's ending of exclusive OpenAI partnerships signal accelerating commoditization of AI capabilities, enabling smaller fintech competitors to rapidly develop sophisticated card personalization features at lower cost. This trend threatens premium card positioning based on proprietary AI advantages and forces issuers to compete on distribution, partnerships, and exclusive merchant benefits rather than technology differentiation.</p></div><div class="trend-card"><div class="trend-number">⚡</div><h4 class="trend-title">Ecosystem Lock-In Through Family/Device Integration</h4><p class="trend-body">Apple's enhanced iOS Intelligence, Microsoft's multi-device Copilot integration, and Meta's parental control expansion signal strategic moves to deepen ecosystem stickiness through family account features and cross-device experiences. Travel card programs must develop comparable family/household benefits and device-agnostic experiences to compete for high-value customer cohorts and lifetime wallet share within these consolidated ecosystems.</p></div></div>
-
-  <!-- ACTIVITY CHART -->
-  <div class="section-label">Activity by Competitor</div>
-  <div class="chart-card">
-    <div class="chart-wrap">
-      <canvas id="activityChart"></canvas>
+  <div class="two-col">
+    <div class="chart-card">
+      <div class="chart-label">ACTIVITY BY COMPETITOR</div>
+      <div class="chart-wrap"><canvas id="activityChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-label">SOCIAL SENTIMENT</div>
+      <div class="sent-table"><p style="font-size:12px;color:var(--muted);padding:.5rem 0">No social data available for this period.</p></div>
     </div>
   </div>
 
-  <!-- COMPETITOR SECTIONS -->
-  <div class="section-label">Competitor Analysis</div>
-  <div class="competitors-grid">
-        <div class="competitor-card" id="comp-amazon">
-            <div class="comp-header">
-                <span class="comp-initial">A</span>
-                <div>
-                    <h3 class="comp-name">Amazon</h3>
-                    <span class="comp-count">12 themes</span>
-                </div>
-            </div>
-            <p class="comp-summary">Amazon's April activities position AWS as a formidable backend infrastructure provider for competing travel card and payment products through massive AI investments with Anthropic and Meta, integration of OpenAI models into Bedrock, and launch of AWS Bedrock AgentCore for accelerated AI development. The company's expansion into luxury hospitality, healthcare AI, and drug discovery signals potential new partnership opportunities that could compete with traditional travel card benefits while its deepened data infrastructure capabilities enable superior travel personalization and fraud detection for rival offerings. Amazon's ecosystem moves—particularly ending Microsoft OpenAI exclusivity and expanding Meta partnerships—demonstrate strategic focus on AI infrastructure dominance rather than direct card product competition, but this positioning enables faster, cheaper development of competing fintech products by other tech players leveraging AWS services.</p>
-            <div class="themes-list">
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Amazon is expanding AI assistant capabilities into mobile ecosystems, signaling potential friction with travel card partnerships if they monetize user data collection.</p>
-                <div class="theme-meta">3 articles · 2026-04-20 to 2026-04-22 · <a href="https://news.google.com/rss/articles/CBMikwFBVV95cUxQeGxlY2RKNzlFX3JSREJkYzgwYlY5dVVuSHBBNDhWZGthR0otLW9pSktqNkY2RVYwbnlCbzdpeUxjWWo3MGRKRzJrTHVOZTFSbkZSeFRWVGVaa0hlcjBwLUw0YVBhSHp1VHNPYk05MlhYMHE5bENodzdvQzk2MUJFUGFrNXlDN3dQd3FtdzRuekxTZWc?oc=5" target="_blank" class="source-link">Android Authority</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">This article about Intel laptop CPUs is irrelevant to travel credit card competitive analysis and contains no actionable intelligence.</p>
-                <div class="theme-meta">2 articles · 2026-04-01 to 2026-04-02 · <a href="https://news.google.com/rss/articles/CBMiqgFBVV95cUxONzFWWUt6VnQ4em80X045eHVGdzNUMUFUdU5QSkhqVjl1LURIR2Zuc2E1RDkyMFo3bnRiV29UYjYzZl9qeTFFM2w1V3g0VXZfYWFncGF0bk1KelozV1QwakF1TFpFaDRublNTdThZV1BoV2hzSnVLR1ZmSl9wclgyclBFeU5mSlZGYl9IYUlSM25lbVduQWpfMVFVYWxVT1hUc2lTR1pJOWFId9IBrwFBVV95cUxOSzM0eklFU3cteVYyTHZhMFlJd2tJUkdIbDJGcFNmaHRhNjVWaXlZektCWlEzbjI1SzlUUGVGWXNLeUYtd25Qd0tuQmV5TWJRRTB0akU4Q0g5VlFBR29JS0hGNFdNQ3RvRmNBTGZYMFhiZEdQWk8yb1ZsX1ZSUm5mRS1rMzVMMXBnYUR5U0lTaDFDOFc1VjF0QXZqTG9KeTR1RU9sNWxJTHFSOTdHWUVv?oc=5" target="_blank" class="source-link">Wccftech</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Amazon's infrastructure investment focus signals potential expansion into payment processing capabilities, threatening traditional credit card issuer margins.</p>
-                <div class="theme-meta">2 articles · 2026-04-07 · <a href="https://news.google.com/rss/articles/CBMirAFBVV95cUxQak82dmV4SFFWd1JUVk11NjJOZ3JGdnZSem1DWmVFN2FfOWVlNEhqVDBEbGp5c3ZsQXJFWWZyVjZ1cGpteGx1OWFsb3NMMEk4S3JhVmVlZVFsWEFWY25QZFJncUwzWmdqZUhwbnlMRGFhMXhyZy1NNm1kMkMxdFR5ZFM5NVFqUEhFWF9hZFZ0M0J4QXFpbjJPc2FxMjkyTHk1YU14eGlOeVZzWHkt?oc=5" target="_blank" class="source-link">WSJ</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Amazon is expanding hospitality offerings through luxury apartment complexes, potentially signaling entry into travel accommodation partnerships that could compete with travel card benefits.</p>
-                <div class="theme-meta">2 articles · 2026-04-19 to 2026-04-24 · <a href="https://news.google.com/rss/articles/CBMi5AJBVV95cUxPSDZmTkFWaXBQdGlWYTlLU05McjdqV1VrRk1sb1NaRU1rMmtNd0JkVFhYZHVHcmdZcWVIN2JMR3ZYR0h6a0JxWGFoTnhHRzFfdHhTYUkxSkNvclhVV3B5LVZLTEwwc25yVDBWdzViSGlMdDlSS1pSS0xDZGlseFJibld5NGxBendWMjQ2eDVvTEE0OS1uOXVQQzFKektmNjVIX01DQ3hzNWZKc3o2N2o5alF5LTIxQWo1UFN6TXNxbk4wNFUwd21tSTlrUGUxcHhZSlc5VDNhdnlJaWFnRktlTUlzUWFvTDd2QVo1QkdJcGNkTlFXWERVS2tsVkp0QnZSNXpqaVpmM0xBWkJSbzV0aENaOFZueGx4Ym9MZ1drWlI0c3JvVjBrMXdjbFo1R1ZGTnp4MU40NzJLNENFRHZXdXRiaHhnYzVYbXFQZzFRalpJbEEtMTVjMFJVOFN2UFgxZ3hLRQ?oc=5" target="_blank" class="source-link">WLUK</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Amazon launched AWS Bedrock AgentCore to accelerate AI agent development, enabling faster personalization and customer service automation for competing financial products.</p>
-                <div class="theme-meta">2 articles · 2026-04-22 to 2026-04-23 · <a href="https://news.google.com/rss/articles/CBMinwFBVV95cUxNOUR0SkhEWW5wQkZ0c1ZzaUJ0b2M0UGd1QkdhUXMwaWFFMmN2UENwWGNCd1A2SHUyN2QtdlVZTzVwZ1NEbGtseUY5WDlKN2tYb0UtVHU1a0o4SlZYTHZQMWRSWmlHQXc1VXpobzZySUI4ZlRGWXFkd0MyaWMtZWpHZV9FcXFQUFBkYXR3YmMwUWVSLVI2aVQ0OU9BQjdxV1U?oc=5" target="_blank" class="source-link">SiliconANGLE</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Ecosystem</span>
-                <p class="theme-text">Amazon launched an AI drug discovery platform, potentially expanding its healthcare ecosystem and creating new partnership opportunities for travel card differentiation.</p>
-                <div class="theme-meta">9 articles · 2026-04-14 to 2026-04-16 · <a href="https://news.google.com/rss/articles/CBMi0wFBVV95cUxPaFlYMTJlQzk0TWpDal9acThxOUs3VTVpY3AzTzRBZm05X0l2YUhlVmhIdE4tVVdtUjF6YjNUV1hyNWNEMlZlOWI5eG1hQzZEUTA3cExia1pGUVhJSGZBZ0JfOExpWUlUZXkwN0lhM3hCaUNkaDFyVUd3OE9NVUl6N3hvNHhURVJoRzdCbWl4WVhINy15X1RuOGpMOHZURlp5aDJVUl9xYjZEc1ZycmM3VWNnS3pNSko0UFhCWDN6WWVSMGdEcFNMRkxoYVVaNmtVWksw?oc=5" target="_blank" class="source-link">Reuters</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Ecosystem</span>
-                <p class="theme-text">Amazon deepened AI infrastructure investment with Anthropic, positioning AWS to power next-generation travel personalization and fraud detection capabilities for competitive card offerings.</p>
-                <div class="theme-meta">8 articles · 2026-04-20 to 2026-04-23 · <a href="https://news.google.com/rss/articles/CBMitAFBVV95cUxQNE5sN00xREtnMDZkRUFuRkNMWUNCVFpLVUlvdVVZUzg4bFVaRS1FZXpaNWxNSm9TLWVva3RWVXA1X25GNE0tbUltbEhvOEsyYmpfSHhnMTYxSDJGcDVXVW5zM2poYkU4VlVoc3AwYzFxdHJxZW1wNGstR3pmc2VKeGNHaHVQVEZPeDV4Z3VlZkpCVW84ZEIyM1dQcGV3MTlPVlFWQTlxeGNhVnlqamt1d2dUakY?oc=5" target="_blank" class="source-link">AP News</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Ecosystem</span>
-                <p class="theme-text">Amazon ended Microsoft exclusivity with OpenAI, enabling broader AI integration across AWS services that could enhance travel card personalization and rewards experiences.</p>
-                <div class="theme-meta">3 articles · 2026-04-28 · <a href="https://news.google.com/rss/articles/CBMihgFBVV95cUxQRUFUV0JyeXdBT1ZURDJ6Qk5wVC04LTRQNHRyWkU0aG84OTNiUzlsMkYxWUhSU2JUbnpuOTVJdExEaWpfa3czZ3JrRTNyQnV5M2ZOeGhYbGdXRXBFblBwd053anBTUW9FTEo2NjBZOExpb1c0Q0hiXzFXVVZTYWxVbGFRamhLdw?oc=5" target="_blank" class="source-link">Barron's</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Ecosystem</span>
-                <p class="theme-text">Amazon deepened Meta partnership for AI infrastructure, potentially leveraging AWS data advantages to enhance travel recommendations and personalization in competing payment products.</p>
-                <div class="theme-meta">2 articles · 2026-04-24 · <a href="https://news.google.com/rss/articles/CBMiqAFBVV95cUxPSVBhdHZROGprdkZfcVhoUGs1cGV4MDZCV1FJM3VVQnlaa1VvV01kelhkYjJqak5pTjBMNlBFYWdzTVhBcDVZVEF1d0JGbVJYR0w1ZEl2Q3U2UXBNWU5EdW9MdFliS21PcVQxRmY1enl3LVhRTllvV29mQ3pVbzd2MHN6MXg1TkliYnowTXV5b0YzUWZSR2h4dWhhWERFTTRiaEhDemRmYWQ?oc=5" target="_blank" class="source-link">Yahoo Finance</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Ecosystem</span>
-                <p class="theme-text">Amazon deepened its AI infrastructure capabilities by partnering with Meta, potentially enhancing AWS services that could power future travel booking and personalization features for competing travel products.</p>
-                <div class="theme-meta">2 articles · 2026-04-24 · <a href="https://news.google.com/rss/articles/CBMieEFVX3lxTE5FX0xXZWlhZmZTMlR2Z1FJRW41SmlLXzVYNDNRNWRwMXZOa1FOWVZLREEzR3N6OEk3MXU2MnVPa21jX3AxU3ZBc3lLWHV5MkpFcVc2TkZtOVhzLWt5NDkwQVd5SkFaeE5Ta0hNd2RJOERTcnMyY0h5Mg?oc=5" target="_blank" class="source-link">About Amazon</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Ecosystem</span>
-                <p class="theme-text">Amazon integrated OpenAI models into Bedrock, enabling enhanced AI capabilities that could power superior personalized travel recommendations and fraud detection in competing travel cards.</p>
-                <div class="theme-meta">2 articles · 2026-04-28 · <a href="https://news.google.com/rss/articles/CBMirgFBVV95cUxOUlliWFhvZ0ItMUJhVHNnUnF6NUE3c0JEakp6ekVkUTZOU3liSXo3aS1EX1VWTWt0OGNhVkd6aVZvTkw0eFA2ZExxMXN4RnlqLS1qQUNrTnY5d2ZISm1wcDN6ZHMzTmI5U1dWeXdhT1Vja21uQjItUTZibjhSZkZvd2lTYVJvOXlJUWktSnpESmlLRThNMEdfMGttUG5XeUI4Wko5cEVYb21qNjdoS0E?oc=5" target="_blank" class="source-link">GeekWire</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Ecosystem</span>
-                <p class="theme-text">Amazon expanded AI capabilities via AWS partnership, enabling potential competitor advantages in personalized rewards, fraud detection, and customer service automation for financial products.</p>
-                <div class="theme-meta">2 articles · 2026-04-29 · <a href="https://news.google.com/rss/articles/CBMizwFBVV95cUxQX3QxbHJjbWRXZ0ZNWk1oa1IyQjBPTTBKekNfSmdwX2E5enRTdFNTMGVXeE93SjlaTVRlemxZNXNob0h4YV92UkdRLU9EWDl5QWFJcjMzTmdMSERDNnRHeHNpZjBCZlFPQ0xKTFJEUlNCUFJyMDlleTh1ajhZUy1keEtQNXIwY3hzWGotNjlnYlM2alEtelVQcUYyY0lJSGxYeGRON2YteENFUFJIOWw0Z2gwcWhpYVlmYU9oUGhkWGNfNEQzY3JDZ2NzT05xSHc?oc=5" target="_blank" class="source-link">EdTech Innovation Hub</a></div>
-            </div></div>
-        </div>
-        <div class="competitor-card" id="comp-apple">
-            <div class="comp-header">
-                <span class="comp-initial">A</span>
-                <div>
-                    <h3 class="comp-name">Apple</h3>
-                    <span class="comp-count">21 themes</span>
-                </div>
-            </div>
-            <p class="comp-summary">Apple's April focus on AI-powered travel features through iOS Intelligence enhancements, Gemini integration with Siri, and three new AI-hardware categories signals growing competitive pressure on standalone travel cards through embedded ecosystem experiences, though leadership transitions and security vulnerabilities in on-device AI may delay near-term feature availability. Strong iPhone 17 shipment momentum and earnings growth increase consumer spending capacity and partnership opportunities for premium co-branded travel cards, while stricter App Store governance and refocused leadership on core competencies suggest Apple may deprioritize adjacent fintech services over its existing payment and loyalty integration strategies. The company's integrations of ChatGPT in CarPlay and enhanced iOS Photos with AI capabilities create new touchpoints for travel booking and expense management that travel card issuers must match through mobile app feature parity.</p>
-            <div class="themes-list">
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Apple launched advanced AI photo editing in iOS 27, raising expectations for premium digital experiences that travel cards must match through enhanced mobile app features.</p>
-                <div class="theme-meta">5 articles · 2026-04-28 to 2026-04-29 · <a href="https://news.google.com/rss/articles/CBMiiwFBVV95cUxQUVlad0N1N0k1bDFnZVdrTEdjS1pYdU1tTWZnRmRwZXJKVVBxczlKcXlCdHVJNjlEY1dtbHJwU0Y5bEMwMlBKMnFVZHEwaWswd1hZa2gxUXFsbHIzYTZqbHBtMVkxWExpdkFrS3FURjRTS0czQWt5aG1FQnEtMzZBWDU5V2RiaEhVMFFr?oc=5" target="_blank" class="source-link">MacRumors</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Apple is developing AI smart glasses, potentially creating new digital payment and loyalty integration opportunities for travel card competitors to differentiate.</p>
-                <div class="theme-meta">3 articles · 2026-04-13 · <a href="https://news.google.com/rss/articles/CBMigAFBVV95cUxPRktoc3FwWjlIU1BhaGtGaWkza0FNNktxU3VlRy1YQV9WYVJZR25UQUh4UzZFYUthWFplWHZmNFR6YnFkRmZ0TUlWYjRsRDBpTTY5TUkwNlBMb0lYVGVTOURXUnR2Z2t2dGM0ZG5WbWZMcVZWbm9CdjQ4UnkxdXJfTw?oc=5" target="_blank" class="source-link">eWeek</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Apple is integrating Gemini AI into Siri, potentially enhancing travel booking assistance and personalized rewards recommendations for competing card products.</p>
-                <div class="theme-meta">3 articles · 2026-04-22 to 2026-04-24 · <a href="https://news.google.com/rss/articles/CBMieEFVX3lxTFBKbEZvSE0tZG9mSkxuV3Q3dkdmWmpLc3NVUDlzMmNpNFI0ZVZUcHd0RGNsdnJEck5pcTQxVnJhZHV5TFNRVS15MDNCQm4zeFNlbDVLNjltdmFELXN4QTdTTl9CWURFWV9IT1hwN3NYTXZGUVRrdnpReg?oc=5" target="_blank" class="source-link">MacRumors</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Apple is delaying new hardware launches until AI capabilities meet standards, signaling competitive pressure to integrate advanced AI features into travel card experiences.</p>
-                <div class="theme-meta">2 articles · 2026-04-02 to 2026-04-03 · <a href="https://news.google.com/rss/articles/CBMiaEFVX3lxTE5HaEdjYzVFT1d5cWV3dERqcmowZVlqYTFFdkZ2M1d5bnB4eWJkcXpRci1DQUtiNWdST2JZdUw3N1BPTnp0OHJweVJWSEV3bXFOXzN0OEViajZOZFZYWDJfb0w3d2V4NnNo?oc=5" target="_blank" class="source-link">Geeky Gadgets</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Apple discovered security vulnerabilities in on-device AI, potentially delaying AI-powered travel features and creating competitive opportunities for early-movers in secure travel card intelligence.</p>
-                <div class="theme-meta">2 articles · 2026-04-09 to 2026-04-10 · <a href="https://news.google.com/rss/articles/CBMiswFBVV95cUxQb1ZuRXhSWXZzcHY2WkVLVk9ja3lHWVZXUFYzQ1pPMnMydk1IU0FXVnY2SGhQVG4wWkFmenNHWU9QeDFwbzI1VjhZM1FyTU5HQjh0TlpBS1FCam1DdXhpRUppOFNjVE5GYjhJSFpERk82bERkR01MWGN3NF96OVF2Y19SUS1TNGpjYXp2RVJMdGpYUUxKNmdkQzA5QThpb2NWTmxnWjdPT1NycDNCUTJkc3NMWQ?oc=5" target="_blank" class="source-link">AppleInsider</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Apple's AI chief departure may delay AI-powered travel features and personalized card benefits that could enhance competitor offerings.</p>
-                <div class="theme-meta">2 articles · 2026-04-13 · <a href="https://news.google.com/rss/articles/CBMihAFBVV95cUxQVXFCWl9ZRVJfQUhUd0swamRZd3VKME1DNkR4ZG8xUUhvd3RaS0pQYmZfUjBLeUlDTTYyMUxKU0VZTkNxS082bHYtamlqMktVX2NQUFNCU0ZhMjdSOGdpTUQ1YTJSM3JzSFN5SjJXR3FJQkpCRG9KN0xXRzdxeHc4dkNGWDI?oc=5" target="_blank" class="source-link">MacRumors</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Apple refocused leadership on core competencies, signaling potential shift away from adjacent services including financial products like travel cards.</p>
-                <div class="theme-meta">2 articles · 2026-04-20 to 2026-04-21 · <a href="https://news.google.com/rss/articles/CBMijAFBVV95cUxPREduSWhHSlE4SE95MUctN3IyZDVldUZpUW9LcWsxWXFPNy1KR0wzS0F1RzYtUmdJekl1Wjd0V2huWGZOcWJxT2NqUTJBNUx1a0VlMGtXdlFHLWNUdnZTTzlVajZmSXBXN3N0WWpFLTM2MnU4VjZ0YTRVSjkyMlp5RXdXWDJhRER3eHpFYg?oc=5" target="_blank" class="source-link">Business Insider</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Apple is developing three new AI-hardware categories, signaling potential ecosystem expansion that could integrate premium payment services into new device categories beyond traditional offerings.</p>
-                <div class="theme-meta">2 articles · 2026-04-26 to 2026-04-27 · <a href="https://news.google.com/rss/articles/CBMiqwFBVV95cUxPWWdYRDNqRDQ5aWVKVUJPUE9qaDdlMmpJeC1JaFVLazVRYjllVFVtTk8yblpYUGhBRlNkMUQxaUNXNllzdi1HLXltWlRxQmFKc0VjeEVMQ0g5TEF5WS1sb296QmJIaEo5X0x6S1lnUlhRMDBIRDdnNVo0bnM5XzU3cnNYdmVPTVRLNmVHLXZLZ19NTk1fZlhsSnA3VVhCbVlMOEFWTFNOaG1ROFE?oc=5" target="_blank" class="source-link">AppleInsider</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Apple is enhancing iOS Photos with AI features, potentially enabling seamless travel photo organization and sharing to strengthen ecosystem lock-in for cardholders.</p>
-                <div class="theme-meta">2 articles · 2026-04-29 to 2026-04-30 · <a href="https://news.google.com/rss/articles/CBMiwgFBVV95cUxPZUNYSXZSR0UycVBPWDdTamR4cDF1TFJIdklHTGtMUHJhS2ZSekhKZkc1cnkxTkZqWXk1RTBfLUN5eTV1OWR5MFkweW1Vc0Zpc3FMWHRrZnM1ZTI4c3R6cjlPVG5ZYmQ1UVlTZzNWQndnMExiU0I4ZEx3ejc0bEtNbnNzTXhFN3hkUG03My1RYV81c0RUcjNqTzFKa3Z1cTgzd244WjlXMkZPUlk3VjlibmtJQTBOX2o4TGl5RGlST2JIdw?oc=5" target="_blank" class="source-link">Tech Times</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Ecosystem</span>
-                <p class="theme-text">Apple enforced App Store content policies against Grok's deepfake features, signaling stricter ecosystem governance that could restrict travel app functionality and partnerships.</p>
-                <div class="theme-meta">7 articles · 2026-04-15 to 2026-04-16 · <a href="https://news.google.com/rss/articles/CBMimwFBVV95cUxNNGNNdGFDV3lLWTZiQlBvU2diMnVyY3lhaXo5SFZhdmN6dk9UbU5QTC1qTU4tS0IzX2k0VEdsZDdtcXVVLU1EZ2tZUC12NGVUNS0wSXdZTXQ5VGZSWjVtUFZwWjg5NlgzOWZfM3pRazEyY0xneVRtWlhDOFJPbERlTVdfQ2JEbXAwZW5NRHUzQ3Rvc2xEUHF5Y2hsQQ?oc=5" target="_blank" class="source-link">The Verge</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Ecosystem</span>
-                <p class="theme-text">Apple is adding four new iOS Intelligence features, potentially enabling more seamless in-app payment experiences and deeper travel booking integrations that could compete with standalone travel cards.</p>
-                <div class="theme-meta">7 articles · 2026-04-16 · <a href="https://news.google.com/rss/articles/CBMiugFBVV95cUxQbGdnbTlpQW1fVUwwc0ZoUEJRZjRwcXI3THVkd3gzX3BJc0dyM29sYmJhSU9lUFh5cnhJcDRWTjRwaUhlSUJpa3dDSEpFMTRjR3VHSWdVVW1IREtaQjZEN0drMnM5TE02WlN4VjVJMUZjTDFxWk0ybU9hX0szb0ltT1FOMkhxeEFOLUw1bzFBNE1uY0JadHJlRzBsREtJdDY5bDNvQ1EwLUFKdVVUbllYVXd2RmpKZnNSU0E?oc=5" target="_blank" class="source-link">Tech Times</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Ecosystem</span>
-                <p class="theme-text">Apple blocked coding apps from App Store updates, signaling stricter ecosystem control that may limit third-party travel/lifestyle integrations on its platform.</p>
-                <div class="theme-meta">2 articles · 2026-04-01 to 2026-04-02 · <a href="https://news.google.com/rss/articles/CBMisAFBVV95cUxNQjYyYVp0ZVVOaDZOdE81SFBPbndiVmJFMHE1blQtRWxyTnhPY25KSmx4eG9jSHFRQWRQUXlmNEtjZzg4cUpxT0NPQlgzMEhvRWltT3NXMFg3X3FUODZpZ3RtQTRXMjNhX1M4Vy1TT04weG1LTEtmYU5YTG53YTVpZF9aQ2luTFdnMS1NcmdXTjRTUVk5QWQ1NWF4M3NlZmlDWWFMd1BvdjFFeUd2OXd5SA?oc=5" target="_blank" class="source-link">quasa.io</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Ecosystem</span>
-                <p class="theme-text">Apple integrated ChatGPT into CarPlay, enabling conversational AI for in-car experiences that travel cards could leverage for enhanced trip planning and concierge services.</p>
-                <div class="theme-meta">2 articles · 2026-04-01 to 2026-04-02 · <a href="https://news.google.com/rss/articles/CBMiygFBVV95cUxNNm0tUDY5eUVWRl9jejdFX1FFY2IxcS1XVEFwSGI5TTNwT3JQZUJFMkQzU3ZCMUdORXM0THBjSzF0RFJhdzRhSlpSb1RCRGFZSFJGZ080M1IxOU80QVB0Q2l4aHp5WmNoV2M5NmRUYjdFQUZBa3FLT3d6RnJJbnVlUXdmb1RKRENRUGliMFFEcFU1OFBfbFBycnJqS0oyeWMzM0pkY2ptVGYydW5KYzJoVXpYTUl2VWVObG9qanMzd183TWgyaXFsZmln0gHPAUFVX3lxTFBSRUlJMHNPVEZ4aENfMFM5cXdyLVVST2lZeWNpTXI5VXdUcWcyemJ1aG1SZVduR004eDVfaVF4UmlfOGJFaURZTVJxZHRiREtEakJzX085NDJDb0RtQXpLa2R5bVViaU5oWEhJZ3JPWmZ0bkNBbkhBR0Ewd3BlUFljbndGbE5TQTVyY1JNbGx3MnRNVEs2eGxWeXNLNHdFRVdXUW9oWTEwTU41c1h1SkNreW1XNTBEdUNFS3J5V2o4S3N5cGVlVXhGTEdyaWNqOA?oc=5" target="_blank" class="source-link">Business Standard</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Ecosystem</span>
-                <p class="theme-text">Apple's stricter app policies contrast with Google Play Store allowing AI nudify apps, positioning Apple as a premium, trustworthy brand for financial products.</p>
-                <div class="theme-meta">2 articles · 2026-04-16 · <a href="https://news.google.com/rss/articles/CBMilAFBVV95cUxNd1RVeWUzYVhncXFpb1gzUjVKS3J0UzVENGRoLWVYa0NJNFE2VElST3lqM3R0RHl3c0d4U2FQUGRCXzJ3YW9OdzJjRkktUTBpN1hXUzNOa2pwSUVLQVBCSnVnbGxPb042UTVZWHNCVFBSb3JKWUtMaHBuLVBhSzZOYV9oTzg3cmY3OEl3TzF6SkhjaWtt?oc=5" target="_blank" class="source-link">Android Police</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#e8634a20;color:#e8634a;border-color:#e8634a40">Company News</span>
-                <p class="theme-text">Apple's strong iPhone 17 shipments may increase consumer discretionary spending and wallet share, creating opportunities for co-branded card partnerships and premium travel rewards positioning.</p>
-                <div class="theme-meta">11 articles · 2026-04-28 to 2026-04-30 · <a href="https://news.google.com/rss/articles/CBMingFBVV95cUxPbGJEcE9KbDBBSWVWeVpmTFdnUDNBY1VCSU11enVXMDV6bXkyd3kxQUxfd2ZlRFZNM3VEQlNJRW5kVkhkU1haekJ2VTJ0U0pYSzRuZlFtNWg4WUpjSkxxOTdqZVI0Yjg2QkVkanFZQXpBV3hjeUtIQ29ZcktYcjF6T0N2elNuRjd5ZzV4MGZZMG10N0FiWDR6Rm9fM3JIdw?oc=5" target="_blank" class="source-link">Yahoo Finance</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#e8634a20;color:#e8634a;border-color:#e8634a40">Company News</span>
-                <p class="theme-text">Apple partnered on AI cybersecurity project, potentially enhancing digital payment security features and competing in wallet/fintech integration capabilities.</p>
-                <div class="theme-meta">6 articles · 2026-04-07 to 2026-04-08 · <a href="https://news.google.com/rss/articles/CBMisgFBVV95cUxNM042blpjTl9iT1lrWVpjU19xMkM2b0RjYTJqT1pQNE8wUnBjRllfMWI5c1NCTlJ4VGhVZ0k4WGN4M0VkbGtYOFpNeHNad3Y4S1RTUXFENUM4R1dISHJmeEM2aGZNb0Vvc0lSVDlHbDZoaFZkeFp1aWRRUVFYRVRTLVhTMlN4MmpITlE3NFNhN0paOGRPWXNHX3ZOR3llUFA5RE1hX1NwU2NhTTJRUUN0VnJn?oc=5" target="_blank" class="source-link">Yahoo Finance</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#e8634a20;color:#e8634a;border-color:#e8634a40">Company News</span>
-                <p class="theme-text">Google launched a standalone Gemini app for macOS, potentially enabling AI-powered travel planning features that could compete with card issuers' travel services.</p>
-                <div class="theme-meta">4 articles · 2026-04-15 to 2026-04-16 · <a href="https://news.google.com/rss/articles/CBMipwFBVV95cUxNWWR6cFczNjFxWWhLUlYxR2VNZTJONkozZmJBTll4OU4yMl92SU14RXptZloyRFg5QjcxaW9JSGRLbHpSZ0taMlFBX1NtTG1vNlB0bk5BR1cxSHNHM3h4aDJhcEczSl9oWi1fZV9OaEw3QkhFTDllaEk0UHVTUDIwWEVIcV9JZzY5MXRGQ0IxSThCWGgwX0JwUWZzRGNJSDhlNUZ2Tk1vZw?oc=5" target="_blank" class="source-link">Bloomberg.com</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#e8634a20;color:#e8634a;border-color:#e8634a40">Company News</span>
-                <p class="theme-text">Apple's strong earnings and iPhone sales growth signal robust consumer spending power, increasing opportunity for premium travel card partnerships with high-value Apple users.</p>
-                <div class="theme-meta">3 articles · 2026-04-30 · <a href="https://news.google.com/rss/articles/CBMipwFBVV95cUxOemZIQmExTG02UDNsZmlhN3E0aFNuc3BRdDVGcXJsMXpuUGF4c25MYXhfejVUdy1YelhFbXZXaFJQdkZhWjVvejZrVm82YkVXQnlmcHBobVhTaTFNOVotUEJBNGUwa25RVVhnaTVQMWtvREZUMDZCSnAwbHFZcDRiYzNtWUdEaVVPOVF6N3RXVWVlckYzTEZ6Z0RlVVZWS1Bib2Q3RFQ3VQ?oc=5" target="_blank" class="source-link">CNBC</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#e8634a20;color:#e8634a;border-color:#e8634a40">Company News</span>
-                <p class="theme-text">Apple prepared leadership transition ahead of earnings results, signaling potential strategic shifts in financial services and payment partnerships affecting card product positioning.</p>
-                <div class="theme-meta">3 articles · 2026-04-30 · <a href="https://news.google.com/rss/articles/CBMioAFBVV95cUxORnRtVWlna0QxYWoydmFvTlJ5elFEY0lmMmtiWmpZNnE2YmxZMUZsdUpwQ0xlTlJMdVVXNDhlZklUbVdET2M3NDRRbGhuazVwaVl1SGhGT1NKUGFjV1BnOWVUNmNlWXk4Q0MyMm4yY0E4TXRqMWVsSTY2bVA3bWdGQ1V5eWltOVF2QkR0Z2VQNHo5azFzS3UzaXdWcWJ3dUZh?oc=5" target="_blank" class="source-link">Yahoo Finance</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#e8634a20;color:#e8634a;border-color:#e8634a40">Company News</span>
-                <p class="theme-text">Apple is enhancing Siri's multitasking capabilities via AI, potentially enabling more sophisticated voice-controlled payment and travel booking features in their ecosystem.</p>
-                <div class="theme-meta">2 articles · 2026-04-01 to 2026-04-03 · <a href="https://news.google.com/rss/articles/CBMi4AFBVV95cUxPeWgyWnJubTNpSHRjYUpiajJ6WXR2ZTlkTzl2Mkw1VXVJMjQtRjRkSS1mRzZEZVlDRnlvRU5tMndQOXRleEZ6NVZNc21UenlXN1NLTDlBS084OHZVOUlCTkZwZWVpOWVvWDAwb0VnMUc5a203alRNTlhJX0tpYzVaUXNCSThncHVwcmZEMXFGMEtGb1RGQVJBdmdxU19QanYxMnp6Y1I3ODV4M0VPTUlWYmg0MXA2NTdJVncwR1RIOTNnOGc3MXBZZ2NFeDJZQVdnVUJnTHVkTUo5bWxJOHQzLdIB5gFBVV95cUxQSXpwT0V5OXJBMGExUktlZWIxS0FEVDJ4RjNaT0VvVTU1cnBpeEwyYUNjRnFEUE1qTTBmaXFZS0dEa2tGeXVHNHJIV0NYd1FOOFhIWklQM0FIUjNXeU9GSTdWOWE0V2VGd2JLZ0FDWF9RT3Q0R0cxc01vbWhsMUJPTU93TWo2T09iOHl2a1VKMWxENUNucXhmbzl1WWFlVG80VVMwOWY4NE9ndzNzd2dFVjdxcVVTTjlucEpGcjVsX003a3cyODcxMW43NEdKQXh1eG1Kc0JMY1pYaG1oc3V2Q1FMSVRTZw?oc=5" target="_blank" class="source-link">India Today</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#e8634a20;color:#e8634a;border-color:#e8634a40">Company News</span>
-                <p class="theme-text">Apple's incoming CEO must address AI strategy gaps, potentially delaying AI-powered travel features and personalization capabilities in Apple's financial services offerings.</p>
-                <div class="theme-meta">2 articles · 2026-04-21 to 2026-04-23 · <a href="https://news.google.com/rss/articles/CBMiqgFBVV95cUxQSWZwaWxlNGMwcDJkTXZMd2RaQk5LUWs4bmJPSzI2ZC1kR1czelQ1enZYNldVUk9vXzBTZDdzazlCNDJRVVNFd2RvekRqblczOEJ6dFZ2VW95M01sa3pLWkgzdFZuNzMxWkIzalVCWVA2Y0RsaFM2ZVhtcXItRHJfSWwwNy1zNmxCNEVSUTZPSmhzOUtrSEJ5c25lRWVJTE9kSExSd01WZTFmZ9IBrwFBVV95cUxNcjh5NHd4cUoyV2FqTWl5RUlnUW8xMkhuMGxaTWZZQnZMWW15X2t4NGJYNElaaGxRLVZSZkZ3MXVKZXZVcTNCcmpfbEp6NUk3OVBmbGRkQkw2NDRaTENENm8wOGRTNEVhQWxZLXZDM1ZrYkUtRGNSVENSVlBEQmJFcWVNeU1nOFZxNWF4djAwU1lBNW1IZDJfRmp0VEdkZFk5UVVIRVB4S0pteWM2WEdr?oc=5" target="_blank" class="source-link">CNBC</a></div>
-            </div></div>
-        </div>
-        <div class="competitor-card" id="comp-google">
-            <div class="comp-header">
-                <span class="comp-initial">G</span>
-                <div>
-                    <h3 class="comp-name">Google</h3>
-                    <span class="comp-count">19 themes</span>
-                </div>
-            </div>
-            <p class="comp-summary">Google's April launches of native Gemini AI app for Mac, Gemini Personal Intelligence in India, and Gemini Notebooks for project management demonstrate systematic expansion of AI-powered productivity and travel planning capabilities that compete directly with travel card value propositions. The company's 63% Cloud revenue growth, Gemini Enterprise Agent Platform, and partnerships with Deloitte and Cognizant enable sophisticated real-time travel recommendations and loyalty program optimization for competing payment products, while Gemini integration into Polestar vehicles signals potential embedded payment and booking features that bypass traditional travel card channels. Google's sustained revenue growth and YouTube advertising dominance provide substantial resources for aggressive rewards offers and merchant partnerships that could undercut travel card competitive positioning.</p>
-            <div class="themes-list">
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Google faced regulatory scrutiny in prediction markets, potentially signaling increased compliance costs that could impact fintech partnerships for travel card offerings.</p>
-                <div class="theme-meta">7 articles · 2026-04-21 to 2026-04-22 · <a href="https://news.google.com/rss/articles/CBMizAFBVV95cUxQOWQ3Uk81V0lFd3pBVm9wRmJDYWxmUzllOWllYU5pNG4yLU93Z01WTkJuX08wcGdwUXdxQ212NnRvbmZacXdNRVdTd0RnOUVEeTA0Q19IOE83Q2RiTEdIUExSeDRacjlaandrRVo2UnRhaG50dnVUSVFQbXVObC1kN0hMMFdzd2FJOVVpOHczSWJJTk5Xb2dYQlpoUzJiQ0tCT3R2dXlDS0FKMU9uMlI5RVIxQ2VPdkRzcGlldHdmTC16QnRPZ09UVnQyTXI?oc=5" target="_blank" class="source-link">Reuters</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Google launched a native Gemini AI app for Mac, potentially enabling AI-powered travel recommendations and booking features to compete in premium card experiences.</p>
-                <div class="theme-meta">6 articles · 2026-04-15 to 2026-04-16 · <a href="https://news.google.com/rss/articles/CBMia0FVX3lxTE9oZTdkLXAwcVZDWTY0eUo0bmhKU0gwNWRfSmlaNkZYSmdHeVNlSC0tYTFhcDB6MG9MOF9jbzJfNk9JRU53NzBvM1RqeElyckJtVGR6U0xUa1lpZndGTlpZZEJiNDNOLWpDdHNF?oc=5" target="_blank" class="source-link">MacRumors</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Google launched Gemini Personal Intelligence in India, potentially enabling AI-powered travel personalization and spending insights to compete with premium card offerings.</p>
-                <div class="theme-meta">3 articles · 2026-04-14 to 2026-04-15 · <a href="https://news.google.com/rss/articles/CBMinwFBVV95cUxNaUo4MjVKTS00akJVSDR2bFVqWE5qdHpvNXFQZkx6YXNNTzJpU2RsZ0RyZl92WmJZdWV4RW1uZGQ0d2ZTLWoyeVJVWnJVUkJHZzUzQUdCN3NtMnY4ZEdiSHNDRmFQQ1BwVUFqQlhPWkhKNTlDdnNTRVB2cnBuajgxNmxKRzREMFJ6eGpuSURCVkxQeVc4dzdhU3g4M2NhMEk?oc=5" target="_blank" class="source-link">TechCrunch</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Google improved Gemini voice controls for smart homes, signaling AI-powered convenience features that travel cards must match to remain competitive in lifestyle benefits.</p>
-                <div class="theme-meta">2 articles · 2026-04-01 to 2026-04-02 · <a href="https://news.google.com/rss/articles/CBMiygFBVV95cUxORm1RbHduOElnbl9KUnJXZUhQbGdwVEFjLUlDR3h5TVB0alpHOVgyN1pzZUlyeVowTjVJNFc4eFJTNF9oUTdkS0xQTmFfQlREbGVZWW9GMkhuUXdUb0hwSEV3NklNRHZQd1NNbVNkX3VITlFUTTlmOWFNM1lraV9OQzVzUXdxbUxoWjMzUkp6V1hKaEwxM1pPMENEVEQ4Y2xjaUZWX2J6OWJJOGtqeDNmeE1ZcE9FRk45dEVHc0xzVGhPOGhoZXl2WlN3?oc=5" target="_blank" class="source-link">Android Central</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Google launched Gemini Notebooks for project management, signaling expansion into productivity tools that could integrate with fintech offerings and threaten standalone travel planning applications.</p>
-                <div class="theme-meta">2 articles · 2026-04-08 · <a href="https://news.google.com/rss/articles/CBMijwFBVV95cUxQSTItWjRjdWxiVFFXaGVnNjFMT0p4RU1jNzBIa212dUU4V0piZHZrWDFNc2ZZREVIamJBUmhYMHVtMHp0SkowVVZzb095NFlKUV9kRHZMYnpJZzkyY1ZSclVPZmoweDJQSDREak5qeG1sR0JncGZSYVBCa210blNJYzlPcmt1SlE2NktnSVdZSQ?oc=5" target="_blank" class="source-link">blog.google</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Google partnered with Deloitte on enterprise AI agents, signaling potential integration of AI-driven travel recommendations and personalized benefits into competing travel payment products.</p>
-                <div class="theme-meta">2 articles · 2026-04-22 to 2026-04-24 · <a href="https://news.google.com/rss/articles/CBMiqAFBVV95cUxQd0pwb2pXNUJyZVlkaGt0czJGNXg4Qy1obEo3Zk15WWd5SEJQUkZ0N1hfazl2dmtCVG1YTW5yajQwMkRUTmMwTjhEZjdNZEJqUGw4UU5oS0FLSktONWc4UTJUelVqLUJrVjVZRGdmM2stWk8xTFpyTDJlc1hkSm9XbWxPYVA1enp5MzVOOXMtNVJYS2UxaEVJeDZlbHpUWTlTblBhdnJkUy0?oc=5" target="_blank" class="source-link">Deloitte</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Google integrated Gemini AI into Polestar vehicles, signaling potential embedded payment and travel booking features that could bypass traditional travel credit card channels.</p>
-                <div class="theme-meta">2 articles · 2026-04-30 · <a href="https://news.google.com/rss/articles/CBMipAFBVV95cUxNMjUtcVp6LS1ieXVsRzI0aVRnRmtkRUp5ampmYmFnZWMzT192R1F5RWZKOHFEWDdsbzhDMWtTdUVBVHo4Y0x2VnF2WVZhbGxnUlFIV2hSbnF0ajZ3Q0RaNldNNFJKY3RfZlFGdzNNNTVldVduaWZlQUFCZGRNZ3pMRDJOOWJ4XzBsQlE1cVNpZmxJeUJXZ3p4ZmYta2VLMzRCYkJ4bA?oc=5" target="_blank" class="source-link">Polestar</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Ecosystem</span>
-                <p class="theme-text">Google launched an enterprise agentic AI platform, enabling competitors to build intelligent travel booking and reward management agents that could disrupt traditional card product offerings.</p>
-                <div class="theme-meta">4 articles · 2026-04-22 to 2026-04-23 · <a href="https://news.google.com/rss/articles/CBMi0gFBVV95cUxNUVd0eTlyWDFRek9Pb3JQSEU0bGxLU3dvUXVRLUwyajFzSFk1WkhpR0l4ZE15OWVjNGZJSll4MExycWc2VDVoc2Y2dkJYVEZtWWFjQW9ZQi11dlFwQVlqMVotVVBJcl9XbXJFcy1LVExCX1VRbGY4X0dENFpvUE9zanBHYTFaTVBCdUZKOWtjZ21yRFpNblBsWWlvRmVwTzRKd3FXcGxUOHlSc1V6aFM3X3JoZFJNelk4T1FfWE9wbTUxY2Qwa2NTUW9QVWVPNy1hQVE?oc=5" target="_blank" class="source-link">SiliconANGLE</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Ecosystem</span>
-                <p class="theme-text">Google extended its cyber resilience capabilities on cloud infrastructure, potentially enabling more secure travel data protection for cardholders and competitive service differentiation.</p>
-                <div class="theme-meta">2 articles · 2026-04-22 · <a href="https://news.google.com/rss/articles/CBMi6wFBVV95cUxPSnVrZTFLY1FvblJKMXlyNWpJdy1UcGx3R1lDSU5YRU11d2pTc0tuRkdTLXJCaTRZRlUxTzhJTDRVY0FZejQ5eVdxUjlmbDQyc2M4MUFPcnRTNl9GaVJ0QzJUS3RuN3R6Y29iOUdOUVhNX2JySmRRZU1MRlRZUXZLNnNYenJKUlBIQmZQY050T1FoajcwdXNDT2hFYUlwcUxETTZFYVFCRFBoVUo0el93VE5TQkVKamllTDFoSmxzamJKcmFtVkQ1bnNGd3NxU1F5eVB3dHFIQ0hpNGpzUy1hRTFKdlhQLWVqZUhR?oc=5" target="_blank" class="source-link">PR Newswire</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Ecosystem</span>
-                <p class="theme-text">Google established a dedicated Gemini Enterprise Practice with Cognizant, potentially enabling more sophisticated AI-powered personalization and rewards optimization for competing travel card offerings.</p>
-                <div class="theme-meta">2 articles · 2026-04-22 to 2026-04-23 · <a href="https://news.google.com/rss/articles/CBMiqwFBVV95cUxNQVFfUXhlOEI4czMtQXE0aV9taDBFeHFJcUJvM0E2czZDcFk0TlIyYnhTTGlWZ19VWDh6QS03YTdNd2NuM1dSLWxCVzZydFRLeEJtTDBlanZkdnJZQk0yS3JqbTdVdXpwVmpvWWZWamhYbEZYbFRyXzJaYjY2dUtOTVVzRU9vQVhQRTdYaFBSTWZtekNZM0tCTDIxWHZoQ3Z5LVItbUFtRUwxWlE?oc=5" target="_blank" class="source-link">Cognizant Technology Solutions</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Ecosystem</span>
-                <p class="theme-text">Google expanded Gemini Enterprise and consolidated Vertex AI, enabling more sophisticated AI-powered personalization and fraud detection capabilities for competing financial services.</p>
-                <div class="theme-meta">2 articles · 2026-04-22 to 2026-04-23 · <a href="https://news.google.com/rss/articles/CBMi5AFBVV95cUxQUUhjVzBHNWlTektNenVhaWp0bXFHdl9pYUU2QnB0X1V6NlRiWmF1RnpyUnp4WnY2a1ZRbE9HbmV6YncxVFBndjM4ZEY1SG9ETEYxZThIaE5IQWFUMGw1dkkwbm5WeGgxaTFveTNra3NfMk1jTmJpcEw0V2RwbGIteEFBemJMczJjcDJIN19wWWxjUGVLVkxfcDlIM0xRX3RLN2ViLWNWSUxUQ3ZWTDZqbXYzNFlVNHFoTV92RXN0M2Zhc0VyWFA0SlExZHB5amdvaElpaTNfWnRVTnY2VHR1U2pxa2E?oc=5" target="_blank" class="source-link">IT Pro</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Ecosystem</span>
-                <p class="theme-text">Google demonstrated broad AI integration across cloud services, signaling potential competitive threats to travel card value propositions through AI-powered personalization and customer insights.</p>
-                <div class="theme-meta">2 articles · 2026-04-27 to 2026-04-28 · <a href="https://news.google.com/rss/articles/CBMitgFBVV95cUxNVnR1MnYxNG1SZ21CeGNYeE9XU3I5MWZwNmo0U2hrczlIMXFqa2hTWTFSU01zeURYdl8wemJDbVQyYzhZVmlCUHppaVBpajdOVDlmMW9RYk5kNFBGcHN2OEN2Tno5XzhjelI2REhBNHhXcWU4Ykhwc2JLZnBiY3NnM2d1cTFiSy0zaUNqV2JYYmFKbGVaREV0dTlVa3BIcEFKSXRoQWF2XzdsZnd5dTZkXzB5UGk1Zw?oc=5" target="_blank" class="source-link">The Register</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#e8634a20;color:#e8634a;border-color:#e8634a40">Company News</span>
-                <p class="theme-text">Google's 63% Cloud revenue growth strengthens its data infrastructure capabilities, enabling more sophisticated travel spending analytics and personalized card offers.</p>
-                <div class="theme-meta">8 articles · 2026-04-28 to 2026-04-30 · <a href="https://news.google.com/rss/articles/CBMingFBVV95cUxPTkRCUmtCZDlXS0VwVkY5NU9MVjBWWklXa0ZocThMalJMNnVtY2ZLLVVWOWdvS2JndG00aVZoQXJJUDhuV0VzdkFjRXlPMC0zOTc2ZUFFdjRzRk4yUU52UWJvSFVRVFloNTN1Mlo4YmNMamxXaXRhUFI3OEs0SE5xT3l4T2sydUV3QWtrczVTRkF0ZDNYWEU3YTZWLUd6Zw?oc=5" target="_blank" class="source-link">Yahoo Finance</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#e8634a20;color:#e8634a;border-color:#e8634a40">Company News</span>
-                <p class="theme-text">Google launched Gemini AI in vehicles, enabling voice-activated travel assistance that could integrate competitor payment and booking features, threatening card-exclusive travel benefits.</p>
-                <div class="theme-meta">7 articles · 2026-04-28 to 2026-04-30 · <a href="https://news.google.com/rss/articles/CBMilgFBVV95cUxNd0x6V0VnUkZnMFhxcTRvaFM0Ty1tVTBOWFBscXk3UDA2UzlkNEFnUk1ZeG8xN0xiLXRkRjZ0WlBRcXdJSTdBVkk5N3Njb2cyeE54ekx4bzNaZFBuempadlpCWkZnRnE3cjJyb19mRjl1RXRnaXFvMXJhNmJGanhKNTRRTDI3RHV1eDJNVmNraDJiTU1JOFE?oc=5" target="_blank" class="source-link">Seeking Alpha</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#e8634a20;color:#e8634a;border-color:#e8634a40">Company News</span>
-                <p class="theme-text">Google's sustained revenue growth through 2026 demonstrates strong digital advertising dominance, increasing competitive pressure on travel card partnerships and merchant acquisition strategies.</p>
-                <div class="theme-meta">3 articles · 2026-04-30 · <a href="https://news.google.com/rss/articles/CBMie0FVX3lxTE9UYUFvT2RaeWdTeWo0aDZQZjF1dGk4NDhvY0RQM2J3OFdWQlVsbUlOMERZUFJaeTVsWUZOeFo5LW8tamFXX1VNRmV4X3l5d2Nqakg5RzVQRDFsV3VGdUQ2blpuU3o1aE1TWDRsTklMbUFzQTBzNTJZTU5uSQ?oc=5" target="_blank" class="source-link">Statista</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#e8634a20;color:#e8634a;border-color:#e8634a40">Company News</span>
-                <p class="theme-text">Google faces advertising revenue pressure from Meta, potentially reducing marketing budgets available for travel card promotions and customer acquisition campaigns.</p>
-                <div class="theme-meta">2 articles · 2026-04-13 · <a href="https://news.google.com/rss/articles/CBMixgFBVV95cUxOcnpfSHIwVlVmTVNtbW02Nm45QXh5Nl81MlBsRVFXR01OdGlZakNhZ1BDY29KNzIxbHF0SUMxV1l1VVI4ZFR1ZnFOLTZPMDRPcVFFTF8wN2wydE1rR2VwY1Fwa1JISHZEM0R0eGc1S2VBanlVbFIzZjYzdVlfN3JJbEJIeGlYZnE4YnVyQUpfdDBmRHhzd2FtRzlFQ2U2aW1qR3owV285cHBReFgxNEF5bFlSVTg3UllBdzJjYU9QRXB4VFg0eUE?oc=5" target="_blank" class="source-link">Reuters</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#e8634a20;color:#e8634a;border-color:#e8634a40">Company News</span>
-                <p class="theme-text">Google launched agentic AI cloud infrastructure, potentially enabling faster, more personalized travel booking experiences and real-time loyalty program optimization for competitors.</p>
-                <div class="theme-meta">2 articles · 2026-04-22 to 2026-04-23 · <a href="https://news.google.com/rss/articles/CBMiuAFBVV95cUxPQXRsWXBPcHNweUlGeW9CcG43VVIyVXJXTzVoVDhhR1ZBTmUxaEItOWlCQ01aQ2JPdFdkb24tV3hybVo5QXpkNlVHdmRVelltSEtfMy1GXy03UHZTTW5UWFJoaWJrVkhDQW9JUE1UTHlUR19aYzFEWXBfLWJ2dTUtN0E4Y201djBXSjNoZm0zcXdaUUZwZlEwQUs0VjJCQXpZdUVUWVRDWmROekl2V1BhUXlsQVJKUGRT?oc=5" target="_blank" class="source-link">TechTarget</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#e8634a20;color:#e8634a;border-color:#e8634a40">Company News</span>
-                <p class="theme-text">Google launched Gemini Enterprise Agent Platform, signaling potential AI-driven personalization and data analytics capabilities that could enhance competitor travel card rewards and customer insights.</p>
-                <div class="theme-meta">2 articles · 2026-04-25 to 2026-04-29 · <a href="https://news.google.com/rss/articles/CBMilAFBVV95cUxNSEJiWUNUNk9nZjh3ZDRjeU9Bd3dtWElMclUwNHhjZGI5YkdHN1VZNXZOYjhLbExQU0Z1cDM0MGJ0VTZGRlh3VGFNU2NZM25WZ2dobmJDcFEtejFKajY5TWlibGJjcTMtc0JCRzlKMzV6NFVPRXZRbkNfVzhhWDl3djB2TkhBVVJkeDZaRDJBcEhudFRW?oc=5" target="_blank" class="source-link">Let's Data Science</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#e8634a20;color:#e8634a;border-color:#e8634a40">Company News</span>
-                <p class="theme-text">Google's YouTube ad revenue growth strengthens its digital advertising moat, enabling aggressive rewards offers that could undercut travel card partnerships.</p>
-                <div class="theme-meta">2 articles · 2026-04-29 · <a href="https://news.google.com/rss/articles/CBMioAFBVV95cUxQc3otcFlCWGd0LUhCZThDbnRVYi04RkZ3cHU2bm9SalNfZ20tajg5dExKZmlOMGxUUzduenVwcDN6Nml4VWMya2NhX29NVXotdU5XbDNsR0FONDBlckhFRlhHUEIwT2xLTG5XME1UQURwWnV4RTJIMjVmRVpqb2RIRE9vWWNwcmx6WkdQdUpta0lLUHAybEE5d01JSFVSS21G?oc=5" target="_blank" class="source-link">Deadline</a></div>
-            </div></div>
-        </div>
-        <div class="competitor-card" id="comp-meta">
-            <div class="comp-header">
-                <span class="comp-initial">M</span>
-                <div>
-                    <h3 class="comp-name">Meta</h3>
-                    <span class="comp-count">15 themes</span>
-                </div>
-            </div>
-            <p class="comp-summary">Meta's April investments in advanced AI reasoning capabilities, first superintelligence lab model, and Muse Spark AI model position the company to deliver sophisticated personalized travel recommendations and fraud detection within social platforms and competing fintech offerings, though its $21 billion AI infrastructure investment may reduce marketing budgets available for travel card sponsorships and partnerships. The company's expansion of Instagram management APIs and parental control enhancements signal deeper ecosystem lock-in strategies that travel card products must match through family account transparency and social commerce integration, while potential open-sourcing of AI models threatens to commoditize premium card personalization features. Meta's blocked AI acquisition in China and EU antitrust action on WhatsApp reduce near-term competitive pressure but signal regulatory headwinds that may constrain future fintech monetization models for travel card competitors.</p>
-            <div class="themes-list">
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Meta launched advanced AI reasoning capabilities, potentially enabling more sophisticated travel personalization and fraud detection in competing fintech products.</p>
-                <div class="theme-meta">14 articles · 2026-04-08 · <a href="https://news.google.com/rss/articles/CBMifEFVX3lxTE1pSjJ3dEdRaGhDYkVvUi1NakFFWnRudlZCRV81REcxWnZId2JzM3F2OXF5aVRSeWpCV3VLaW1Sdmd3ZXM0X0Q3ajhRWnZQdGMySUpCS01nRTJVTHRlZ1BXQ21iU1NjOFdPcFlNeVFhT1BjakxaTlBYanJ3N1g?oc=5" target="_blank" class="source-link">Barron's</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Meta may open source upcoming AI models, potentially enabling competitors to develop faster and cheaper AI-powered card features and personalization engines.</p>
-                <div class="theme-meta">4 articles · 2026-04-06 to 2026-04-07 · <a href="https://news.google.com/rss/articles/CBMiogFBVV95cUxPRGdkbHR0by1lY19TMlhPVmhZZ2EzZnpreUYzUU5JZnM4R2dEdjJGREJ3cmRYMkRMWk4zLWVhZXlSeHk1MklBVE9OUml6NnpwWjRaV3FCUVZfSlhqV2hDYWh1elRmM2dEZ0JKTTE3cTMzeklvTWM1eGtmN25ybkZyTjd5MkQ0amRVVDlFTWxHNkFHcHRXSUczU1JkZ2pkVlBkREE?oc=5" target="_blank" class="source-link">Seeking Alpha</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Meta is investing $21 billion in AI infrastructure, potentially reducing marketing spend available for travel card partnerships and sponsorships.</p>
-                <div class="theme-meta">4 articles · 2026-04-09 to 2026-04-10 · <a href="https://news.google.com/rss/articles/CBMioAFBVV95cUxPQmx6MExmemRLYWV4U1FweERsdkdLeGs2MHF1Mi13Vng4VEphcUQ2VE5VNHVjTGY5WVJ2amFGY2czSjdmSjg4N3NTVGlLYUpqLWNfZnhjOWYzZmhCaUpXMFVwaUh1YUVBaFltajRhQ0d2cXZTSTlteXBBOHFVOU5XMXZwS1hHcVRwV0t1UkJxcWJKbUxkakNfajhZUHdlQVk40gGmAUFVX3lxTE5qbFRRYUFwUHRXZTI1cnI5X1Y0RU0wRE90dzYweEhqbVE1U0RtOHBoQ013R0Fmc0JKdkZxQXlWV0xuZmxfRUQ3U1VhblBYZzk1eHNIUnpIYkF3NnRFVUh3dC1CSHNNeDdRMzRiN3dfS2thcFUzUEJXTl91NFhDdVloWkxjZ2RJY04yYUFXSEoyUDN4RzFnWjdhLUlkaEprbzZJZTlrcWc?oc=5" target="_blank" class="source-link">CNBC</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Meta unveiled its first AI model from a superintelligence lab, potentially enabling more sophisticated personalization and fraud detection in competing fintech offerings.</p>
-                <div class="theme-meta">2 articles · 2026-04-08 · <a href="https://news.google.com/rss/articles/CBMigAFBVV95cUxNYWxqVDA3TGExLXlBb0lucmFvM1E4czh3ejNxVFBTMGR5Mk1kZV9hYTBsSEhFR05tYlVCZHM4dUw1Ukp1TndLa3pRNGN6LUs4WVdmY0hMOXctcE9GTHVmUklQSE5oN21XWmtRZTdIQ3ZZbjM0V3dfSnVsX2I5b1RtdA?oc=5" target="_blank" class="source-link">The New York Times</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Meta launched Muse Spark AI model, potentially enabling personalized travel recommendations and dynamic rewards integration within social platforms to compete for travel spending engagement.</p>
-                <div class="theme-meta">2 articles · 2026-04-08 · <a href="https://news.google.com/rss/articles/CBMingFBVV95cUxOUDd5LW1JY0JuQ1c0S29id0JTYnZabGJMTkhrYUlpTVZfQjkyeElQZE9vdVlNZTVVWkhaQ3NQbXdfR3ZaZDljcGdmcExPSjlNMmpyRl85UUJsc0syZVFuWk9Cc2RBcGdiZ0k1VGUxek1HbXZaVDFIRHN5VVVVRXB3LV9FbFBHOC1lWm5Gby10UE11UDlDZGJmRDNNRW1Fdw?oc=5" target="_blank" class="source-link">Social Media Today</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Ecosystem</span>
-                <p class="theme-text">Meta faced EU antitrust action against WhatsApp AI fees, signaling regulatory risk for fintech monetization models that travel card competitors might pursue.</p>
-                <div class="theme-meta">9 articles · 2026-04-15 to 2026-04-16 · <a href="https://news.google.com/rss/articles/CBMisgFBVV95cUxNTnRxNUhUNDF6QU9uOXgweGpxTE12MHB1Yy1DSWVYcW1US2JqZXlGelVuUVBHLUFJRlptSHdCb1lpWXZER1Vpc3FoSngtSGdNdG9UcTM3enVBbE9WeHBVVUtjQ090eWcwVTFkWVloVkstdWZmek80R3RDaEhGY0lBUm9lQTBGdlBCQ29HcmdEeTRGT2MxNEJfam41SlY3cGJEa21aSGJtbHEweXpXbEdGN3l3?oc=5" target="_blank" class="source-link">Reuters</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Ecosystem</span>
-                <p class="theme-text">Meta enhanced parental controls for teen AI interactions, signaling ecosystem lock-in strategies that travel card products should match with family account transparency features.</p>
-                <div class="theme-meta">5 articles · 2026-04-23 to 2026-04-24 · <a href="https://news.google.com/rss/articles/CBMickFVX3lxTE9UMHNUZUpnOFYzeDM0a0xUUnJsb2Fqdko0RVpyeTdyTVJnNTl2QkswcmZZZk9Xc2VkVUJPWkFmZEhSSWMzeDdmNjdHTXRyM2lEeEpFNEY3VXJuLWVDazNIbjVLSklBemE5RTZJWk5qZW5XZw?oc=5" target="_blank" class="source-link">Parents</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Ecosystem</span>
-                <p class="theme-text">Meta expanded Instagram management APIs, enabling travel brands to deepen customer engagement through social commerce, potentially competing with card issuer loyalty programs.</p>
-                <div class="theme-meta">2 articles · 2026-04-23 to 2026-04-24 · <a href="https://news.google.com/rss/articles/CBMijAFBVV95cUxQNmsySE85MGI4Nk5Ic1VZQVBjMC1wTUNVeW1fbnZDekM5eGdEVkxudDlwa2VyNG1DT1VSOUJQcFpUaFh3WU0yRnIzSXBnejhuX29oaWpqZGY0bWgwSk5LLXB3Skd1NVBvWEdURi0tcTZXODdSTGE1VWE1b01JN0QwY0FaTUNPeWN2YmtSeA?oc=5" target="_blank" class="source-link">Social Media Today</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#e8634a20;color:#e8634a;border-color:#e8634a40">Company News</span>
-                <p class="theme-text">Meta launched Muse Spark AI model, potentially enabling personalized travel recommendations and spending insights that could compete with travel card benefits.</p>
-                <div class="theme-meta">20 articles · 2026-04-09 to 2026-04-14 · <a href="https://news.google.com/rss/articles/CBMimAFBVV95cUxQYndBd2s4cV9HQUp0VjRuaVRmNkdvTWI1bkFZSERyaXVPaE1yeFRjOUdTc2xhZ0syVEQ1ZlMtcnNmRkVkYUxGb0dCS0QwZURVdTBrMjVvWU9haUl1VUZaaWxDa1EzSzJDaVVmVzFBMENzamZ6OFQwUXBXbjNIMmhPQTJLUzJTbVRYS3F4azRWUkh1dUVacVp5Tg?oc=5" target="_blank" class="source-link">Business Insider</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#e8634a20;color:#e8634a;border-color:#e8634a40">Company News</span>
-                <p class="theme-text">Meta's blocked AI acquisition in China limits their fintech capabilities, reducing competitive pressure on travel card innovation and partnerships.</p>
-                <div class="theme-meta">12 articles · 2026-04-27 to 2026-04-28 · <a href="https://news.google.com/rss/articles/CBMiqgFBVV95cUxPaEV2UXh3RXVhbEwzcHdXbkUxWEoyMmlMbHlPVGV3eVo5NVpxazNxUWJzTE5tZzhJa3QyWk80Z01XUWNNTUViOUktdU1uYnEzeGNfd0p3Vm5NUlV6ZnRQak1QUGJxNEpTbGRlLTMtVWtaUGt6QTM5bXc4c1VyWFZWc0pfOXdnWHExeTdFcm45bUNLTlBSRjVPMU1mR25sSEd4bGZPdV9RN2hFQQ?oc=5" target="_blank" class="source-link">Bloomberg.com</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#e8634a20;color:#e8634a;border-color:#e8634a40">Company News</span>
-                <p class="theme-text">Meta launched Muse Spark AI model, potentially enabling personalized travel recommendations and enhanced social features within competing fintech platforms.</p>
-                <div class="theme-meta">5 articles · 2026-04-09 · <a href="https://news.google.com/rss/articles/CBMi5gFBVV95cUxQSUhhN1pOX1l0dHhTMjJnMVljbzRYeEJFY1RkLXU2ekUydEpuekJtMHFGb3labUZvYmRHR2hqZmFvUEV1NkRnRi1PSW9CRWxoVDZBQXlvemdWeE9LcmhnYWtXTlNTdFpub1h5U2hPYnFtN0ZUandQMDhUYUFLUTFuRUZiY2ZIUEs4Y1NYWl9IczZIblQ0Qm9EQTVmZ1hhekJDVXU2dXp4MDVveWl1dlRWajE4UWhfUkNiRUZ2dmdDaHZtQ0dvWG9IRFJ3YUNMZWRXTThpWjhzQmtXelVyTnV1N0FHT2syUQ?oc=5" target="_blank" class="source-link">Capital Brief</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#e8634a20;color:#e8634a;border-color:#e8634a40">Company News</span>
-                <p class="theme-text">Meta is implementing employee monitoring technology, raising data privacy concerns that could influence consumer trust in tech-affiliated financial products and partnerships.</p>
-                <div class="theme-meta">5 articles · 2026-04-21 to 2026-04-23 · <a href="https://news.google.com/rss/articles/CBMi4wFBVV95cUxOalZ5MS1JQUVHSTFGSjhCWFhVSW1HdkFvYzRNc0oyU2xaSGllSF9IYXBsNUU4Tmp2SG9wc0IwRlBRMjdQaHJKdUxUWUxqQWctZ2lRYVhoSHpOVDRjZTJZcXRSc1F2T2R0QmNXY0E0d2dXS3pyVWJ5UjFBaFgyWkxYMlRLeFBfWWFPTS1aMGFpVVlnS0twR3M0U2FtVklvY0hQSGJSWGhTdVRlY2NFNHAtdURESVY0N241VHhGazh4QVdVS1F1LXF5aUlSYzFKWTlNT29aZ1dZWV9qbWpuSlVzeXNvZw?oc=5" target="_blank" class="source-link">Reuters</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#e8634a20;color:#e8634a;border-color:#e8634a40">Company News</span>
-                <p class="theme-text">Meta unveiled its first AI model from a costly superintelligence team, potentially enabling advanced AI-driven personalization and fraud detection capabilities for future fintech products.</p>
-                <div class="theme-meta">3 articles · 2026-04-08 · <a href="https://news.google.com/rss/articles/CBMiywFBVV95cUxPMGlQRHNjbkNMampHRlJWOVkxUTlLdmlUMWZoZTJOa05TZFgtNWppRVpBYk5XT0xVdVRBbHFqSlE2NDRQdHBEcGVaZ2p2dnFrZFhjZThBYjV4SlZFekNkdERsWHhhck1HU0NHUjdRNTY3OTg3TExWNXd2cVd4aldaV2tOVWVGZW5BYzRJYTNkWHJlcklfc3FkTmpOOWl3S3MzZTlOSktEVkFUXzZiU21SUUdXZ3J1UDNZaHIxR3RHQnNzR2VfYTZxRVVaQQ?oc=5" target="_blank" class="source-link">Reuters</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#e8634a20;color:#e8634a;border-color:#e8634a40">Company News</span>
-                <p class="theme-text">Meta invested heavily in AI capabilities, potentially enabling more personalized travel recommendations and spending insights for their future financial products.</p>
-                <div class="theme-meta">2 articles · 2026-04-09 to 2026-04-12 · <a href="https://news.google.com/rss/articles/CBMiogFBVV95cUxNampLcFVUdHlLN25xUEJtT1FQNk9uQ1h2V0d5RzVBREV1bDA1OFNQTGVndUMydWxnd3FoekVDZFB0bDB2YzVvWDN2RjNVd0dtaUI5OXRiUUxENXFSUUIxc0NGQmpDQlcxcWQ3Z3dhUXJRRFJ5dEtEOHlUQjQwTjNSbHhPZHVCQ3AySG9ENlEtVHQ2Y3NZRjI2azIyMndiMkdLQ1E?oc=5" target="_blank" class="source-link">Open Magazine</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#e8634a20;color:#e8634a;border-color:#e8634a40">Company News</span>
-                <p class="theme-text">Meta's $2 billion acquisition blocked by China, limiting its digital payment infrastructure expansion and reducing competitive pressure on travel card ecosystem partnerships.</p>
-                <div class="theme-meta">2 articles · 2026-04-27 · <a href="https://news.google.com/rss/articles/CBMi1gFBVV95cUxPZV93RXB5djdPREZTZmMxUEswSW9aLTZzT3JkclYwOXlIc1NJdHFoZ1REcExsbTNkUWdQa0s5X2gtN1pyUHI0X3RoZmtiVV8yeENMZm9PcUMtNUx6NzJCYW1ZNHk5WDFWNFFZRW5GaXdTTFl6X1pmalpRVjNXWGRpb1hXMDJzVlI4MjFpOFN0eVB4dTh0OUZHRUVEekJKWUxhc3F2S0xIZjhnc0FMamtxQkdwT25iRWtTbDl3LXdEd3RRSDFjdjFtbkgydHMwSnFuVXJvWktn?oc=5" target="_blank" class="source-link">MarketWatch</a></div>
-            </div></div>
-        </div>
-        <div class="competitor-card" id="comp-microsoft">
-            <div class="comp-header">
-                <span class="comp-initial">M</span>
-                <div>
-                    <h3 class="comp-name">Microsoft</h3>
-                    <span class="comp-count">16 themes</span>
-                </div>
-            </div>
-            <p class="comp-summary">Microsoft's April releases of multi-agent Copilot Studio updates, three new AI models, and Copilot integration in Outlook position the company to deliver sophisticated AI-powered travel planning assistants and automated expense tracking that enhance competitor card offerings with seamless booking and itinerary management capabilities. The company's ending of exclusive OpenAI partnership, deepened general OpenAI integration, and expanded cloud infrastructure connectivity enable competitors to build more intelligent, personalized travel card features faster while Microsoft's strong Q3 earnings and cloud/AI growth provide resources for enterprise corporate travel card partnerships and fintech integrations. Microsoft's token-based GitHub Copilot billing and Copilot Agent Mode in Outlook signal aggressive AI monetization strategies that travel card programs should monitor for competitive premium benefit differentiation opportunities.</p>
-            <div class="themes-list">
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Microsoft committed to Australia's AI innovation ecosystem, signaling potential fintech partnerships that could integrate advanced AI into competing payment and rewards products.</p>
-                <div class="theme-meta">4 articles · 2026-04-21 to 2026-04-23 · <a href="https://news.google.com/rss/articles/CBMijwFBVV95cUxOaVBVTmpqT010ZVAwa3Z2RGNqOHBaR2s2RklURTdzZVVJajJkV2YyUFQ1d3BmdFc1aXBiOElvaGpud1E5MjF1SThzcGgya3oxekJBaF9hTTAyS1ZkbEZEVjFxMi02OUJDSkFQR3JzSFMyY1JtUVN3RXM2X2dvbXF6UjVJcFdTNmJjZkhBWkpBNA?oc=5" target="_blank" class="source-link">Microsoft Source</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Microsoft released multi-agent Copilot Studio updates, enabling sophisticated AI-powered travel planning assistants that could enhance competitor card offerings with personalized trip recommendations and booking integration.</p>
-                <div class="theme-meta">2 articles · 2026-04-01 to 2026-04-02 · <a href="https://news.google.com/rss/articles/CBMi9gFBVV95cUxPUFFZa3ppZ1dubmlJX1BYYi1BOVVoVUJ4T01QanRPV1ZjMUFWWW43Mmo3bzJsQWVkWUNJX2FVLUc4TkVPQWZKSnBrVlQzbmxZUTF5LVlycUtQTldETVVMblVsNzZVbnlPMnlhYkhpdTZCSXkyWUdaTEFtdzQ1VlhfRWJhNS16Q1JJWUM2WFR2MFNiOXZfazZnR0hEU0oxSF9md1J1WGRkME9TdFNrS2RUemRJNkt4V3RfYm1WMUxNYXZMQVdDMGVaVjdXNnBaRnc1dU5BZkVBNkJ2ckJuY1haUTRpazBNNzVRSWhvQm04VzRXZ2xjZ0E?oc=5" target="_blank" class="source-link">Microsoft</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Microsoft is developing AI-powered Copilot features that could enhance travel planning and booking experiences, potentially disrupting traditional travel card value propositions.</p>
-                <div class="theme-meta">2 articles · 2026-04-13 to 2026-04-14 · <a href="https://news.google.com/rss/articles/CBMimgFBVV95cUxOaEN0NWFRNV9jeEZycHdybDR1blMyVzJGWVcxa3V2LXhUSVYzNmFqNjhkSkZLbWFvT3M5VldEdGItMTl4T2lnT2RTQkZfbUItTm8yT04xOXA0dzNUc19GQTJSeDVwbkNVS1JDSDdjWXF0VWVWZmUtXzhaOGxLWkpFZUNqOXBlZWRFMFN0Vkg3YjFBVjZyRjNuZGdn?oc=5" target="_blank" class="source-link">The Information</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Product Launch</span>
-                <p class="theme-text">Microsoft enabled Westpac NZ's AI tool for customer service, signaling enterprise AI integration that travel card competitors must match for customer engagement.</p>
-                <div class="theme-meta">2 articles · 2026-04-14 · <a href="https://news.google.com/rss/articles/CBMihgFBVV95cUxNQmRmWWMxMXhfWGJuT0tCcHMzS0FDQXdJYVFDUVpoZC1hRmtkU0FjbndUcnRoTXE0b3lqdjc5TkZ6NHVxS3ZGdkpkaU02cGtMcnBhdnc4OUZ5VUNaSzM3YjhkY3YzZGZ0WThEYWI4Z0dzT0hjbktiYkJjZzhXeUlobndQbGNwQQ?oc=5" target="_blank" class="source-link">Microsoft Source</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Ecosystem</span>
-                <p class="theme-text">Microsoft released three new AI models, potentially enabling more sophisticated travel personalization and fraud detection features in competing card products.</p>
-                <div class="theme-meta">4 articles · 2026-04-02 to 2026-04-03 · <a href="https://news.google.com/rss/articles/CBMiqgFBVV95cUxNaEFsOTEyZ2JkWG9uWTBYWWZMcUZyVl9oMHV3SkpIZldIV2ZaRF9EZUExVFJLSDdXTEFNSDAteUxrYzNpQjEwaWgwWEhqSVdGTGt4dm5OdzlnNTNselBiTHUzN3VRUEFKbm93M2YyQ2hQRC1ua2JETlptQXBTYzRwR00wQWNUQVZrdTJrb1lPMzgwQmw1Z0VCQlFlN3BuVTR4OFVsb0t3WDdMZw?oc=5" target="_blank" class="source-link">Business Insider</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Ecosystem</span>
-                <p class="theme-text">Microsoft ended exclusive OpenAI partnership, potentially enabling competitors to integrate alternative AI models into travel card offerings and customer experiences.</p>
-                <div class="theme-meta">4 articles · 2026-04-27 to 2026-04-30 · <a href="https://news.google.com/rss/articles/CBMi3wFBVV95cUxPTG10M2s5YjVPMURaVC1Pb3lpTFdJZTZtZ1B1YmY2eksxSlFtMmhGZmhzblg4TUk0bGU5cUpOU2JoZFBvUDk2bWV0VjNKX3RhaTE0c2NVajRfajB2ajdqelJsLWFxRnRjd0N4aFpWVzJUdTdoaUhlTmN4WXZTM0xxNVNNQnlGSVE0ZjFiRzlQVjM0SUR6UHgtWm82VFZnTy0teWs0b0hjQ0ZqTjl6RzVWVE0wMGViOTFtc25FVGktdURmSlBNclcxQnYwdGtGcFp1QTB5WE9ZaGRkTGp0YjVF?oc=5" target="_blank" class="source-link">Tech Times</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Ecosystem</span>
-                <p class="theme-text">Microsoft updated GitHub Copilot pricing, signaling aggressive monetization of AI features that could influence tech-focused card benefits strategies.</p>
-                <div class="theme-meta">3 articles · 2026-04-20 to 2026-04-21 · <a href="https://news.google.com/rss/articles/CBMilAFBVV95cUxNQkk0WnlYSmJIeEsyVmdsOGZBYWlnT1ZBWTZTREtkOWpHNmZoRjBzQUl5bUJOUThRdkRXWENYbENWR3RsbVhCT3h6ajU0ZWFsMVRXTUhuWTBKOXVrck1kYV9fSXlvdG5PQzlaWm1EMjJaZ2RxVDZnbnNSZmpBU0xZWE5JT3hKZTQ4X2tDNjFJYXA4d1Vp?oc=5" target="_blank" class="source-link">The GitHub Blog</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Ecosystem</span>
-                <p class="theme-text">Microsoft restricted GitHub Copilot access, signaling potential shifts in AI feature monetization that could influence premium card benefit differentiation strategies.</p>
-                <div class="theme-meta">3 articles · 2026-04-21 to 2026-04-22 · <a href="https://news.google.com/rss/articles/CBMiowFBVV95cUxNRkJncm9iQlVQWGtGTnl1dmplcDRtU0VBa21sanQwTkxSV3lSeVFrSGNBQWJrRHVMU1FWZHpVX0hfNmRMUWpBZDluem5OdmhSc3BvRU5SMlNSdTNGZEJaS2pFYW1LUk9qQ2dxSFA0UEtxeTZ0T2ZNVTA4N2VBdFhWamd3RzcyREhKZW1GNjhNeFlKeFpvalZBdkNwQWNZX08tandn?oc=5" target="_blank" class="source-link">Let's Data Science</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Ecosystem</span>
-                <p class="theme-text">Microsoft deepened OpenAI integration, enabling AI-powered travel personalization and spending insights that travel card competitors must match to remain relevant.</p>
-                <div class="theme-meta">3 articles · 2026-04-27 to 2026-04-28 · <a href="https://news.google.com/rss/articles/CBMibkFVX3lxTFBIWjFhTVJJSG5kRU9TX3pSTEw5Ylg0RHBDR01RbzBQMnltTjFQcHRmSW9Cemlob1dRaVR4djI0NEJjYVBlS3dzRzVNYmNIb25VWU53UnBWeFVPVlJ1bFlFVGQwQno3TjEtR0hybWNR?oc=5" target="_blank" class="source-link">OpenAI</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Ecosystem</span>
-                <p class="theme-text">Microsoft expanded cloud infrastructure connectivity, enabling seamless enterprise integrations that could power next-generation travel card loyalty and rewards platform capabilities.</p>
-                <div class="theme-meta">2 articles · 2026-04-02 to 2026-04-07 · <a href="https://news.google.com/rss/articles/CBMiowFBVV95cUxPbWh4WE5FMi13VXRiQno2bkJTTDVIandrWk1xWHoxTkF4aXZUbk5iZW8yMnctanMtcnhyWG0tR2lBX3pTdFRsaVlfOHJtaldSTU1hT3p2emlLUVZsekIxUHFhVE5TV0dOYnBmeXBtcDlKU18yT1lDZ0ZTV19Ma2FJRTlQaFk5TWFRUlFEVmlKajFLLTMyZlljVk9MeVVGcHBGUGlN?oc=5" target="_blank" class="source-link">Redmondmag.com</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Ecosystem</span>
-                <p class="theme-text">Microsoft integrated AI Copilots and agents into Power Apps, enabling businesses to automate workflows, which could threaten travel card differentiation through superior digital experience and personalization.</p>
-                <div class="theme-meta">2 articles · 2026-04-15 to 2026-04-16 · <a href="https://news.google.com/rss/articles/CBMizgFBVV95cUxNQ0dFSGVRbXAxcUtQWGNoNHd5VXhBUFkxVHItZ3hka1BUOGhkMHI4YU11VFpEaFJPUkg0em1xa3ZLYXFxR3VGQV9oVDE1YWs0MzBTMU1FRlBmanpRU0w2ZW5rb0xzWGVaWm9ZWkFjNHRiUWh6aUJPN0Nsa0tiVFIzV0FoQmJETGtlTWlwb3haV0VITzFHdm5BVGgzMk5Rc2c2ek5vVzRRd3hxbWk5ZkRiX21SODV1TkVhaWtJU0wtUk1qd3k0SVVIQ2Y4R3djUQ?oc=5" target="_blank" class="source-link">Microsoft</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#88820;color:#888;border-color:#88840">Ecosystem</span>
-                <p class="theme-text">Microsoft implemented token-based billing for GitHub Copilot, signaling potential adoption of usage-based pricing models that travel card programs should monitor for competitive differentiation.</p>
-                <div class="theme-meta">2 articles · 2026-04-20 to 2026-04-23 · <a href="https://news.google.com/rss/articles/CBMitAFBVV95cUxQR002b0dmNUFhRHJWMXFwelQxMjBmTVBZNEI3VmpxTGNzVTRGX1REOUVkMU5MTG9xRkVwSTQxamI2TkFLVjlBQU1EVVl5Q2Y2Q0xZUUprVEtsRkozbDc5SV84dm1WU1gtNzhSQ3Y3TVNBbFVlak5hY1JEb21KUnVITC1RS0w4M2FtQUpjejhwRlU3dXNMUThQQy0xSm9JaWl4OEZqOGEtajlHVkRJbW5qY205cWw?oc=5" target="_blank" class="source-link">Thurrott.com</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#e8634a20;color:#e8634a;border-color:#e8634a40">Company News</span>
-                <p class="theme-text">Microsoft launched Copilot Agent Mode in Outlook, enabling AI-driven inbox and calendar management that travel card products could integrate for automated expense tracking and itinerary organization.</p>
-                <div class="theme-meta">4 articles · 2026-04-28 to 2026-04-29 · <a href="https://news.google.com/rss/articles/CBMilgFBVV95cUxOTWVMc1RlNzAybGR5T2hXNW16WlBGRWc3NzhuMDVMa19fVGZzRl9nU0p3TS14OFdxZFMxQ1FxY091cUltMEZmelhZMUtQU3hicnRPdUZHd2RpV2V2NFN0WWVRa3o1TTJTWVlMQ3IyNlZRWEdBV3VyRVcwcERDcGgwQ3RoU0l1UGNFenVIMXc2Y1VUY3dmWHc?oc=5" target="_blank" class="source-link">WinBuzzer</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#e8634a20;color:#e8634a;border-color:#e8634a40">Company News</span>
-                <p class="theme-text">Microsoft enhanced AI collaboration tools, potentially enabling rival fintech companies to develop more intelligent, personalized travel card features faster.</p>
-                <div class="theme-meta">2 articles · 2026-04-01 · <a href="https://news.google.com/rss/articles/CBMiakFVX3lxTE1NY0pqVlh5RVpZYmJSdVljWjk4SDBXRVlJRVAzVVRGbFBZZ0JVbGJHSjAwMmdRYnVSTy0tem1OOUl6MGRtMjZHNDFHTDExMXVXMmc4eGlCWS1mLThvMmNBWFhKMFlFLUdZemc?oc=5" target="_blank" class="source-link">tech.co</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#e8634a20;color:#e8634a;border-color:#e8634a40">Company News</span>
-                <p class="theme-text">Microsoft's cloud and AI growth strength may increase enterprise spending, creating partnership opportunities for premium corporate travel card offerings.</p>
-                <div class="theme-meta">2 articles · 2026-04-29 · <a href="https://news.google.com/rss/articles/CBMinAFBVV95cUxOLV9FUlJHTHZickRvSUpmTUtvSm9wMjd2S2dRQVR4WHBsZEFnZlFqVDBRZzhtV1FOSkxpdDRuZEtjUUxBTXJkSWlrRTk2anZ0ZFEzOUJKTHF2a09veXd5VWxsUFlBY1FXTXV3MnFFcWVrMEtBaEs5UFpvYVRSS0tJUjBVd2hLUVpjSF9vYzRVY01GVk9QY3RJckUtSFM?oc=5" target="_blank" class="source-link">Yahoo Finance</a></div>
-            </div>
-            <div class="theme-row">
-                <span class="cat-badge" style="background:#e8634a20;color:#e8634a;border-color:#e8634a40">Company News</span>
-                <p class="theme-text">Microsoft beat Q3 earnings, indicating strong financial health to invest in competing fintech/payment offerings or partner integrations.</p>
-                <div class="theme-meta">2 articles · 2026-04-29 · <a href="https://news.google.com/rss/articles/CBMingFBVV95cUxQU0F1dWh3amZ1MUdFQzdpcmZwWHRiZ1hUMmRrQ29KQnVmeXRFNXhHOTdxNEh3V0FsQUFXd2NoT1VjWkJXNzF2ZnFCQU5IeENBRXFkRDJpNlNrZU96WTFyTUxqRkRkZTV2dUtJVzN0RWNUbmZpNVA4Ymp3OWJKLWpoVlgwQlF0dDFDUXFpM2l5M0EtYl9QRVh0WW9vVExqZw?oc=5" target="_blank" class="source-link">Yahoo Finance</a></div>
-            </div></div>
+  <section class="dash-section" id="trends" style="scroll-margin-top:58px">
+    <div class="section-head">
+      <span class="section-label">MARKET TRENDS</span>
+      <span class="section-count">5 identified this month</span>
+    </div>
+    <div class="trends-grid"><div class="trend-card t-blue">
+          <div class="trend-num">01</div>
+          <div class="trend-icon">💻</div>
+          <div class="trend-title">AGENTIC AI AS PRIMARY DIFFERENTIATOR</div>
+          <div class="trend-body">Amazon, Google, and Meta are all investing heavily in autonomous AI agents that can execute financial transactions and business workflows independently, moving beyond conversational AI toward decision-making systems. This represents a fundamental shift in how financial services, booking platforms, and payment systems will be embedded into productivity and consumer applications.</div>
+        </div><div class="trend-card t-white">
+          <div class="trend-num">02</div>
+          <div class="trend-icon">📉</div>
+          <div class="trend-title">ECOSYSTEM LOCK-IN THROUGH AI PERSONALIZATION</div>
+          <div class="trend-body">Apple, Google, and Microsoft are integrating customizable AI models and personalized assistance directly into their platforms, signaling that device-level and application-level AI will become the primary driver of user engagement and switching costs. Travel and financial service providers must now compete within these embedded ecosystems rather than through standalone applications.</div>
+        </div><div class="trend-card t-green">
+          <div class="trend-num">03</div>
+          <div class="trend-icon">🔓</div>
+          <div class="trend-title">MESSAGING PLATFORMS AS FINANCIAL CHANNELS</div>
+          <div class="trend-body">Meta's expansion of WhatsApp capabilities, combined with integration of payment features and shopping agents, indicates that messaging infrastructure is becoming an alternative distribution channel for financial transactions. This threatens traditional card-based payment models by enabling frictionless in-chat commerce and financial services.</div>
         </div></div>
+    <div class="trends-row2"><div class="trend-card t-grey">
+          <div class="trend-num">04</div>
+          <div class="trend-icon">🏢</div>
+          <div class="trend-title">ENTERPRISE AI INFRASTRUCTURE AS COMPETITIVE MOAT</div>
+          <div class="trend-body">Amazon's deepening AWS-Snowflake integration, Microsoft's Azure expansion through partnerships, and Google's enterprise workflow AI partnerships indicate that cloud infrastructure providers are building insurmountable advantages in data processing and AI model deployment for business customers. Financial service providers will increasingly depend on these platforms' capabilities for customer analytics and personalization.</div>
+        </div><div class="trend-card t-black">
+          <div class="trend-num">05</div>
+          <div class="trend-icon">🛡</div>
+          <div class="trend-title">REGULATORY SCRUTINY ON AI MARKETING AND FEATURES</div>
+          <div class="trend-body">Apple's $250M settlement over AI feature claims and Google's adjustment of Gemini usage limits after user complaints signal that regulators and consumers are increasingly skeptical of AI marketing narratives. Premium positioning of financial services based on AI capabilities will face higher burden of proof and consumer skepticism.</div>
+        </div></div>
+  </section>
 
-  <footer class="footer">
-    <p>Built by Ridi Tasmiah · AI-Powered Competitive Intelligence Pipeline ·
-    <a href="https://github.com/tasmiahr/ai-competitive-intelligence" target="_blank">View on GitHub</a></p>
-    <p style="margin-top:0.5rem">Python · Claude AI · DBSCAN · Google News RSS · GitHub Actions</p>
+  <section class="dash-section" id="competitors" style="scroll-margin-top:58px">
+    <div class="section-head">
+      <span class="section-label">COMPETITOR ANALYSIS</span>
+      <span class="section-count">5 competitors</span>
+    </div>
+    <div class="comp-grid"><div class="comp-card" id="c0">
+          <div class="comp-header">
+            <div class="comp-avatar" style="background:linear-gradient(135deg,#1a56ff,#00b894)">A</div>
+            <div>
+              <div class="comp-name">AMAZON</div>
+              <div class="comp-meta">8 themes · 24 articles</div>
+            </div>
+          </div>
+          <div class="comp-summary-wrap">
+            <p class="comp-summary">Amazon has significantly expanded its competitive positioning through deep Claude AI integration across AWS, enabling enhanced personalization and fraud detection capabilities that competitors will struggle to match without equivalent AI infrastructure investments. The company's new Nova Place headquarters expansion signals confidence in B2B growth, while AWS partnerships with Coinbase and Stripe on autonomous AI agents are creating pathways for frictionless crypto-integrated experiences that could disrupt traditional financial service ecosystems. AWS-Snowflake integration for enterprise AI and Claude Opus 4.8 deployment provide Amazon with substantial advantages in building sophisticated data analytics and personalization features at scale. The integration of agentic AI into SMB financial tools represents a direct threat to distributed financial service partnerships, as Amazon is positioning itself as the infrastructure layer that enables all competitors' AI capabilities.</p>
+          </div>
+          <div class="comp-themes-wrap">
+            <div class="themes-label">Themes</div>
+            <div class="theme-item">
+              <span class="cat-tag" style="color:#7da4ff;background:rgba(26,86,255,.15);border-color:rgba(26,86,255,.3)">Product Launch</span>
+              <p class="theme-body">This article about Huawei phone launches is not relevant competitive intelligence for a travel credit card product team.</p>
+              <div class="theme-foot">7 articles · 2026-05-25 to 2026-05-29 · <a href="https://news.google.com/rss/articles/CBMingFBVV95cUxQc29ESjFCWlI5eTVZYUNtemhqa29KZ2xrVVNGYTV3UlhIeGVsNjRKSG1TZm4xMGJsMEdpSDNfbGZpZDg5YmhlcVVLYTM2YW9KV3FjS1Bta3hYTVRfa0FQOUVWWW1Iei15REtsNjhKUkE0THlzQVhuaTFwbkVkUVQ1V3RiTmtSZUZRMVgzcjVDWFVXR2NNVlhpdThYcHpvUdIBmgFBVV95cUxQQ21nMGdrSmtWanFGR0NBNWdxQlZsR3ppTU1QdWpUenlGa19wZW1ZX1h4eXkxLXdoT3EzeHlDN0JZalpXNTNBS0NKZmx2QkktczFpMXVsTk5DbG9hQ3Jfbk5hZ0ZJNkZ2UFQ5YTBUWWdHRVlPcWdYSDNseGlrVWV5N25CSmtLTlptcU5EWVBHU3JwMUVCZXZKYnRB?oc=5" target="_blank" class="src-link">GSMArena.com ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#7da4ff;background:rgba(26,86,255,.15);border-color:rgba(26,86,255,.3)">Product Launch</span>
+              <p class="theme-body">Amazon's expansion into a new headquarters at Nova Place signals potential business growth opportunities for co-branded corporate credit card partnerships and B2B payment solutions.</p>
+              <div class="theme-foot">2 articles · 2026-05-26 to 2026-05-27 · <a href="https://news.google.com/rss/articles/CBMirgFBVV95cUxQcWtJOGxoRkx0YWxiR0RMNUVOVk40NjJzcmQwQklNLXBkdGZpQ1FtZUhwSkdmZ05yVl9SSjQ4c1FOZDMtT2JBQm1mTzdYU0xDNzRfV1Mzak0wZVZucXlVRDItZlpDZTByWFM4QkdIajgwczdVRHdEeUFDOU5EQXpOTHEtTzhUYzdzaEpUUlhtV3dKaDQwUXNvajZhM29BY3h5c0lGeFREb1g0VTl1RGc?oc=5" target="_blank" class="src-link">The Business Journals ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#5ee8c8;background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.25)">Ecosystem</span>
+              <p class="theme-body">Amazon integrated Claude AI into AWS, enabling enhanced personalized travel recommendations and fraud detection capabilities for competing card products.</p>
+              <div class="theme-foot">3 articles · 2026-05-11 to 2026-05-12 · <a href="https://news.google.com/rss/articles/CBMitwFBVV95cUxQa1Y3d2NzVEtyQzVReDk0SjhRd2pyUmoxUldNdDdmeGY1cEx1aU81WFpHT3htakktTzBkUG1CbXFrR2FMSUp5T1FEVGNzamVkYVpWVEM1UHM2Yll4ZzBnZnBrVnVVaTFaeEFMRlpUMUFWRlVfVlFVQ3U4WjdadC1mek9OMlF0U2l6UGpicWxhVzJCSmhIS3FLUGhHMWRMMXpTZG9Yc0tFRzk1enVTM3BLdUl0SVo3VW8?oc=5" target="_blank" class="src-link">Investing.com ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#5ee8c8;background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.25)">Ecosystem</span>
+              <p class="theme-body">Amazon deepened AWS-Snowflake integration for enterprise AI, enabling competitors to build more sophisticated data analytics features into travel loyalty programs.</p>
+              <div class="theme-foot">3 articles · 2026-05-27 to 2026-05-28 · <a href="https://news.google.com/rss/articles/CBMi4wFBVV95cUxNeUY2cVJSVi0xWTZqcHdHbU51enJkM2JNZDczVlZickZiNWdZMmRMbTlPVjFud1RKQUIwcjNmVzZFV3ZvaDRWbzhXWmxjRHZGSlNMM2JDRko1eE0tblhPY3lfVUVFWGp0NGVuRi1BV0cyTExIZkoxeTB6VXFjUGNlYlJ1UlFvQWtSSzc0Yy1mQ0k1N3d1THV3dlZKNE5acUVJbmRLLU1RTU5oNXNZWWR2X3lZRm9JcEVOMkdUdGNUZlItSkFtZjliSktWT1QyZG03Q0s2MjRROExUd0IwU3Nnc0l6OA?oc=5" target="_blank" class="src-link">Snowflake ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#5ee8c8;background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.25)">Ecosystem</span>
+              <p class="theme-body">Amazon launched Claude Opus 4.8 on AWS, enabling them to enhance travel card personalization and customer service through advanced AI capabilities.</p>
+              <div class="theme-foot">3 articles · 2026-05-28 · <a href="https://news.google.com/rss/articles/CBMijwFBVV95cUxORDctNzFXM1FDSHlUa3Ywdk9sVDB4V0tvMmVwamtxUzJfZGlyaXF2eThaT3B2ZWhuUzQ1LUlQZEpTWDZzTVlZdGZlOW5CdE1wNjRRZWRaYldWRHBpWEtUc2ZXM1dmRlpoT3djblB2Q2xaVTY5ekliNUh3N1RCM1l2MTd5Z29TaWdVanAxenpvcw?oc=5" target="_blank" class="src-link">Amazon Web Services (AWS) ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#5ee8c8;background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.25)">Ecosystem</span>
+              <p class="theme-body">Amazon and AWS are integrating agentic AI into SMB financial tools, potentially enabling competitor fintech partnerships that could disrupt travel card distribution channels.</p>
+              <div class="theme-foot">2 articles · 2026-05-01 to 2026-05-05 · <a href="https://news.google.com/rss/articles/CBMidEFVX3lxTE5iQUh0UDN1bVRpSUlVQXBCUnV6ZFg3cGNLV2VnNjNtRkVmZHpHN2ZMRVlzdkFPOEp5OE1QeVdPWnVDSkEtWmE2cEhIODZ4aHF0UmY3VUhEMUtxYkxtbnhkN2ctZGJVUUpKc3liRnRTSjktcWot?oc=5" target="_blank" class="src-link">FinTech Magazine ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#5ee8c8;background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.25)">Ecosystem</span>
+              <p class="theme-body">Amazon's AWS partnered with Coinbase and Stripe on autonomous AI agents, potentially enabling competitors to build frictionless crypto-integrated payment experiences that could disrupt traditional card ecosystems.</p>
+              <div class="theme-foot">2 articles · 2026-05-07 to 2026-05-08 · <a href="https://news.google.com/rss/articles/CBMiigFBVV95cUxNVzR5X09MUGZyNUNBNGxWcXBwMlV5RGZna3lONzZfNS0xRjRkY09CTHlFT0VXQ2dYV2hSdEpiVWhITWVDdEVWOFdmdEJuZFNYRTZkYklqdHFLUTY1aGU5el9FZ1c2Vmd0VjB3eWZkOGJ3bmJjRl9MazE5d0ZjeTFveHMyd3ZZaUdzcGc?oc=5" target="_blank" class="src-link">AI Magazine ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#5ee8c8;background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.25)">Ecosystem</span>
+              <p class="theme-body">Amazon expanded Claude AI integration on AWS, enabling competitors to build AI-powered travel personalization features that could enhance card benefits and customer engagement.</p>
+              <div class="theme-foot">2 articles · 2026-05-12 · <a href="https://news.google.com/rss/articles/CBMib0FVX3lxTE00My1pWDc3YXF3a3kxTHdmN2xUU0s0eHp1S2FqQmJrc0FWNlRkVm1kX0VxLUg2WVZncm9FcVNOSm5tcjBPX21qamt5M0czQWh6SUFvSzQzNHVjV25nZGM3bk92eVFTc3JmakdKWDFaYw?oc=5" target="_blank" class="src-link">SQ Magazine ↗</a></div>
+            </div>
+          </div>
+          
+        </div><div class="comp-card" id="c1">
+          <div class="comp-header">
+            <div class="comp-avatar" style="background:linear-gradient(135deg,#00b894,#1a56ff)">A</div>
+            <div>
+              <div class="comp-name">APPLE</div>
+              <div class="comp-meta">8 themes · 47 articles</div>
+            </div>
+          </div>
+          <div class="comp-summary-wrap">
+            <p class="comp-summary">Apple is pursuing aggressive AI customization and personalization through iOS 27's multiple AI assistant integration and WWDC 2026 announcements, positioning device-level AI as a primary user engagement mechanism that financial service providers must integrate with rather than compete against. The $250M settlement over Apple Intelligence marketing claims introduces regulatory risk for premium positioning strategies based on AI capabilities, signaling that feature claims will face heightened scrutiny. Apple's ecosystem lock-in strategy—combining Vision Pro accessibility integration, encrypted messaging enhancements, and deeper wallet integration—creates a cohesive consumer experience that traditional financial service providers cannot replicate outside the Apple ecosystem. These moves indicate Apple views financial services integration as a core ecosystem feature rather than a partnership opportunity.</p>
+          </div>
+          <div class="comp-themes-wrap">
+            <div class="themes-label">Themes</div>
+            <div class="theme-item">
+              <span class="cat-tag" style="color:#7da4ff;background:rgba(26,86,255,.15);border-color:rgba(26,86,255,.3)">Product Launch</span>
+              <p class="theme-body">Apple is integrating multiple AI assistants into iOS, signaling AI customization as a key consumer preference that travel card products should consider offering.</p>
+              <div class="theme-foot">3 articles · 2026-05-05 to 2026-05-06 · <a href="https://news.google.com/rss/articles/CBMijAFBVV95cUxPeU8zY095ZWxxQ3NMRXZXX2RWWFBWTkZMLTl0OC1qR0V3c0hxS2szWGlOU3BLRWNNWHh0RzZ4SmxtQWp6Y2FBWHVSYnUtUHRTdUd4c3BOQlp4SXpCSUxvVTUtRXFnMEUzM0ZOM0lfZlNQM1RSMWhoVzh2a01QWXpYcXpWd0lhdWtoU1o1eg?oc=5" target="_blank" class="src-link">MacRumors ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#7da4ff;background:rgba(26,86,255,.15);border-color:rgba(26,86,255,.3)">Product Launch</span>
+              <p class="theme-body">Apple settled a $250M lawsuit over iPhone AI features, demonstrating regulatory scrutiny on tech features that could impact payment product differentiation strategies.</p>
+              <div class="theme-foot">2 articles · 2026-05-05 to 2026-05-06 · <a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE01ekFBaDVjTDZsOGJKMHhXakRfZWJJOEdFQjlpVE4xWHc0WXZsMTgyWEpPQVZIV2hQMVBLdEdyR1VVYjVXZkhMNVJjbGYweTBjZ2pZM0JwVGVtQQ?oc=5" target="_blank" class="src-link">BBC ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#7da4ff;background:rgba(26,86,255,.15);border-color:rgba(26,86,255,.3)">Product Launch</span>
+              <p class="theme-body">Apple faced a $250M settlement over Apple Intelligence features, signaling regulatory scrutiny on AI marketing claims that could impact premium card benefit positioning.</p>
+              <div class="theme-foot">2 articles · 2026-05-05 to 2026-05-07 · <a href="https://news.google.com/rss/articles/CBMitgFBVV95cUxOdW5WTllNbUMwejUyM09QWG02cVpMc0cwaldTTE1zOGtuMFVRZFl5Nk9XTWNFNnk2ZUM1WFRXZFg2MFpsdGg4T1R3YzVaR3ZCRUM1MVJ5Vkp1NjVYcGNOM0gtczRjbzZaaFlmQ1cxbjItR2lDQ1VlOHI4dUo1Q0FjMTA3clY2a21sX1RUNU1NMWZ3Y3ZlQlU3dEs5bVdKNHhGdDlVV1hUb2FFclhKYkpldVBYUG9kd9IBuwFBVV95cUxQYl9ySlByank4Y0FQMmVwbkF5dWRWb01zRC1QOTM5Z2VMUjRFTmlCalA4OTluU016RF9FZGxTcHR6QzhyZmJBZlMzd09vLTJidHdQNmxKZTZzb1BFZngzeXpnSDIxUmxRY2g0VE5EN3B6ZW1pOFVPWTctY2tVSjc3c3lBSG5HeWgxblFhc2N5TjJsTy1QQTlfd0xRRHRRcndRWWlBTXNsQXFKYTNJX3kzU1lvWkw0R1pLV1FV?oc=5" target="_blank" class="src-link">WGN-TV ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#7da4ff;background:rgba(26,86,255,.15);border-color:rgba(26,86,255,.3)">Product Launch</span>
+              <p class="theme-body">Apple is planning customizable AI model selection in iOS 27, signaling intensified AI personalization that could enhance competing digital wallet and payment experiences.</p>
+              <div class="theme-foot">2 articles · 2026-05-05 to 2026-05-06 · <a href="https://news.google.com/rss/articles/CBMipAFBVV95cUxQcUJkSDR3UDhBc1N2RkMtTEhoN1V6ejl2bXJHeTFJLWxGdVVkRElHZnhpVFNGbmZOMmRMY2FocXAwYWhrOWs2MWh0T3pIOGpSUnhkTlp0MG84Tm1pLXpnTU94V2dPLTlha1lZdm5zWVRKWXVUcUhNN1EzOEJCWWJkd3IwQ2g1NjRnLVpTa2dnWGpGeDd1Y016ZEVTQlRPc2dwdkJacA?oc=5" target="_blank" class="src-link">TechCrunch ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#5ee8c8;background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.25)">Ecosystem</span>
+              <p class="theme-body">Apple integrated accessibility features with Vision Pro, signaling ecosystem lock-in strategy that travel card programs must match through inclusive digital experiences.</p>
+              <div class="theme-foot">26 articles · 2026-05-19 to 2026-05-24 · <a href="https://news.google.com/rss/articles/CBMitwFBVV95cUxOcU51OHE1YXo4cEZsdE5CWGxONkF0T2VUUXZZUGtvSmhFR2lZUDcwRG5SSFp5UFA1RjNZTTdkZDVxYTAtUEYxRWlaMlFzak1vYm01M3Vwc1pMd0EwTlJUc1dYYkVxQXJfYkZYVGRQVmpGcDVuUWVxbjF2MmU3bDZma0Y3MUhsX1lmeG5kQnVWSVV0R3o1SzRFcHhWWThmODluWXMwb19oOEN2R3RLYm9XVjN3RXRNMzQ?oc=5" target="_blank" class="src-link">Apple ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#5ee8c8;background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.25)">Ecosystem</span>
+              <p class="theme-body">Apple announced WWDC 2026 starting June 8 with Apple Intelligence updates, potentially enabling deeper ecosystem integration for travel card digital wallet features and payment partnerships.</p>
+              <div class="theme-foot">5 articles · 2026-05-18 to 2026-05-19 · <a href="https://news.google.com/rss/articles/CBMihgJBVV95cUxOUUVoWDF2VHhfLXlxREVsd2gyYkZKQ3NBNDQ5YjVNSm1pWE1hXy1MeGdBRno4dnptM2ZaVUZaUjVINzhJN096MFNvRm1OSGVfaUo5Xy1BU09mMFhXdnBqWV8wakV6bjhJc3RLVlA2M25KemthenJKRU1uMFNCUDdUNmdZWVhRQWNzNUwyRUQyay1fN2hpSE9HOVVJQ0ZIUXRGc1FldzRZZVE4VTZWVVFhVzhhVXBDYmVwVUlBOXRtTEtJR3d0eHVhbnk5WFllRW5ldFI4NHhLbFdCcWtxS2JXWWVhbnJEaTZGRmFXc3FiRGE5bmFWSnVRa19IZE1jcFhiU2FTV2FR0gGLAkFVX3lxTE9pN0hQX1dNOVcxak5rLUxfU0tJZTlQMmVEaDdNWmx0WjBTWjA5VWFObGVMRVZJclpOOWF1Ynh2MktWYkFTTlRpNGI4aWZvZFBIWjVqSDEyamtRazlMdTQyY1lhZWdjS0huYndiZUhoQnNmbnhDXy13Vk5Rby1EZElTb1lDaG4tYnphbWVyM1VQejcwWjgwTG80SXk1b3dGb2dsUkI1YVRkOG5YSDFKS0tyNVZMUi0zVUE0cEhrZ2NCeW4xQVdwREJZUFVlb0VCMlhDYlRiOGh2VG9SNXVfdVZYTm1ZbjllaUVxeHZrTmFBclFnTEdPTW9ZMm5vUkNXQjI5cTJmbjJhbUVRMA?oc=5" target="_blank" class="src-link">Moneycontrol.com ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#5ee8c8;background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.25)">Ecosystem</span>
+              <p class="theme-body">Apple announced WWDC26 focusing on AI Siri enhancements, potentially enabling smarter voice-activated payment and travel booking integrations that could threaten standalone travel card apps.</p>
+              <div class="theme-foot">5 articles · 2026-05-19 to 2026-05-22 · <a href="https://news.google.com/rss/articles/CBMi4AFBVV95cUxOSVRraENON2p0QWxjclh0LUctcEY2QXFCYlhGVzVhY1FpRmxwV2czSXdGOXZSOHlHZjBZbjNyeC16bnpJYXpHX194b2UzSEJIRFJmeUc0cW56OWpscHkxTm4tS2JWOHRzeFRxVkNsQXFuMGkzN0pTYzllZXFzOWdjWFliZm9ibExUVmxPWUFQdkhJX0YwNmU4Y1BSb3JSMHNlenpHMFpFM3lWQWVtdzhzazdncTFPS2tkUDFBQVVqeG5JTkNMTXpWNWMtdThHZk1ra21ySzR6ZVBlXzNGWGZuZ9IB5gFBVV95cUxONGlNOHZJVjlZRmFTdWFIeGRSMmJ6R2oyVWJEcWV1ZEhIekh3dFF0TTVCXzJESnpaTWpoX3h4SFlnMnpIRF9BcGc1NlhDYlVDSExPU09pczFCWnYxY3RXVDFyT0NYMERTRXBiWjA1TW1ZaVkyZlZzdU1iNmlEU0VvcDRBdHJiSkI1RFZ3REwzRzloYUNZUHphUVlUV2h2dDBlTGlSeGtHbEp6d1ZMdHoyNWJDdW9yQlVWdFFLbEVpWHVlaHJhSElldGE0Y0lvd2FLSng2al9FZGFZQko3M3FZblI0dVRPUQ?oc=5" target="_blank" class="src-link">Business Standard ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#5ee8c8;background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.25)">Ecosystem</span>
+              <p class="theme-body">Apple enhanced encrypted messaging and ecosystem integration, potentially enabling more seamless in-app payment and loyalty program notifications for competing card issuers.</p>
+              <div class="theme-foot">2 articles · 2026-05-12 · <a href="https://news.google.com/rss/articles/CBMidkFVX3lxTFBrNHFoVzd2MFFuTVU0MmRFa1lWU3FLSk8yVEhEcWxVMUNoMDdVbjhPajZOWk9xeXBDazRBWE9NRFJnYnJXcGlQSlNOb2E2amtOa1dTdkgyemdZOUZDN0JvMlRQR2huYjFwbkRmY0Y1RFJLc3AzMGc?oc=5" target="_blank" class="src-link">capitolskyline.com ↗</a></div>
+            </div>
+          </div>
+          
+        </div><div class="comp-card" id="c2">
+          <div class="comp-header">
+            <div class="comp-avatar" style="background:linear-gradient(135deg,#1a56ff,#0f36cc)">G</div>
+            <div>
+              <div class="comp-name">GOOGLE</div>
+              <div class="comp-meta">8 themes · 28 articles</div>
+            </div>
+          </div>
+          <div class="comp-summary-wrap">
+            <p class="comp-summary">Google's I/O 2026 announcements demonstrate aggressive expansion into personalized financial assistance through Gemini's proactive capabilities and AI subscriptions that directly compete with premium service offerings. The launch of AI agents and mobile apps for Flow services, combined with Gemini integration into design tools, enables Google to offer end-to-end AI-powered solutions that existing financial service providers cannot match without substantial platform integration. Google's enterprise partnerships with EQT and Digital Turbine indicate the company is building embedded financial services capabilities directly into business software ecosystems, creating alternative distribution channels that bypass traditional financial service providers. Google's willingness to adjust Gemini usage limits based on user feedback suggests the company will optimize AI features for customer adoption, making their platform increasingly competitive for real-time personalization and spending intelligence applications.</p>
+          </div>
+          <div class="comp-themes-wrap">
+            <div class="themes-label">Themes</div>
+            <div class="theme-item">
+              <span class="cat-tag" style="color:#7da4ff;background:rgba(26,86,255,.15);border-color:rgba(26,86,255,.3)">Product Launch</span>
+              <p class="theme-body">Google launched AI subscriptions at I/O 2026, signaling potential bundled travel services or AI-powered travel planning features that could compete with premium card offerings.</p>
+              <div class="theme-foot">5 articles · 2026-05-19 to 2026-05-23 · <a href="https://news.google.com/rss/articles/CBMikAFBVV95cUxNSUpseVBic2Rfbm1rZnpJSjlZcGlpazBDb1owdDkxdzYtcGV0NDVrMktwMy16cHAteTRVbTA0QVBFdFpFaXFySHFTaFo3SkZaMU94anpOUGdmb0VvbWZiMFJYRlh0VHM0RlpNMlNuSURyR2VJMktKU2ZqQkJiaFhTRjBVelVWSExqS1k0WF9PLUo?oc=5" target="_blank" class="src-link">blog.google ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#7da4ff;background:rgba(26,86,255,.15);border-color:rgba(26,86,255,.3)">Product Launch</span>
+              <p class="theme-body">Google enhanced Gemini's proactive AI capabilities, signaling competition in personalized financial assistance features for travel card users.</p>
+              <div class="theme-foot">5 articles · 2026-05-19 to 2026-05-25 · <a href="https://news.google.com/rss/articles/CBMijAFBVV95cUxNVGxlcDl0VnlkNWYzdUcwSTkyM0FBOFNUUGpkWjdRV0Zmcmp5cjJQa0VwX3lqamY2ZXRFQlBMSEt6ZkxVd2FMN2sxZHd2ZG1HeVkycTAwX0dHREJEMmFYU09RM2JzaUppQjhsMTNJU00xUk4yTkF3cGxEYjUtclc1M2NWWUQ4M1hpWGRNOQ?oc=5" target="_blank" class="src-link">blog.google ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#7da4ff;background:rgba(26,86,255,.15);border-color:rgba(26,86,255,.3)">Product Launch</span>
+              <p class="theme-body">Google integrated Gemini into Canva's design tools, enabling AI-powered visual content creation that travel card issuers could leverage for personalized marketing and rewards program communications.</p>
+              <div class="theme-foot">4 articles · 2026-05-20 to 2026-05-25 · <a href="https://news.google.com/rss/articles/CBMibkFVX3lxTE9vYWptLU9LUUhsS0ppYko2UUduNElzYjB5ZldnM1BxblBsREFsU2t3cUJGT05vWEVPOUtPOWdZZDVnTFlDOU1mM1F1SGZvZXhfTGxZX1M4STVJNjlmVkZrckpEVG52MXJUS1o0aDhR?oc=5" target="_blank" class="src-link">Fast Company ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#7da4ff;background:rgba(26,86,255,.15);border-color:rgba(26,86,255,.3)">Product Launch</span>
+              <p class="theme-body">Google adjusted Gemini usage limits after complaints, signaling willingness to respond to user feedback and improve AI features that could enhance travel card app experiences.</p>
+              <div class="theme-foot">3 articles · 2026-05-29 · <a href="https://news.google.com/rss/articles/CBMiakFVX3lxTE9JRmFxUUZOSVNfNGl2Q055eFZZa2lrTWdEOXdKbEQ4NFZfSldxTXVVTF9DajVZNUdHMkhQMmIxM1FfUGNaME8xTXMtR09RS3h3bVYweXFnRmVzY0h0aW13aGFkazRxbzNGRkE?oc=5" target="_blank" class="src-link">9to5Google ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#7da4ff;background:rgba(26,86,255,.15);border-color:rgba(26,86,255,.3)">Product Launch</span>
+              <p class="theme-body">Google launched AI agents and mobile apps for Flow services, signaling aggressive expansion into conversational AI that travel card competitors must integrate to remain relevant.</p>
+              <div class="theme-foot">2 articles · 2026-05-19 to 2026-05-22 · <a href="https://news.google.com/rss/articles/CBMiiwFBVV95cUxNejBIdXRPNUxWLVVvUE1mRUJfYUtGbVF6TmR5aS1TS3hjb1A1SHJZVUxNR0tCbE0yMHNPMTVweTljaFdsWVBmSkdDYkFYdnJNZ2FrOTh1ZkhMcGJNSHMzbE9mb1V5SjVBcms4bGgzeXlEMF9TeXU3bDZHeVk5UXY5R2tQdU51TUpMT1ow?oc=5" target="_blank" class="src-link">blog.google ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#5ee8c8;background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.25)">Ecosystem</span>
+              <p class="theme-body">Google partnered with EQT to accelerate AI adoption globally, signaling potential integration of AI-driven personalization and rewards optimization into competitive travel card offerings.</p>
+              <div class="theme-foot">4 articles · 2026-05-28 to 2026-05-29 · <a href="https://news.google.com/rss/articles/CBMipAFBVV95cUxPQXhCcGpGSmhXTUNTbDl2OGpFVUgyb1A0UU4tQ3RNeW9rVmJfcWNfaGlzTEZBdlQ2X0J0anYxRFpwQnhuTFBNU1ZudHBtUmZYUnM0RXBTb0tjNkE3NWpBU204MEw5bjJDWG00LWl4UU1DVHI3RG90T2dFRFQ4WXhYallHUlBmTVBFZU1tNU5DZnVlTGJOYkdkUm5zMXQ4TE5EclFJeQ?oc=5" target="_blank" class="src-link">Yahoo Finance ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#5ee8c8;background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.25)">Ecosystem</span>
+              <p class="theme-body">Google expanded AI agent partnerships in enterprise workflows, potentially enabling embedded financial services and spending intelligence directly within business software ecosystems.</p>
+              <div class="theme-foot">3 articles · 2026-05-28 · <a href="https://news.google.com/rss/articles/CBMiggJBVV95cUxNMno5WW05RC0xZmJoUkUwRlhObzI3ZlY1c29XdjF1Vk15SnB2bEtlLU4wZDJmM1hJbmpmZ0dpRG0yMFdXSHVSWjRiaDZHLUJndHlZVFY2bm5FNzVSbENXdnl0ZS15dGthdlJJdlpCYkdGTkhyOUxMd2VjMk1VOWZwenA2RThxNG4xcFFmMTRJOTlNNTZaUHMzNzRFOUdWeW54eEdWQk9tSWtyZVR1b0ZMWDlOSXh3b2t0YmFMNVFHb0ZtXzhaaVEwVkNWNDIxRjFRVXRlcnd1RnlySzNHOEFrTE1RNjBqcXEtR0RlUHBuY1FkLTc2NkttQjIwSzk4MDZvcHc?oc=5" target="_blank" class="src-link">Google Cloud Press Corner ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#5ee8c8;background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.25)">Ecosystem</span>
+              <p class="theme-body">Google deepened its cloud AI capabilities through Digital Turbine, potentially enabling more personalized travel recommendations and spending insights for competing card products.</p>
+              <div class="theme-foot">2 articles · 2026-05-21 · <a href="https://news.google.com/rss/articles/CBMi9wFBVV95cUxNcjY5aHZ1N2FoN2w1aHBDaFpIZkhoYkJLc08yMjVvbGZ6cnVpbjJDZE1UWmZDbjVsM0R2Tk5wR2dBVjY5Tnl0WGs0VWF4SHJYSHZ0RDlLc3pSTE1GNjBDRUpmcnRRQksxRklJTDMtQkxueHAtTlBHbFQzNnNSYjV6Mm8wUVVxd1VuUzJvbjAtalVQOVVWaWt5R0NUNmREQ2I1VUhKMUdMQ3FCalFSdzU0MlFlMXlNRndyVjQ1RlVJc1AycTZXUFdIY2lLRTJoTTgyaHF3aXpLWlREalFtV25rREdrNERaOGYzNng5ODFHMVgxVTBuZlY4?oc=5" target="_blank" class="src-link">PR Newswire ↗</a></div>
+            </div>
+          </div>
+          
+        </div><div class="comp-card" id="c3">
+          <div class="comp-header">
+            <div class="comp-avatar" style="background:linear-gradient(135deg,#f5a623,#e8634a)">M</div>
+            <div>
+              <div class="comp-name">META</div>
+              <div class="comp-meta">8 themes · 45 articles</div>
+            </div>
+          </div>
+          <div class="comp-summary-wrap">
+            <p class="comp-summary">Meta is making a strategic pivot toward agentic AI and fintech services expansion, with 7,000 employees reassigned to AI-focused roles and plans for advanced autonomous financial transaction capabilities that directly threaten traditional financial service models. The company's government chatbot launch in Nigeria signals expansion into underbanked markets where messaging-based financial services could achieve rapid adoption, while WhatsApp Incognito Chat and messaging monetization enable integrated payment features within existing communication infrastructure. Meta's removal of AI guardrails from models introduces significant data security and fraud detection risks for competitors, while the development of AI shopping agents for Instagram creates alternative e-commerce ecosystems that reduce reliance on traditional payment mechanisms. Meta's strategy of monetizing messaging and social platforms through paid subscriptions combined with payment features suggests the company is building a parallel financial services ecosystem that competes directly with traditional financial service distribution.</p>
+          </div>
+          <div class="comp-themes-wrap">
+            <div class="themes-label">Themes</div>
+            <div class="theme-item">
+              <span class="cat-tag" style="color:#7da4ff;background:rgba(26,86,255,.15);border-color:rgba(26,86,255,.3)">Product Launch</span>
+              <p class="theme-body">Meta launched a multilingual government chatbot in Nigeria, signaling expansion into fintech/payments services that could compete with traditional travel card digital assistance offerings.</p>
+              <div class="theme-foot">3 articles · 2026-05-21 to 2026-05-22 · <a href="https://news.google.com/rss/articles/CBMinAFBVV95cUxNSjVzNE45YkQzS01uV2NWVDYyMTJ2dWI1OFdWaVNnWGtTZ2swdUhqZFJjYTZiY0FWTnZaakdfeXVWM0hYRHdBSWJES2MwV0g3RU5PRV9zeE4zTHBmRHNUVVg4Y2xYR2ViV1Zab2lOX0ZhckhMUU84LVVJZ1ZVbGhBLUNEU2F3TkFSZ0hGZmNOTmFyblkxUkhZUjZWR2Q?oc=5" target="_blank" class="src-link">The Guardian Nigeria News ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#7da4ff;background:rgba(26,86,255,.15);border-color:rgba(26,86,255,.3)">Product Launch</span>
+              <p class="theme-body">Meta plans advanced agentic AI assistant for consumers, potentially enabling automated financial transaction capabilities that could compete with travel card features.</p>
+              <div class="theme-foot">2 articles · 2026-05-05 to 2026-05-06 · <a href="https://news.google.com/rss/articles/CBMihAFBVV95cUxOR3ZWMU90TkcwdnMyTTg1OFR5QUJHcUJqWjM2VVZWVUpVR09mczJwTjM1a3hBUVMwRUNzbURhWE9hQWgtbzdiQlNSZGFpMFRGQUNUWmFmTERXV05EcmdKd0hLc2ltQzRHQk55ZUtvRXBEeVpNdDlVdnhXUjNGRmtyeS1jbU4?oc=5" target="_blank" class="src-link">Financial Times ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#7da4ff;background:rgba(26,86,255,.15);border-color:rgba(26,86,255,.3)">Product Launch</span>
+              <p class="theme-body">Meta is reportedly reassigning 7,000 employees to AI-focused roles, potentially accelerating AI-driven personalization and targeting capabilities for their financial services offerings.</p>
+              <div class="theme-foot">2 articles · 2026-05-18 to 2026-05-19 · <a href="https://news.google.com/rss/articles/CBMic0FVX3lxTE1nTldtZnJqSnBZRG8yYkoyYURpRU1ncW1zbFZ3SUYwM0RyVGlreWE5cF9XLU95Wk5wVndTWkloMUw2Z29zUm5odW1OTUVHT1BZb0hERjhMek9JSjhOTzFqdTNSdjF1Y18yUDdnSmVpRnJ0X0U?oc=5" target="_blank" class="src-link">Engadget ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#7da4ff;background:rgba(26,86,255,.15);border-color:rgba(26,86,255,.3)">Product Launch</span>
+              <p class="theme-body">Meta stripped AI guardrails from models, raising data security and fraud detection risks for competing fintech and card products.</p>
+              <div class="theme-foot">2 articles · 2026-05-25 · <a href="https://news.google.com/rss/articles/CBMihAFBVV95cUxPemhoS1RKNzhhdWdIRDlKVFI4NHJDaDdxVjBmV0VpS29nSW1kMUJRbWx6cGVaX2lQV3FTV0hrZ1BCT29vUnY5OVVBYW9UYnp1aEUwS1M5OERPMmNNVmk4VU55elhrRFZmWVk4dmJtTnllVkgtaUxpMDhpT2s4czVSMTBZUEU?oc=5" target="_blank" class="src-link">Financial Times ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#5ee8c8;background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.25)">Ecosystem</span>
+              <p class="theme-body">Meta is monetizing messaging and social platforms through paid subscriptions, signaling ecosystem expansion that could integrate payment features and compete with travel card loyalty programs.</p>
+              <div class="theme-foot">17 articles · 2026-05-27 to 2026-05-29 · <a href="https://news.google.com/rss/articles/CBMimAFBVV95cUxNSWJlUFBOaFlhdS1IaXdqQlJZeFoybDA0c1hYMV93b3dLa3h1SFNxdjA5akdpTHFOdFJWTGFMLVpHNUhJSWVVX3h1SFFxbWh1d3pQdDM0YmoyS3RnV2R0TTM3TWJzOEt4WlNXYnFjMDJ2d0ZlOFFadTV0cDNlYUFWV0U2a0htazRLa2M5VlVJdUdZb0dVOUdvOQ?oc=5" target="_blank" class="src-link">WSJ ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#5ee8c8;background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.25)">Ecosystem</span>
+              <p class="theme-body">Meta enhanced WhatsApp's privacy features with incognito chats, signaling emphasis on secure messaging that could differentiate their fintech payment integration strategy.</p>
+              <div class="theme-foot">12 articles · 2026-05-13 to 2026-05-15 · <a href="https://news.google.com/rss/articles/CBMibEFVX3lxTE9FWjMxbEVaYTNPcnRSTUpSdUF1V0p4bHZ3Yk1GYlIzR3FFei01NHhVQXJtSWkxbmxyWTdYSEo3b25FSDRsQWVlTDNHOXhweVh6ekdCQ0ZaVFBKS2RCeTlEbWNBbmg0RzdvQ2JPRA?oc=5" target="_blank" class="src-link">WIRED ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#5ee8c8;background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.25)">Ecosystem</span>
+              <p class="theme-body">Meta launched WhatsApp Incognito Chat, signaling ecosystem expansion into private communications that could enable targeted travel spending insights for competing fintech offerings.</p>
+              <div class="theme-foot">4 articles · 2026-05-17 to 2026-05-21 · <a href="https://news.google.com/rss/articles/CBMie0FVX3lxTE1LNFlKT0lLaXZiRWhuQ29VYVBoUzBtZU91YVJRdGNza0JILXhpalBWWEgyLS1WeUhnNU56WGEwSFF3STJ3QTdwQXFzMHlnQld0VEdpX1VWTFdPQTF3MnliekhTdktLdlJvTmNNUHdXY1BuVWJMNXZhLVJWUQ?oc=5" target="_blank" class="src-link">Memeburn ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#5ee8c8;background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.25)">Ecosystem</span>
+              <p class="theme-body">Meta is developing AI shopping agents for Instagram to compete with TikTok Shop, potentially creating alternative e-commerce ecosystems that could reduce reliance on traditional payment cards.</p>
+              <div class="theme-foot">3 articles · 2026-05-06 to 2026-05-08 · <a href="https://news.google.com/rss/articles/CBMimAFBVV95cUxQQ0tjZmxLbDJiUXJqbVNVVmRYdzBuS2U4UTNvQ0xRdjVEdEVTMjI4YS10T1ppZlJQQTNxM0NNTmxNVEQxd1N2TXdEUGhyc1RIVFhjdjB2VGQyS3dvSkRfS25wcnp5WlljQmE5bW5nZzI2enhHRzk5V0JDOTVGOFJiUE43dkRvNHJ6Y0V5M2FQbmcwVG9qYTdnZQ?oc=5" target="_blank" class="src-link">eMarketer ↗</a></div>
+            </div>
+          </div>
+          
+        </div><div class="comp-card" id="c4">
+          <div class="comp-header">
+            <div class="comp-avatar" style="background:linear-gradient(135deg,#00b894,#0f36cc)">M</div>
+            <div>
+              <div class="comp-name">MICROSOFT</div>
+              <div class="comp-meta">8 themes · 21 articles</div>
+            </div>
+          </div>
+          <div class="comp-summary-wrap">
+            <p class="comp-summary">Microsoft is taking a measured approach to AI integration, deprioritizing some consumer-facing AI features in Xbox while investing heavily in enterprise AI through Copilot collaboration tools and Azure billing expansion partnerships with Amdocs. The company's focus on reducing friction through seamless UX rather than forced AI features suggests a maturation in how enterprise and productivity applications should integrate AI, prioritizing adoption over feature proliferation. Microsoft's 120 critical security patches in the 365 ecosystem raise reliability concerns for customers considering bundled service partnerships, potentially creating vulnerability that competitors could exploit for ecosystem switching. The Azure infrastructure expansion indicates Microsoft is building enterprise-grade AI capabilities that financial service providers will depend on for transaction processing and customer analytics, though security concerns may create hesitation in adopting these platforms for sensitive financial workloads.</p>
+          </div>
+          <div class="comp-themes-wrap">
+            <div class="themes-label">Themes</div>
+            <div class="theme-item">
+              <span class="cat-tag" style="color:#7da4ff;background:rgba(26,86,255,.15);border-color:rgba(26,86,255,.3)">Product Launch</span>
+              <p class="theme-body">Microsoft is deprioritizing AI integration in Xbox, signaling potential shift away from AI-driven consumer engagement strategies that could impact loyalty program differentiation.</p>
+              <div class="theme-foot">2 articles · 2026-05-05 to 2026-05-06 · <a href="https://news.google.com/rss/articles/CBMifEFVX3lxTFBTQ3JhQzZFQlgzbVJTVGhpanNZZk5NbVlhbkFaUm5vQmJXQnloQ3V2TFZKdTl0aDZ6VEViWmZkNS0yanNyWVJiUDJGN2JjaThxdG5PQzFYajIzM29jRTcwWk4xRWs0UUd0OWhlTWN5LXBGWVdGajFsNFBqVzQ?oc=5" target="_blank" class="src-link">Engadget ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#7da4ff;background:rgba(26,86,255,.15);border-color:rgba(26,86,255,.3)">Product Launch</span>
+              <p class="theme-body">Microsoft integrated AI-powered information aggregation across browser tabs, signaling potential competitive moves toward seamless data integration features that could differentiate future travel card digital experiences.</p>
+              <div class="theme-foot">2 articles · 2026-05-13 to 2026-05-15 · <a href="https://news.google.com/rss/articles/CBMidkFVX3lxTE9vNUpGQTIyelpjRWVmVXU1YVBOTUVGTzROMHVaZ0VRUXdQNXZFOVJQUm5wMkFNMlozV2l2WTFDaFdXYjdpaERZMElwUTFrUVNVWmpCRVh1QXpZUUN6MHdmV3dNV1Z4cEY2Q1pfbElySVo3Y29WRkE?oc=5" target="_blank" class="src-link">The Verge ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#7da4ff;background:rgba(26,86,255,.15);border-color:rgba(26,86,255,.3)">Product Launch</span>
+              <p class="theme-body">Microsoft customized Office UX to reduce friction, signaling that seamless AI integration—not forced features—drives user loyalty and adoption in productivity ecosystems.</p>
+              <div class="theme-foot">2 articles · 2026-05-22 · <a href="https://news.google.com/rss/articles/CBMinAFBVV95cUxQQk1OZ3NURTdfT0MtaW1fTXRGNmU4TjRYaVlnMm1JM084SDU2MXAxX002Q3ZoRmI0NFlTaTN1Xy16M0g4TVFnb2hNZGpta3ZfSmZsclJTSVdMODc3ekJvYmxVUHl4YlhkRk5PeDVwMzZJaGhzdk5UZ1VzMEdvNXREZEVUcUQ1QUFUei0ybHFYcTNoY1V3UUpOdzRybmg?oc=5" target="_blank" class="src-link">The Verge ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#5ee8c8;background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.25)">Ecosystem</span>
+              <p class="theme-body">Microsoft updated Copilot with collaboration features, signaling enterprise AI integration that travel card products must match through personalized, AI-assisted booking and expense management tools.</p>
+              <div class="theme-foot">5 articles · 2026-05-26 to 2026-05-29 · <a href="https://news.google.com/rss/articles/CBMi_AJBVV95cUxOUE5TdnJJV1dsZm5yYVBCcE01YUd0YWQzblgyeUNQU1dHUk9JUXR1RlgyU3drU0FtaHJNSG80LW9GazE3NTNMQzFtLUR3Ui04VG0tZFFYNHYyQkZBRk9XNXkzY2Q3cXNzV0xpczBWcm9rV1NLZkZXMWlKWjVzdFRLY2xsaGhzbXRTLXZNUngzeHhsb1BiSktYSVhHTGdvcm9CandBQ09DU2NBTF9aTkZhcWlST1gxUW95UDhWQ25MYjRwWThBeEk2cVFlV19ZeEFfU3JzNnpZOFlVeEI0X2txdy1SY2ZkV1BRTHltZ2s4WXk3d1FFc05OR3QtdWNDcVB0eFd1SGNIeng3NEhXZDdoWEI2NllOX2tTdHI3blR5bXJkSi1JQ1FnWERPNFBZc185M0pKa0pBREc4MW1hZlhwNmgtMWwxUHJ2Q2tQR2F1MERkMzJSal8tbDBmREp6RHRFM2VBaDM3MmFoM0xlNDlpVXpZajE4dy1KRllOTA?oc=5" target="_blank" class="src-link">MSN ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#5ee8c8;background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.25)">Ecosystem</span>
+              <p class="theme-body">This article appears to be about Azure technical codes unrelated to travel credit cards, so no direct competitive implication for card products exists.</p>
+              <div class="theme-foot">3 articles · 2026-05-11 to 2026-05-15 · <a href="https://news.google.com/rss/articles/CBMiTkFVX3lxTE1LZjIzc1dNamZiVi1lV1ozVUpIX0RmYnBVXzh4VmpNU1JzUjVVQkhjcDB4cWdZV01CMmo4elNzd29xQVo1bDJkQS05TGRYUdIBU0FVX3lxTE1VZ1AydUtTY2xRZDJYd0F6QTFpbC1XRGV4a0pLSjZnVWV0LWs0cDd1eThfd0o5azBSX1ZLeXdyQXJFZjdhc2JSRkpJVU4zaFhjU1Bv?oc=5" target="_blank" class="src-link">Beebom ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#5ee8c8;background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.25)">Ecosystem</span>
+              <p class="theme-body">Microsoft expanded Azure's enterprise billing capabilities through Amdocs partnership, strengthening cloud infrastructure that could enable more sophisticated travel card transaction processing and rewards management systems.</p>
+              <div class="theme-foot">3 articles · 2026-05-13 · <a href="https://news.google.com/rss/articles/CBMivAFBVV95cUxQVnNERUVkTWxEb3RHN2Q4Y2tHU2VRVEptdEZpQjlYaGVjcldoOTNFd0VlU29qejZZMWwwRGJlVl9jRndPbEpKUkwzdTdTQ0dsVk9ibENJTVY4S3dzYmIwbW9NR1dYQTM5X1lpSXJiZW1Ebk52UDVBMmFFeDZ4MldUVHM4RnEtaTNUVmZ1YzR6R0s2dDRfRW9iZy1xRWhxSEZCY29ocTZqeHl1S0h2QWxmT1JIc3NucmhvVW45aA?oc=5" target="_blank" class="src-link">Investing.com ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#5ee8c8;background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.25)">Ecosystem</span>
+              <p class="theme-body">Microsoft released 120 security patches including 29 critical flaws, potentially impacting cloud infrastructure reliability that travel card platforms depend on for payment processing.</p>
+              <div class="theme-foot">2 articles · 2026-05-12 to 2026-05-13 · <a href="https://news.google.com/rss/articles/CBMicEFVX3lxTE1UdWhUUy11Wm5kWndJQmQ1ZWFrVDFiR1EtNC1UZUdXSjVPMkRoZWMyal9JbXF3MGlQOE9idThSU1FuR1lESVFMa2FWUldXVmVlemM3dVBWTlhmUl9ERUROZl9fMldsRDZkSGFPTkVwYV_SAXZBVV95cUxNMktTa2lNN2pPUnpYVHBVNTlyOFlOZHZiQ09zcGlXdEtkRi1TeW5sOHZzLUpSSU10ckFzZTZvLWcwVjhLYjQxVDM4UnkwczhObk9qUnVzR0VhOEFQN3BkMzNHWkxGLUg1MlViZ0p2RXJGVDVqZGxB?oc=5" target="_blank" class="src-link">CyberSecurityNews ↗</a></div>
+            </div><div class="theme-item">
+              <span class="cat-tag" style="color:#5ee8c8;background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.25)">Ecosystem</span>
+              <p class="theme-body">Microsoft's security vulnerabilities in 365 ecosystem could erode customer trust in bundled services that travel card partners might leverage.</p>
+              <div class="theme-foot">2 articles · 2026-05-22 to 2026-05-24 · <a href="https://news.google.com/rss/articles/CBMiakFVX3lxTE0yS1kyS1RIOEl6WVBxU09RMWQ4bGFuaDE5eTlfeVJKRERhcHlMQzVhenI4TFFpdEZnbHM0S295NVYzZjFlRmk1OVdBZkFIOTgxLWJKR0FCbDhhR0hoRWg4eFM3ZTR0aC1TYkHSAW9BVV95cUxOYnJiNVFrN2E5ZlB6TUhzU1kzVVNGSFAtQmxFZkROa2lnWElDRERXN1VxX2l5eFJ3N1Q3dFpGNWVNOGVtN1loRUdxMXl6ZEpvNG9iTU9zeHJTUXYtU21MTTdxcEwtUjVQcTgzZ1RNX0U?oc=5" target="_blank" class="src-link">CyberSecurityNews ↗</a></div>
+            </div>
+          </div>
+          
+        </div></div>
+  </section>
+
+  <footer class="dash-footer">
+    <span>AI Competitive Intelligence System</span>
+    <span>Built by <a href="https://www.linkedin.com/in/riditasmiah" target="_blank">Ridi Tasmiah</a> · <a href="https://github.com/tasmiahr/ai-competitive-intelligence" target="_blank">GitHub ↗</a></span>
   </footer>
 
 </main>
 
 <script>
-const ctx = document.getElementById('activityChart').getContext('2d');
-new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: ["Amazon", "Apple", "Google", "Meta", "Microsoft"],
-    datasets: [{
-      label: 'Total Articles',
-      data: [39, 74, 62, 91, 43],
-      backgroundColor: 'rgba(0, 212, 170, 0.15)',
-      borderColor: 'rgba(0, 212, 170, 0.8)',
-      borderWidth: 1.5,
-      borderRadius: 6,
+new Chart(document.getElementById('activityChart').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:["Amazon", "Apple", "Google", "Meta", "Microsoft"],
+    datasets:[{
+      data:[38, 54, 100, 72, 28],
+      backgroundColor:'rgba(26,86,255,.15)',
+      borderColor:'rgba(26,86,255,.7)',
+      borderWidth:1.5,borderRadius:6,borderSkipped:false,
+      hoverBackgroundColor:'rgba(26,86,255,.25)',
     }]
   },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#6b6b80', font: { size: 11 } } },
-      y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#6b6b80', font: { size: 11 } } }
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{
+      legend:{display:false},
+      tooltip:{
+        callbacks:{label:ctx=>` ${ctx.parsed.y} articles`},
+        backgroundColor:'rgba(10,10,20,.9)',padding:10,cornerRadius:6,
+        titleFont:{family:'JetBrains Mono',size:11},
+        bodyFont:{family:'JetBrains Mono',size:11},
+      }
+    },
+    scales:{
+      x:{grid:{display:false},ticks:{color:'#aaa',font:{size:11,family:'JetBrains Mono'}}},
+      y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{color:'#aaa',font:{size:11,family:'JetBrains Mono'}}}
     }
   }
 });
 </script>
-
 </body>
 </html>

@@ -1,0 +1,68 @@
+{
+  "year_month": "2026-05",
+  "generated_at": "2026-06-01T01:59:49.720541",
+  "subreddits_monitored": [
+    "creditcards",
+    "churning",
+    "awardtravel",
+    "personalfinance"
+  ],
+  "competitor_sentiment": [
+    {
+      "competitor": "Apple",
+      "total_posts": 0,
+      "total_score": 0,
+      "total_comments": 0,
+      "positive": 0,
+      "negative": 0,
+      "neutral": 0,
+      "sentiment": "neutral",
+      "top_posts": []
+    },
+    {
+      "competitor": "Google",
+      "total_posts": 0,
+      "total_score": 0,
+      "total_comments": 0,
+      "positive": 0,
+      "negative": 0,
+      "neutral": 0,
+      "sentiment": "neutral",
+      "top_posts": []
+    },
+    {
+      "competitor": "Microsoft",
+      "total_posts": 0,
+      "total_score": 0,
+      "total_comments": 0,
+      "positive": 0,
+      "negative": 0,
+      "neutral": 0,
+      "sentiment": "neutral",
+      "top_posts": []
+    },
+    {
+      "competitor": "Amazon",
+      "total_posts": 0,
+      "total_score": 0,
+      "total_comments": 0,
+      "positive": 0,
+      "negative": 0,
+      "neutral": 0,
+      "sentiment": "neutral",
+      "top_posts": []
+    },
+    {
+      "competitor": "Meta",
+      "total_posts": 0,
+      "total_score": 0,
+      "total_comments": 0,
+      "positive": 0,
+      "negative": 0,
+      "neutral": 0,
+      "sentiment": "neutral",
+      "top_posts": []
+    }
+  ],
+  "total_posts": 0
+}
